@@ -35,7 +35,6 @@ module.exports = {
     'computed-property-spacing': [1, 'never'], // disallow or enforce spaces inside of computed properties
     'comma-spacing': [1, { before: false, after: true }], // enforce spacing before and after comma
     'comma-style': [1, 'last'], // enforce one true comma style
-    camelcase: 1, // require camel case names
     'default-case': 1, // require default case in switch statements
     'default-case-last': 1, // enforce default clauses in switch statements to be last
     'default-param-last': 1, // enforce default parameters to be last
