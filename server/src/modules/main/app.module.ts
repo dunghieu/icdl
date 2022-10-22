@@ -6,7 +6,10 @@ import { StudentModule } from '../student/student.module';
 import { ConfigModule, ConfigService } from '../config';
 import { AccountModule } from '../account/account.module';
 import { AuthModule } from '../auth';
-import { AdminUserModule } from '../admin-user';
+import { CourseModule } from '../course';
+import { EthnicModule } from '../ethnic';
+import { CityModule } from '../city';
+import { FeedModule } from '../feed';
 
 @Module({
   imports: [
@@ -28,7 +31,10 @@ import { AdminUserModule } from '../admin-user';
     }),
     AccountModule,
     StudentModule,
-    AdminUserModule,
+    FeedModule,
+    EthnicModule,
+    CityModule,
+    CourseModule,
     ConfigModule,
     AuthModule,
   ],

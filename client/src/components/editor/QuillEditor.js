@@ -2,6 +2,7 @@ import React from 'react';
 import ReactQuill, {Quill} from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import 'react-quill/dist/quill.core.css';
+import './QuillEditor.css';
 
 import axios from 'axios';
 const __ISMSIE__ = navigator.userAgent.match(/Trident/i) ? true : false;
@@ -264,7 +265,7 @@ class QuillEditor extends React.Component {
           //먼저 노드 서버에다가 이미지를 넣은 다음에   여기 아래에 src에다가 그걸 넣으면 그게
           //이미지 블롯으로 가서  크리에이트가 이미지를 형성 하며 그걸 발류에서     src 랑 alt 를 가져간후에  editorHTML에 다가 넣는다.
           quill.insertEmbed(position, 'image', {
-            src: 'http://localhost:5000/' + response.data.url,
+            src: 'http://localhost:8080/' + response.data.url,
             alt: response.data.fileName,
           });
           quill.setSelection(position + 1);
@@ -307,7 +308,7 @@ class QuillEditor extends React.Component {
           let range = quill.getSelection();
           let position = range ? range.index : 0;
           quill.insertEmbed(position, 'video', {
-            src: 'http://localhost:5000/' + response.data.url,
+            src: 'http://localhost:8080/' + response.data.url,
             title: response.data.fileName,
           });
           quill.setSelection(position + 1);
@@ -370,7 +371,7 @@ class QuillEditor extends React.Component {
 
   render() {
     return (
-      <div>
+      <div style={{borderRadius: '5px'}}>
         <div id="toolbar">
           <select className="ql-header" defaultValue={''} onChange={(e) => e.persist()}>
             <option value="1" />
@@ -388,9 +389,17 @@ class QuillEditor extends React.Component {
           <button className="ql-code-block" />
           <button className="ql-video" />
           <button className="ql-blockquote" />
-          <button className="ql-clean" />
+          <button className="ql-align" value=""></button>
+          <button className="ql-align" value="center"></button>
+          <button className="ql-align" value="right"></button>
+          <button className="ql-align" value="justify"></button>
+          <button className="ql-list" value="ordered"></button>
+          <button className="ql-list" value="bullet"></button>
+          <button className="ql-indent" value="-1"></button>
+          <button className="ql-indent" value="+1"></button>
         </div>
         <ReactQuill
+          className="quill-edit"
           ref={(el) => {
             this.reactQuillRef = el;
           }}
@@ -427,10 +436,8 @@ class QuillEditor extends React.Component {
   }
 
   modules = {
-    // syntax: true,
     toolbar: {
       container: '#toolbar',
-      //id ="toorbar"는  그 위에 B I U S I V F P 이거 있는 곳이다.
       handlers: {
         insertImage: this.imageHandler,
         insertVideo: this.videoHandler,
@@ -453,7 +460,9 @@ class QuillEditor extends React.Component {
     'code-block',
     'video',
     'blockquote',
-    'clean',
+    'align',
+    'list',
+    'indent',
   ];
 }
 

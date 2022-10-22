@@ -1,39 +1,49 @@
 import {
-  IsNotEmpty, IsOptional,
+  IsOptional,
+  IsString, Matches,
 } from 'class-validator';
 
 export class StudentDto {
-  @IsNotEmpty()
+  @IsString()
   firstName: string;
 
-  @IsNotEmpty()
+  @IsString()
   lastName: string;
 
-  @IsNotEmpty()
+  @IsString()
   gender: string;
 
-  @IsNotEmpty()
+  @IsString()
+  citizenId: string;
+
+  @IsString()
   studentId: string;
 
-  @IsNotEmpty()
+  @IsString()
   class: string;
 
-  @IsNotEmpty()
+  @IsString()
   dayOfBirth: string;
 
-  @IsNotEmpty()
+  @IsString()
   monthOfBirth: string;
 
-  @IsNotEmpty()
+  @IsString()
   yearOfBirth: string;
 
-  @IsNotEmpty()
+  @IsString()
   placeOfBirth: string;
 
-  @IsNotEmpty()
+  @IsString()
+  @Matches(/((84|0)[3|5|7|8|9])+([0-9]{8})\b/, { message: 'Phone number is not valid' })
   phoneNumber: string;
 
-  @IsNotEmpty()
+  @IsString()
   ethnic: string;
 
+  @IsString()
+  type: string;
+
+  @IsOptional()
+  description: string;
 }

@@ -32,9 +32,6 @@ export class AuthController {
   @Post('register')
   async register(@Body() payload: RegisterDto): Promise<any> {
     const account = await this.accountService.create(payload);
-    const student = await this.studentService.create(payload);
-    await this.studentService.update(student.id, {accountId: account.id});
-    await this.accountService.update(account.id, {referenceId: student.id});
     return await this.authService.createToken(account);
   }
 

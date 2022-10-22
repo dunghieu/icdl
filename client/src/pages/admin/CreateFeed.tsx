@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 
 import QuillEditor from '../../components/editor/QuillEditor';
-import {Typography, Button, Snackbar, IconButton} from '@mui/material';
+import {Typography, Button, Snackbar, IconButton, TextField} from '@mui/material';
 import axios from 'axios';
 import {useSelector} from 'react-redux';
 import MuiAlert, {AlertProps} from '@mui/material/Alert';
@@ -11,8 +11,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props,
 });
 
 function CreateFeed(props: {history: string[]}) {
-  const user = useSelector((state: any) => state.user);
-
+  const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [files, setFiles] = useState([]);
   const [open, setOpen] = React.useState(false);
@@ -27,7 +26,7 @@ function CreateFeed(props: {history: string[]}) {
 
   const onEditorChange = (value: React.SetStateAction<string>) => {
     setContent(value);
-    console.log(content);
+    console.log('content', content);
   };
 
   const onFilesChange = (files: React.SetStateAction<never[]>) => {
@@ -39,16 +38,12 @@ function CreateFeed(props: {history: string[]}) {
 
     setContent('');
 
-    if (user.userData && !user.userData.isAuth) {
-      return alert('Please Log in first');
-    }
-
     const variables = {
+      title: title,
       content: content,
-      userID: user.userData._id,
     };
 
-    axios.post('/api/feed', variables).then((response) => {
+    axios.post('http://localhost:8080/api/feed', variables).then((response) => {
       if (response) {
         setOpen(true);
 
@@ -61,7 +56,18 @@ function CreateFeed(props: {history: string[]}) {
 
   return (
     <div style={{maxWidth: '700px', margin: '2rem auto'}}>
-      <div style={{textAlign: 'center'}}></div>
+      <TextField
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        label="Title"
+        InputLabelProps={{shrink: true}}
+        id="outlined-basic"
+        variant="outlined"
+        fullWidth
+        size="small"
+        margin="normal"
+        color="info"
+      />
       <QuillEditor
         placeholder={'Start Posting Something'}
         onEditorChange={onEditorChange}
@@ -70,12 +76,12 @@ function CreateFeed(props: {history: string[]}) {
 
       <form onSubmit={onSubmit}>
         <div style={{textAlign: 'center', margin: '2rem'}}>
-          <Button type="submit" variant="contained">
+          <Button type="submit" variant="contained" color="info">
             Submit
           </Button>
           <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
             <Alert onClose={handleClose} severity="success" sx={{width: '100%'}}>
-              This is a success message!
+              Create Succeed!
             </Alert>
           </Snackbar>
         </div>

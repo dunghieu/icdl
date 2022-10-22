@@ -1,6 +1,5 @@
-import { Account } from 'src/modules/account';
 import { BaseEntity } from 'src/shared';
-import { Entity, Column, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, Column } from 'typeorm';
 
 @Entity()
 export class Student extends BaseEntity{
@@ -12,6 +11,9 @@ export class Student extends BaseEntity{
 
     @Column()
     gender: string;
+
+    @Column()
+    citizenId: string;
 
     @Column()
     studentId: string;
@@ -38,9 +40,8 @@ export class Student extends BaseEntity{
     ethnic: string;
 
     @Column()
-    accountId: number;
+    type: string;
 
-    @OneToOne(() => Account)
-    @JoinColumn({ name: 'accountId' })
-    account: Account;
+    @Column({ nullable: true })
+    description: string;
 }
