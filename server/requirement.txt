@@ -1,0 +1,25 @@
+//Hệ thống quản lý thi chứng chỉ tin học
+
+Đăng tin thông báo tổ chức thi
+Thí sinh đăng ký thi/ôn thi
+Thí sinh có thể hoãn thi
+Chốt danh sách thi
+Lập danh sách phòng thi
+Lập danh sách thu bài lý thuyết
+Lập danh sách bài thi thực hành
+Tạo thẻ dự thi
+Tạo danh sách ảnh
+Thu bài thực hành
+Đánh số phách bài thi thực hành
+Vào điểm lý thuyết/ thực hành
+Lập danh sách công bố điểm, thí sinh tra cứu điểm theo thông tin đã đăng ký, hoặc xem theo danh sách
+Nhận đơn phúc tra
+Lập danh sách được cấp chứng chỉ
+Công bố quyết định cấp chứng chỉ
+
+Bảng tỉnh thành + dân tộc
+danh sách phòng thi
+mẫu thẻ dự thi
+danh sách ảnh
+
+bất cập: thêm 1 ng vào danh sách phải làm lại từ đầu.
