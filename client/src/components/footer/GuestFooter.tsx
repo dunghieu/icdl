@@ -1,15 +1,59 @@
-import {Box, Container, Grid, Typography, Icon, Tooltip} from '@mui/material';
+import {
+  Box,
+  Container,
+  Grid,
+  Typography,
+  Icon,
+  Tooltip,
+  Button,
+  ThemeProvider,
+  createTheme,
+} from '@mui/material';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import HomeIcon from '@mui/icons-material/Home';
 import PhoneIcon from '@mui/icons-material/Phone';
 import {Link} from 'react-router-dom';
+import ArrowCircleUpOutlinedIcon from '@mui/icons-material/ArrowCircleUpOutlined';
+import {useEffect, useState} from 'react';
+
+const theme = createTheme({
+  palette: {
+    neutral: {
+      main: 'black',
+      // contrastText: '#fff',
+    },
+  },
+});
 
 const GuestFooter = () => {
+  const [showScroll, setShowScroll] = useState('');
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const scrollToTop = () => {
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  };
+
+  document.body.onscroll = function () {
+    setScrollPosition(window.scrollY);
+  };
+
+  useEffect(() => {
+    if (scrollPosition > 100) {
+      setShowScroll('fixed');
+    } else {
+      setShowScroll('absolute');
+    }
+  }, [scrollPosition]);
+
+  useEffect(() => {
+    scrollToTop();
+  }, []);
+
   return (
     <div
       style={{
         backgroundColor: '#b20530',
+        position: 'relative',
       }}
     >
       <Container
@@ -117,6 +161,19 @@ const GuestFooter = () => {
           </Grid>
         </Grid>
       </Container>
+      <ThemeProvider theme={theme}>
+        <Button
+          variant="text"
+          sx={{
+            position: showScroll,
+            bottom: '1rem',
+            right: '1rem',
+          }}
+          onClick={scrollToTop}
+        >
+          <ArrowCircleUpOutlinedIcon fontSize="large" color="neutral" />
+        </Button>
+      </ThemeProvider>
     </div>
   );
 };

@@ -11,6 +11,8 @@ import GiangVien from "pages/guest/introduce/GiangVien";
 import GioiThieuTrungTam from "pages/guest/introduce/GioiThieuTrungTam";
 import SoDoToChuc from "pages/guest/introduce/SoDoToChuc";
 import TraCuuChungChi from "pages/guest/TraCuuChungChi";
+import TraCuuDanhSachThi from "pages/guest/TraCuuDanhSachThi";
+import TraCuuKetQuaThi from "pages/guest/TraCuuKetQuaThi";
 import { lazy } from "react";
 
 const routes = [
@@ -76,6 +78,16 @@ const routes = [
     path: "/tra-cuu-chung-chi",
     exact: true,
     component: TraCuuChungChi
+  },
+  {
+    path: "/tra-cuu-danh-sach-thi",
+    exact: true,
+    component: TraCuuDanhSachThi
+  },
+  {
+    path: "/tra-cuu-ket-qua-thi",
+    exact: true,
+    component: TraCuuKetQuaThi
   },
   {
     path: "/dang-ky-thi",

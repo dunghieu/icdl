@@ -12,7 +12,7 @@ const theme = createTheme({
   },
 });
 
-const TraCuuChungChi = () => {
+const TraCuuKetQuaThi = () => {
   return (
     <>
       <ThemeProvider theme={theme}>
@@ -35,7 +35,7 @@ const TraCuuChungChi = () => {
               color: '#b20530',
             }}
           >
-            TRA CỨU CHỨNG CHỈ CNTT
+            CỔNG TRA CỨU KẾT QUẢ THI CỦA THÍ SINH
           </Typography>
           <Box
             sx={{
@@ -44,28 +44,41 @@ const TraCuuChungChi = () => {
               width: '100%',
             }}
           >
-            <InputLabel sx={{fontWeight: 700}}>Họ tên:</InputLabel>
+            <InputLabel sx={{fontWeight: 700}}>Họ tên đầy đủ:</InputLabel>
             <TextField
               variant="outlined"
               color="neutral"
               margin="dense"
               size="small"
-              placeholder="Nhập đầy đủ họ tên để tìm kiếm. VD: Nguyễn Văn Nam"
+              placeholder="Ví Dụ: Nguyễn Văn Nam"
               fullWidth
             />
             <br />
             <br />
             <br />
-            <InputLabel sx={{fontWeight: 700}}>Số hiệu:</InputLabel>
+            <InputLabel sx={{fontWeight: 700}}>CMND (Không có khoảng cách giữa các số):</InputLabel>
             <TextField
               variant="outlined"
               color="neutral"
               margin="dense"
               size="small"
-              placeholder="Nhập đầy đủ họ tên để tìm kiếm. VD: Nguyễn Văn Nam"
+              placeholder="Ví dụ: 900800700"
+              fullWidth
+            />
+            <br />
+            <br />
+            <br />
+            <InputLabel sx={{fontWeight: 700}}>Ngày thi (theo định dạng dd/mm/yyy):</InputLabel>
+            <TextField
+              variant="outlined"
+              color="neutral"
+              margin="dense"
+              size="small"
+              placeholder="Ví dụ: 20/04/1996"
               fullWidth
             />
           </Box>
+
           <Button
             variant="contained"
             sx={{
@@ -78,7 +91,7 @@ const TraCuuChungChi = () => {
               },
             }}
           >
-            Tra cứu
+            Tìm
           </Button>
           <Typography>Vui lòng nhập đầy đủ thông tin.</Typography>
         </Container>
@@ -88,4 +101,4 @@ const TraCuuChungChi = () => {
   );
 };
 
-export default TraCuuChungChi;
+export default TraCuuKetQuaThi;

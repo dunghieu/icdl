@@ -12,7 +12,7 @@ const theme = createTheme({
   },
 });
 
-const TraCuuChungChi = () => {
+const TraCuuDanhSachThi = () => {
   return (
     <>
       <ThemeProvider theme={theme}>
@@ -35,7 +35,7 @@ const TraCuuChungChi = () => {
               color: '#b20530',
             }}
           >
-            TRA CỨU CHỨNG CHỈ CNTT
+            CỔNG TRA CỨU THÔNG TIN THÍ SINH ĐĂNG KÝ DỰ THI
           </Typography>
           <Box
             sx={{
@@ -44,25 +44,25 @@ const TraCuuChungChi = () => {
               width: '100%',
             }}
           >
-            <InputLabel sx={{fontWeight: 700}}>Họ tên:</InputLabel>
+            <InputLabel sx={{fontWeight: 700}}>Họ tên đầy đủ:</InputLabel>
             <TextField
               variant="outlined"
               color="neutral"
               margin="dense"
               size="small"
-              placeholder="Nhập đầy đủ họ tên để tìm kiếm. VD: Nguyễn Văn Nam"
+              placeholder="Ví Dụ: Nguyễn Văn Nam"
               fullWidth
             />
             <br />
             <br />
             <br />
-            <InputLabel sx={{fontWeight: 700}}>Số hiệu:</InputLabel>
+            <InputLabel sx={{fontWeight: 700}}>CMND (Không có khoảng cách giữa các số):</InputLabel>
             <TextField
               variant="outlined"
               color="neutral"
               margin="dense"
               size="small"
-              placeholder="Nhập đầy đủ họ tên để tìm kiếm. VD: Nguyễn Văn Nam"
+              placeholder="Ví dụ: 900800700"
               fullWidth
             />
           </Box>
@@ -78,7 +78,7 @@ const TraCuuChungChi = () => {
               },
             }}
           >
-            Tra cứu
+            Tìm
           </Button>
           <Typography>Vui lòng nhập đầy đủ thông tin.</Typography>
         </Container>
@@ -88,4 +88,4 @@ const TraCuuChungChi = () => {
   );
 };
 
-export default TraCuuChungChi;
+export default TraCuuDanhSachThi;

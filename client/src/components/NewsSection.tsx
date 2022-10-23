@@ -1,4 +1,38 @@
 import {Container, Grid, Typography} from '@mui/material';
+import ActionAreaCardVertical from './common/card/ActionAreaCardVertical';
+
+const gridItem = [
+  {
+    title: 'title1',
+    content: 'content1',
+    time: '2021-10-10',
+  },
+  {
+    title: 'title2',
+    content: 'content2',
+    time: '2021-10-10',
+  },
+  {
+    title: 'title3',
+    content: 'content3',
+    time: '2021-10-10',
+  },
+  {
+    title: 'title4',
+    content: 'content4',
+    time: '2021-10-10',
+  },
+  {
+    title: 'title5',
+    content: 'content5',
+    time: '2021-10-10',
+  },
+  {
+    title: 'title6',
+    content: 'content6',
+    time: '2021-10-10',
+  },
+];
 
 const NewsSection = () => {
   return (
@@ -17,54 +51,11 @@ const NewsSection = () => {
         THÔNG BÁO VÀ TIN TỨC
       </Typography>
       <Grid container spacing={2} sx={{marginTop: '50px'}}>
-        <Grid item xs={12} md={6}>
-          <div
-            style={{
-              background: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(https://images.unsplash.com/photo-1626126090003-8b2b2b2b2b2b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80) center center/cover no-repeat`,
-              height: '250px',
-            }}
-          ></div>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <div
-            style={{
-              background: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(https://images.unsplash.com/photo-1626126090003-8b2b2b2b2b2b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80) center center/cover no-repeat`,
-              height: '250px',
-            }}
-          ></div>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <div
-            style={{
-              background: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(https://images.unsplash.com/photo-1626126090003-8b2b2b2b2b2b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80) center center/cover no-repeat`,
-              height: '250px',
-            }}
-          ></div>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <div
-            style={{
-              background: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(https://images.unsplash.com/photo-1626126090003-8b2b2b2b2b2b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80) center center/cover no-repeat`,
-              height: '250px',
-            }}
-          ></div>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <div
-            style={{
-              background: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(https://images.unsplash.com/photo-1626126090003-8b2b2b2b2b2b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80) center center/cover no-repeat`,
-              height: '250px',
-            }}
-          ></div>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <div
-            style={{
-              background: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(https://images.unsplash.com/photo-1626126090003-8b2b2b2b2b2b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80) center center/cover no-repeat`,
-              height: '250px',
-            }}
-          ></div>
-        </Grid>
+        {gridItem.map((item) => (
+          <Grid item xs={12} md={6} key={item.title}>
+            <ActionAreaCardVertical title={item.title} content={item.content} time={item.time} />
+          </Grid>
+        ))}
       </Grid>
     </Container>
   );
