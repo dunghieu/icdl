@@ -37,6 +37,9 @@ export class Student extends BaseEntity{
     phoneNumber: string;
 
     @Column()
+    email: string;
+
+    @Column()
     ethnic: string;
 
     @Column()
