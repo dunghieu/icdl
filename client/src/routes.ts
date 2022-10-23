@@ -15,7 +15,7 @@ import { lazy } from "react";
 
 const routes = [
   {
-    path: ["/admin", '/academy'],
+    path: paths.Admin,
     component: Layout,
     routes: [
       {

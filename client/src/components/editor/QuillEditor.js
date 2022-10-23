@@ -300,33 +300,35 @@ class QuillEditor extends React.Component {
       };
       formData.append('file', file);
 
-      axios.post('/api/blog/uploadfiles', formData, config).then((response) => {
-        if (response.data.success) {
-          const quill = this.reactQuillRef.getEditor();
-          quill.focus();
+      axios
+        .post('http://localhost:8080/api/feed/uploadfiles', formData, config)
+        .then((response) => {
+          if (response.data.success) {
+            const quill = this.reactQuillRef.getEditor();
+            quill.focus();
 
-          let range = quill.getSelection();
-          let position = range ? range.index : 0;
-          quill.insertEmbed(position, 'video', {
-            src: 'http://localhost:8080/' + response.data.url,
-            title: response.data.fileName,
-          });
-          quill.setSelection(position + 1);
+            let range = quill.getSelection();
+            let position = range ? range.index : 0;
+            quill.insertEmbed(position, 'video', {
+              src: 'http://localhost:8080/' + response.data.url,
+              title: response.data.fileName,
+            });
+            quill.setSelection(position + 1);
 
-          if (this._isMounted) {
-            this.setState(
-              {
-                files: [...this.state.files, file],
-              },
-              () => {
-                this.props.onFilesChange(this.state.files);
-              }
-            );
+            if (this._isMounted) {
+              this.setState(
+                {
+                  files: [...this.state.files, file],
+                },
+                () => {
+                  this.props.onFilesChange(this.state.files);
+                }
+              );
+            }
+          } else {
+            return alert('failed to upload file');
           }
-        } else {
-          return alert('failed to upload file');
-        }
-      });
+        });
     }
   };
 
@@ -344,28 +346,30 @@ class QuillEditor extends React.Component {
       };
       formData.append('file', file);
 
-      axios.post('/api/blog/uploadfiles', formData, config).then((response) => {
-        if (response.data.success) {
-          const quill = this.reactQuillRef.getEditor();
-          quill.focus();
+      axios
+        .post('http://localhost:8080/api/feed/uploadfiles', formData, config)
+        .then((response) => {
+          if (response.data.success) {
+            const quill = this.reactQuillRef.getEditor();
+            quill.focus();
 
-          let range = quill.getSelection();
-          let position = range ? range.index : 0;
-          quill.insertEmbed(position, 'file', response.data.fileName);
-          quill.setSelection(position + 1);
+            let range = quill.getSelection();
+            let position = range ? range.index : 0;
+            quill.insertEmbed(position, 'file', response.data.fileName);
+            quill.setSelection(position + 1);
 
-          if (this._isMounted) {
-            this.setState(
-              {
-                files: [...this.state.files, file],
-              },
-              () => {
-                this.props.onFilesChange(this.state.files);
-              }
-            );
+            if (this._isMounted) {
+              this.setState(
+                {
+                  files: [...this.state.files, file],
+                },
+                () => {
+                  this.props.onFilesChange(this.state.files);
+                }
+              );
+            }
           }
-        }
-      });
+        });
     }
   };
 

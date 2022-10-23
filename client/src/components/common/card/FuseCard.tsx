@@ -1,21 +1,31 @@
-import { Card, CardContent, CardActions } from "@mui/material";
+import {Card, CardContent, CardActions} from '@mui/material';
 
-const FuseCard = ({header, content, actions} : any) => {
+const FuseCard = ({header, content, actions}: any) => {
   return (
-    <Card 
+    <Card
       sx={{
-        padding: "1.5rem",
-        borderRadius: "1rem",
-      }}>
+        padding: '1.5rem',
+        borderRadius: '1rem',
+      }}
+    >
       {header}
-      <CardContent>
+      <CardContent
+        sx={{
+          textOverflow: 'ellipsis',
+          overflow: 'hidden',
+        }}
+      >
         {content}
       </CardContent>
-      <CardActions>
+      <CardActions
+        sx={{
+          justifyContent: 'flex-end',
+        }}
+      >
         {actions}
       </CardActions>
     </Card>
-  )
-}
+  );
+};
 
-export default FuseCard
+export default FuseCard;

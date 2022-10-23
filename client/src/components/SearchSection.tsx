@@ -1,5 +1,5 @@
 import {Box, Container, Typography} from '@mui/material';
-import searchIcon1 from '../lib/assets/images/Search1.png';
+import {Link} from 'react-router-dom';
 import searchIcon2 from '../lib/assets/images/Search2.png';
 import searchIcon3 from '../lib/assets/images/Search3.png';
 import searchIcon4 from '../lib/assets/images/Search4.png';
@@ -35,19 +35,28 @@ const SearchSection = () => {
               alignItems: 'center',
             }}
           >
-            <Box
-              sx={{
-                display: 'flex',
-                border: '2px solid #b20530',
-                width: '200px',
-                height: '200px',
-                borderRadius: '100%',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              <img src={searchIcon2} alt="Search 2" style={{width: '50%', height: '120px'}} />
-            </Box>
+            <Link to="/">
+              <Box
+                sx={{
+                  display: 'flex',
+                  border: '2px solid #b20530',
+                  width: '200px',
+                  height: '200px',
+                  borderRadius: '100%',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  '&:hover': {
+                    backgroundColor: '#b20530',
+                    cursor: 'pointer',
+                    '& img': {
+                      filter: 'grayscale(1) invert(1) brightness(1.5)',
+                    },
+                  },
+                }}
+              >
+                <img src={searchIcon2} alt="Search 2" style={{width: '50%', height: '120px'}} />
+              </Box>
+            </Link>
             <Typography variant="h6" sx={{color: '#b20530', textAlign: 'center'}}>
               DANH SÁCH DỰ THI VÀ KẾT QUẢ THI CNTT
             </Typography>
@@ -60,19 +69,28 @@ const SearchSection = () => {
               alignItems: 'center',
             }}
           >
-            <Box
-              sx={{
-                display: 'flex',
-                border: '2px solid #b20530',
-                width: '200px',
-                height: '200px',
-                borderRadius: '100%',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              <img src={searchIcon3} alt="Search 3" style={{width: '50%', height: '120px'}} />
-            </Box>
+            <Link to="/">
+              <Box
+                sx={{
+                  display: 'flex',
+                  border: '2px solid #b20530',
+                  width: '200px',
+                  height: '200px',
+                  borderRadius: '100%',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  '&:hover': {
+                    backgroundColor: '#b20530',
+                    cursor: 'pointer',
+                    '& img': {
+                      filter: 'grayscale(1) invert(1) brightness(1.5)',
+                    },
+                  },
+                }}
+              >
+                <img src={searchIcon3} alt="Search 3" style={{width: '50%', height: '120px'}} />
+              </Box>
+            </Link>
             <Typography variant="h6" sx={{color: '#b20530', textAlign: 'center'}}>
               TRA CỨU CHỨNG CHỈ
             </Typography>
@@ -85,19 +103,28 @@ const SearchSection = () => {
               alignItems: 'center',
             }}
           >
-            <Box
-              sx={{
-                display: 'flex',
-                border: '2px solid #b20530',
-                width: '200px',
-                height: '200px',
-                borderRadius: '100%',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              <img src={searchIcon4} alt="Search 4" style={{width: '50%', height: '120px'}} />
-            </Box>
+            <Link to="/">
+              <Box
+                sx={{
+                  display: 'flex',
+                  border: '2px solid #b20530',
+                  width: '200px',
+                  height: '200px',
+                  borderRadius: '100%',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  '&:hover': {
+                    backgroundColor: '#b20530',
+                    cursor: 'pointer',
+                    '& img': {
+                      filter: 'grayscale(1) invert(1) brightness(1.5)',
+                    },
+                  },
+                }}
+              >
+                <img src={searchIcon4} alt="Search 4" style={{width: '50%', height: '120px'}} />
+              </Box>
+            </Link>
             <Typography variant="h6" sx={{color: '#b20530', textAlign: 'center'}}>
               XÁC MINH CHỨNG CHỈ
             </Typography>

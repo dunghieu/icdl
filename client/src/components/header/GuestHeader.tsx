@@ -1,21 +1,25 @@
 import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
+import {
+  AppBar,
+  Box,
+  Toolbar,
+  IconButton,
+  Typography,
+  Menu,
+  Container,
+  Button,
+  MenuItem,
+  Icon,
+  Divider,
+} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-import Button from '@mui/material/Button';
-import MenuItem from '@mui/material/MenuItem';
-import Icon from '@mui/material/Icon';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import {Link} from 'react-router-dom';
 import Logo from '../../lib/assets/images/Logo.png';
 import PhoneIcon from '@mui/icons-material/Phone';
 import {Tooltip} from '@mui/material';
+import useWindowDimensions from 'lib/hooks/useWindowDimentions';
 
 const basicPages = [
   {
@@ -55,12 +59,17 @@ const settings = [
   },
 ];
 
-const settings2 = ['KHÓA HỌC', 'LỊCH THI'];
+const settings2 = [
+  ['KHÓA HỌC', 'LỊCH THI'],
+  ['KHÓA HỌC', 'LỊCH THI'],
+  ['KHÓA HỌC', 'LỊCH THI'],
+];
 
 const GuestHeader = () => {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
   const [anchorElUser2, setAnchorElUser2] = React.useState<null | HTMLElement>(null);
+  const {width, height} = useWindowDimensions();
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -109,7 +118,10 @@ const GuestHeader = () => {
           </Tooltip>
         </div>
       </Container>
-      <AppBar position="static" sx={{backgroundColor: '#b20530', color: 'white'}}>
+      <AppBar
+        position={height > 300 ? 'sticky' : 'fixed'}
+        sx={{backgroundColor: '#b20530', color: 'white'}}
+      >
         <Container
           maxWidth="xl"
           sx={{justifyContent: 'center', display: {xs: 'block', md: 'flex'}}}
@@ -214,7 +226,7 @@ const GuestHeader = () => {
                 Công nghệ thông tin
                 <KeyboardArrowDownRoundedIcon />
                 <Menu
-                  sx={{mt: '45px'}}
+                  sx={{mt: '45px', ml: '100px'}}
                   id="menu-appbar"
                   anchorEl={anchorElUser2}
                   anchorOrigin={{
@@ -229,11 +241,46 @@ const GuestHeader = () => {
                   open={Boolean(anchorElUser2)}
                   onClose={handleCloseUserMenu2}
                 >
-                  {settings2.map((setting) => (
-                    <MenuItem key={setting} onClick={handleCloseUserMenu2}>
-                      <Typography textAlign="center">{setting}</Typography>
-                    </MenuItem>
-                  ))}
+                  <div style={{display: 'flex'}}>
+                    <div>
+                      <MenuItem onClick={handleCloseUserMenu2}>
+                        <Typography fontWeight={700} textAlign="center">
+                          CNTT Cơ bản
+                        </Typography>
+                      </MenuItem>
+                      {settings2[0].map((setting) => (
+                        <MenuItem key={setting} onClick={handleCloseUserMenu2}>
+                          <Typography textAlign="center">{setting}</Typography>
+                        </MenuItem>
+                      ))}
+                    </div>
+                    <Divider orientation="vertical" flexItem light variant="middle" />
+                    <div>
+                      <MenuItem onClick={handleCloseUserMenu2}>
+                        <Typography fontWeight={700} textAlign="center">
+                          CNTT Nâng Cao
+                        </Typography>
+                      </MenuItem>
+                      {settings2[1].map((setting) => (
+                        <MenuItem key={setting} onClick={handleCloseUserMenu2}>
+                          <Typography textAlign="center">{setting}</Typography>
+                        </MenuItem>
+                      ))}
+                    </div>
+                    <Divider orientation="vertical" flexItem light variant="middle" />
+                    <div>
+                      <MenuItem onClick={handleCloseUserMenu2}>
+                        <Typography fontWeight={700} textAlign="center">
+                          IC3, MOS
+                        </Typography>
+                      </MenuItem>
+                      {settings2[2].map((setting) => (
+                        <MenuItem key={setting} onClick={handleCloseUserMenu2}>
+                          <Typography textAlign="center">{setting}</Typography>
+                        </MenuItem>
+                      ))}
+                    </div>
+                  </div>
                 </Menu>
               </Button>
             </Box>

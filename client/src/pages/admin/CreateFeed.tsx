@@ -1,10 +1,47 @@
 import React, {useEffect, useState} from 'react';
 
 import QuillEditor from '../../components/editor/QuillEditor';
-import {Typography, Button, Snackbar, IconButton, TextField} from '@mui/material';
+import {Typography, Button, Snackbar, TextField} from '@mui/material';
 import axios from 'axios';
 import {useSelector} from 'react-redux';
 import MuiAlert, {AlertProps} from '@mui/material/Alert';
+import {createTheme, ThemeProvider} from '@mui/material/styles';
+import MultipleSelectChip from 'components/common/select/MultipleSelectChip';
+
+const theme = createTheme({
+  palette: {
+    neutral: {
+      main: 'none',
+      // contrastText: '#fff',
+    },
+  },
+});
+
+declare module '@mui/material/styles' {
+  interface Palette {
+    neutral: Palette['primary'];
+  }
+
+  // allow configuration using `createTheme`
+  interface PaletteOptions {
+    neutral?: PaletteOptions['primary'];
+  }
+}
+
+// Update the Button's color prop options
+declare module '@mui/material/TextField' {
+  interface TextFieldPropsColorOverrides {
+    neutral: true;
+  }
+}
+
+const categories = [
+  'Thông báo',
+  'Các Khóa học',
+  'Thông báo CNTT Cơ Bản',
+  'Thông báo CNTT Nâng Cao',
+  'Thông báo IC3, MOS',
+];
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -13,6 +50,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props,
 function CreateFeed(props: {history: string[]}) {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [category, setCategory] = useState('');
   const [files, setFiles] = useState([]);
   const [open, setOpen] = React.useState(false);
 
@@ -41,6 +79,7 @@ function CreateFeed(props: {history: string[]}) {
     const variables = {
       title: title,
       content: content,
+      category: category,
     };
 
     axios.post('http://localhost:8080/api/feed', variables).then((response) => {
@@ -48,26 +87,39 @@ function CreateFeed(props: {history: string[]}) {
         setOpen(true);
 
         setTimeout(() => {
-          props.history.push('/blog');
+          props.history.push('/admin');
         }, 2000);
       }
     });
   };
-
   return (
     <div style={{maxWidth: '700px', margin: '2rem auto'}}>
-      <TextField
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        label="Title"
-        InputLabelProps={{shrink: true}}
-        id="outlined-basic"
-        variant="outlined"
-        fullWidth
-        size="small"
-        margin="normal"
-        color="info"
-      />
+      <ThemeProvider theme={theme}>
+        <TextField
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          label="Title"
+          InputLabelProps={{shrink: true}}
+          variant="outlined"
+          fullWidth
+          size="small"
+          margin="normal"
+          color="neutral"
+        />
+
+        <MultipleSelectChip
+          label="Category"
+          value={categories}
+          get={(value: string | string[]) => {
+            if (typeof value === 'string') {
+              setCategory(value);
+            }
+            if (Array.isArray(value)) {
+              setCategory(value.join(','));
+            }
+          }}
+        />
+      </ThemeProvider>
       <QuillEditor
         placeholder={'Start Posting Something'}
         onEditorChange={onEditorChange}

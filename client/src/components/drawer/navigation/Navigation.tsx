@@ -19,6 +19,7 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import {Link} from 'react-router-dom';
 import {Basic, Collapsable} from './components';
+import LocalLibraryOutlinedIcon from '@mui/icons-material/LocalLibraryOutlined';
 
 export interface NavigationItem {
   id?: string;
@@ -34,38 +35,44 @@ const navigationItems: NavigationItem[] = [
   {
     id: 'dashboard',
     title: 'dashboard',
-    subtitle: 'Employee',
     type: 'group',
     children: [
       {
-        id: 'dashboard.home',
-        title: 'Home',
+        id: 'dashboard.feed',
+        title: 'Feeds',
         type: 'basic',
         icon: <HomeOutlinedIcon />,
         link: '/admin',
       },
       {
-        id: 'dashboard.academy',
-        title: 'Academy',
+        id: 'dashboard.course',
+        title: 'Course',
         type: 'basic',
-        icon: <SchoolOutlinedIcon />,
-        link: '/academy',
+        icon: <LocalLibraryOutlinedIcon />,
+        link: '/admin/course',
       },
       {
-        id: 'dashboard.commerce',
-        title: 'E-Commerce',
-        type: 'collapsable',
-        icon: <ShoppingCartOutlinedIcon />,
-        children: [
-          {
-            id: 'dashboard.academy',
-            title: 'Academy',
-            type: 'basic',
-            icon: <SchoolOutlinedIcon />,
-            link: '/academy',
-          },
-        ],
+        id: 'dashboard.candidate',
+        title: 'Candidate',
+        type: 'basic',
+        icon: <SchoolOutlinedIcon />,
+        link: '/admin/candidate',
       },
+      // {
+      //   id: 'dashboard.commerce',
+      //   title: 'E-Commerce',
+      //   type: 'collapsable',
+      //   icon: <ShoppingCartOutlinedIcon />,
+      //   children: [
+      //     {
+      //       id: 'dashboard.academy',
+      //       title: 'Academy',
+      //       type: 'basic',
+      //       icon: <SchoolOutlinedIcon />,
+      //       link: '/academy',
+      //     },
+      //   ],
+      // },
     ],
   },
   {
@@ -81,13 +88,13 @@ const navigationItems: NavigationItem[] = [
         icon: <PersonOutlineOutlinedIcon />,
         link: '/profile',
       },
-      {
-        id: 'profile.setting',
-        title: 'Setting',
-        type: 'basic',
-        icon: <SettingsOutlinedIcon />,
-        link: '/setting',
-      },
+      // {
+      //   id: 'profile.setting',
+      //   title: 'Setting',
+      //   type: 'basic',
+      //   icon: <SettingsOutlinedIcon />,
+      //   link: '/setting',
+      // },
       {
         id: 'profile.signout',
         title: 'Sign out',

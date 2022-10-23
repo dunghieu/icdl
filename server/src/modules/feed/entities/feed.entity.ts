@@ -9,4 +9,7 @@ export class Feed extends BaseEntity{
     @Column()
     content: string;
 
+    @Column()
+    category: string;
+
 }
