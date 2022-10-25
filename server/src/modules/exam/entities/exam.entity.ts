@@ -16,8 +16,8 @@ export class Exam extends BaseEntity {
     date: Date;
 
     @Column()
-    startTime: Date;
+    startTime: string;
 
     @Column()
-    endTime: Date;
+    endTime: string;
 }

@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsString, Matches } from 'class-validator';
 
 export class ExamDto {
     @IsString()
@@ -11,11 +11,14 @@ export class ExamDto {
     instruction: string;
 
     @IsNotEmpty()
+    @Matches(/^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$/, { message: 'Invalid date format' })
     date: Date;
 
     @IsNotEmpty()
-    startTime: Date;
+    @Matches(/^(?:(?:([01]?\d|2[0-3]):)?([0-5]?\d):)?([0-5]?\d)$/, { message: 'Invalid time format' })
+    startTime: string;
 
     @IsNotEmpty()
-    endTime: Date;
+    @Matches(/^(?:(?:([01]?\d|2[0-3]):)?([0-5]?\d):)?([0-5]?\d)$/, { message: 'Invalid time format' })
+    endTime: string;
 }

@@ -19,7 +19,7 @@ export class ExamController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.examService.findOne(+id);
+    return this.examService.findOneBy(+id);
   }
 
   @Patch(':id')

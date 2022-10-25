@@ -10,6 +10,7 @@ import { CourseModule } from '../course';
 import { EthnicModule } from '../ethnic';
 import { CityModule } from '../city';
 import { FeedModule } from '../feed';
+import { ExamModule } from '../exam';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { FeedModule } from '../feed';
     }),
     AccountModule,
     StudentModule,
+    ExamModule,
     FeedModule,
     EthnicModule,
     CityModule,
