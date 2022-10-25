@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { Student } from './entities/student.entity';
+import * as moment from 'moment';
 
 @Injectable()
 export class StudentService {
@@ -13,7 +14,8 @@ export class StudentService {
   ) {}
 
   create(createStudentDto: CreateStudentDto) {
-    return this.studentRepository.save(createStudentDto);
+    const student = this.studentRepository.create(createStudentDto);
+    return this.studentRepository.save(student);
   }
 
   async findAll(): Promise<Student[]> {
@@ -50,5 +52,12 @@ export class StudentService {
 
   async remove(id: number): Promise<void> {
     await this.studentRepository.delete(id);
+  }
+
+  async search(query): Promise<Student> {
+    const repo = this.studentRepository;
+    // const { name, email, phone } = query;
+    return repo.createQueryBuilder('student')
+      .getOne();
   }
 }

@@ -1,5 +1,4 @@
 import {
-  IsDateString,
   IsOptional,
   IsString, Matches,
 } from 'class-validator';
@@ -40,10 +39,14 @@ export class StudentDto {
   phoneNumber: string;
 
   @IsString()
+  email: string;
+
+  @IsString()
   ethnic: string;
 
-  @IsDateString()
-  testDate: Date;
+  @IsString()
+  @Matches(/^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$/, { message: 'Invalid date format' })
+  testDate: string;
 
   @IsString()
   certificateType: string;
