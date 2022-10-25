@@ -11,6 +11,7 @@ import { EthnicModule } from '../ethnic';
 import { CityModule } from '../city';
 import { FeedModule } from '../feed';
 import { ExamModule } from '../exam';
+import { ExamResultModule } from '../exam-result';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { ExamModule } from '../exam';
     AccountModule,
     StudentModule,
     ExamModule,
+    ExamResultModule,
     FeedModule,
     EthnicModule,
     CityModule,

@@ -4,7 +4,6 @@ import { Repository } from 'typeorm';
 import { CreateExamDto } from './dto/create-exam.dto';
 import { UpdateExamDto } from './dto/update-exam.dto';
 import { Exam } from './entities/exam.entity';
-import * as moment from 'moment';
 
 @Injectable()
 export class ExamService {
