@@ -1,4 +1,5 @@
 import {
+  IsDateString,
   IsOptional,
   IsString, Matches,
 } from 'class-validator';
@@ -40,6 +41,12 @@ export class StudentDto {
 
   @IsString()
   ethnic: string;
+
+  @IsDateString()
+  testDate: Date;
+
+  @IsString()
+  certificateType: string;
 
   @IsString()
   type: string;

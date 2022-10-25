@@ -1,3 +1,11 @@
 import { BaseEntity } from 'src/shared';
+import { Column, Entity } from 'typeorm';
 
-export class Course extends BaseEntity{}
+@Entity()
+export class Course extends BaseEntity{
+    @Column()
+    name: string;
+
+  // @Column()
+  // subjects: SubjectDto[];
+}

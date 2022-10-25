@@ -1,6 +1,8 @@
+import { IsString } from 'class-validator';
+
 export class CourseDto {
-  // name: string;
-  // description: string;
-  // code: string;
+  @IsString()
+  name: string;
+
   // subjects: SubjectDto[];
 }

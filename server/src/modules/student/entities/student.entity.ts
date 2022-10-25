@@ -43,6 +43,12 @@ export class Student extends BaseEntity{
     ethnic: string;
 
     @Column()
+    testDate: Date;
+
+    @Column()
+    certificateType: string;
+
+    @Column()
     type: string;
 
     @Column({ nullable: true })
