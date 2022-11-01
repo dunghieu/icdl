@@ -1,13 +1,16 @@
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
 // application
 import { BaseEntity } from 'src/shared/index';
+import { Student } from 'src/modules/student';
 @Entity()
-export class PaymentEntity extends BaseEntity {
+export class Payment extends BaseEntity {
   @Column()
+  @OneToOne(() => Student, (student) => student.id)
+  @JoinColumn({ name: 'studentId', referencedColumnName: 'id'})
   studentId: number;
 
   @Column()
-  paymentId: string;
+  intentId: string;
 
   @Column()
   amount: number;

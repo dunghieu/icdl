@@ -5,7 +5,7 @@ export class PaymentDto {
   studentId: number;
 
   @IsString()
-  paymentId: string;
+  intentId: string;
 
   @IsNumber()
   amount: number;

@@ -21,20 +21,21 @@ export class StudentService {
 
   async create(createStudentDto: CreateStudentDto) {
     //TODO : create a student -> create a paymentIntent -> save the paymentIntent to db -> send email
-    const student = this.studentRepository.create(createStudentDto);
+    const student = await this.studentRepository.save(createStudentDto);
+    const amount = createStudentDto.type === StudentType.ON ? 400000 : createStudentDto.type === StudentType.THI ? 1000000 : 1400000;
     const paymentIntent = await this.paymentService.createPaymentIntent({
-      amount: 1000,
+      amount: amount,
       currency: 'vnd',
     });
     const payment = await this.paymentService.create({
       studentId: student.id,
-      paymentId: paymentIntent.paymentId,
-      amount: createStudentDto.type === StudentType.ALL ? 1400000 : StudentType.THI ? 1000000 : 400000,
+      intentId: paymentIntent.paymentId,
+      amount: amount,
       status: 0,
     });
 
     // await this.emailService.sendInviteEmail(student);
-    return this.studentRepository.save(student);
+    return payment;
   }
 
   async findAll(query: SearchRequest): Promise<Student[]> {
@@ -68,9 +69,21 @@ export class StudentService {
   }
 
   async update(id: number, updateUserDto: UpdateStudentDto) {
-    await this.findById(id);
-
-    return this.studentRepository.update(id, updateUserDto);
+    const user = await this.studentRepository.createQueryBuilder('student').innerJoinAndSelect('student.payment', 'payment').where('student.id = :id', { id: id }).getOne();
+    if (updateUserDto.type && user.type !== updateUserDto.type) {
+      const amount = updateUserDto.type === StudentType.ON ? 400000 : updateUserDto.type === StudentType.THI ? 1000000 : 1400000;
+      const paymentIntent = await this.paymentService.createPaymentIntent({
+        amount: amount,
+        currency: 'vnd',
+      });
+      const payment = await this.paymentService.update(user.payment.id, {
+        intentId: paymentIntent.paymentId,
+        amount: amount,
+      });
+    }
+    const updatedUser = Object.assign(user, updateUserDto);
+    const result = await this.studentRepository.save(updatedUser);
+    return result;
   }
 
   async remove(id: number): Promise<void> {

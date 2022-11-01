@@ -2,27 +2,31 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 // application
-import { PaymentEntity } from './entities';
+import { Payment } from './entities';
 import {
   CreatePaymentIntentPayload,
 } from './payloads';
 import Stripe from 'stripe';
 import { StripeConfig } from './stripe.config';
-import { PaymentDto } from './dtos';
+import { PaymentDto, UpdatePaymentDto } from './dtos';
 @Injectable()
 export class PaymentService {
   private stripe : Stripe;
   constructor(
-    @InjectRepository(PaymentEntity)
-    private paymentRepository: Repository<PaymentEntity>,
+    @InjectRepository(Payment)
+    private paymentRepository: Repository<Payment>,
   ) {
     this.stripe = new Stripe(StripeConfig.secret_key, {
       apiVersion: '2022-08-01',
     });
   }
 
-  findById(id: number) {
-    return this.paymentRepository.findOneBy({id});
+  async findById(id: number) {
+    const payment = await this.paymentRepository.findOneBy({ id });
+    if (!payment) {
+      return null;
+    }
+    return payment;
   }
 
   find(query: any) {
@@ -32,6 +36,12 @@ export class PaymentService {
   async create(body: PaymentDto) {
     const payment = this.paymentRepository.create(body);
     return this.paymentRepository.save(payment);
+  }
+
+  async update(id: number, body: UpdatePaymentDto) {
+    const payment = await this.paymentRepository.findOneBy({id});
+    const updatedPayment = Object.assign(payment, body);
+    return this.paymentRepository.save(updatedPayment);
   }
 
   async createPaymentIntent(body: CreatePaymentIntentPayload) {

@@ -1,5 +1,7 @@
+import { Expose } from 'class-transformer';
+import { Payment } from 'src/modules/payment/entities';
 import { BaseEntity } from 'src/shared';
-import { Entity, Column } from 'typeorm';
+import { Entity, Column, JoinColumn, OneToOne, OneToMany } from 'typeorm';
 
 @Entity()
 export class Student extends BaseEntity{
@@ -47,4 +49,7 @@ export class Student extends BaseEntity{
 
     @Column({ nullable: true })
     description: string;
+
+    @OneToOne(() => Payment, (payment) => payment.studentId)
+    payment: Payment;
 }

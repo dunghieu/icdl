@@ -14,5 +14,5 @@ export enum Sort {
 export enum StudentType {
   THI = 'thi',
   ON = 'ôn',
-  ALL = 'thi + ôn',
+  ALL = 'ôn + thi',
 }
