@@ -17,12 +17,6 @@ export class StudentDto {
   citizenId: string;
 
   @IsString()
-  studentId: string;
-
-  @IsString()
-  class: string;
-
-  @IsString()
   dayOfBirth: string;
 
   @IsString()

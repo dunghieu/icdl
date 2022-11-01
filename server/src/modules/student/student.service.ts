@@ -5,22 +5,37 @@ import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { Student } from './entities/student.entity';
 import * as moment from 'moment';
+import { EmailService } from '../email';
+import { PaymentService } from '../payment/payment.service';
+import { SearchRequest } from 'src/shared/search-request';
 
 @Injectable()
 export class StudentService {
   constructor(
     @InjectRepository(Student)
     private studentRepository: Repository<Student>,
+    private emailService: EmailService,
+    private paymentService: PaymentService
   ) {}
 
-  create(createStudentDto: CreateStudentDto) {
+  async create(createStudentDto: CreateStudentDto) {
+    //TODO : create a student -> create a paymentIntent -> save the paymentIntent to db -> send email
     const student = this.studentRepository.create(createStudentDto);
+    const payment = await this.paymentService.createPaymentIntent({
+      amount: 1000,
+      currency: 'vnd',
+    });
+    // await this.emailService.sendInviteEmail(student);
     return this.studentRepository.save(student);
   }
 
-  async findAll(): Promise<Student[]> {
+  async findAll(query: SearchRequest): Promise<Student[]> {
+    const { limit, page } = query;
+    const offset = (page - 1) * limit;
+    const skip = offset > 0 ? offset : 0;
+    const take = limit > 0 ? limit : 0;
     try {
-      const users = await this.studentRepository.find();
+      const users = await this.studentRepository.createQueryBuilder('student').skip(skip).take(take).getMany();
       return users;
     } catch (error) {
       switch (error.code) {

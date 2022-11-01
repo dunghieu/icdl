@@ -26,8 +26,6 @@ CREATE TABLE IF NOT EXISTS `student` (
   `lastName` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_vietnamese_ci NOT NULL,
   `gender` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_vietnamese_ci NOT NULL,
   `citizenId` varchar(255) NOT NULL,
-  `studentId` varchar(255) NOT NULL,
-  `class` varchar(255) NOT NULL,
   `dayOfBirth` varchar(255) NOT NULL,
   `monthOfBirth` varchar(255) NOT NULL,
   `yearOfBirth` varchar(255) NOT NULL,

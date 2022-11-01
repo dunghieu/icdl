@@ -16,12 +16,6 @@ export class Student extends BaseEntity{
     citizenId: string;
 
     @Column()
-    studentId: string;
-
-    @Column()
-    class: string;
-
-    @Column()
     dayOfBirth: string;
 
     @Column()

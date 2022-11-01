@@ -5,3 +5,8 @@ export enum RolesType {
 }
 
 export const ROLES_KEY = 'roles';
+
+export enum Sort {
+  ASC= 'ASC',
+  DESC= 'DESC',
+}

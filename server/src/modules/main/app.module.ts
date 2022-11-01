@@ -12,6 +12,8 @@ import { CityModule } from '../city';
 import { FeedModule } from '../feed';
 import { ExamModule } from '../exam';
 import { ExamResultModule } from '../exam-result';
+import { EmailModule } from '../email';
+import { PaymentModule } from '../payment/payment.module';
 
 @Module({
   imports: [
@@ -31,6 +33,7 @@ import { ExamResultModule } from '../exam-result';
         } as TypeOrmModuleAsyncOptions;
       },
     }),
+    EmailModule,
     AccountModule,
     StudentModule,
     ExamModule,
@@ -41,6 +44,7 @@ import { ExamResultModule } from '../exam-result';
     CourseModule,
     ConfigModule,
     AuthModule,
+    PaymentModule,
   ],
   controllers: [AppController],
   providers: [AppService],
