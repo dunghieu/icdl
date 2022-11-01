@@ -1,34 +1,17 @@
-import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
+import { Column, Entity } from 'typeorm';
 // application
 import { BaseEntity } from 'src/shared/index';
-@Entity('payment')
+@Entity()
 export class PaymentEntity extends BaseEntity {
-  @Column({ nullable: false })
-  order_id?: number;
+  @Column()
+  studentId: number;
 
-  @Column({ nullable: true })
-  status?: string;
+  @Column()
+  paymentId: string;
 
-  @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
-  transaction_amt: number;
+  @Column()
+  amount: number;
 
-  @Column({ nullable: true })
-  description: string;
-
-  @Column({ type: 'varchar', nullable: true })
-  payment_method?: string;
-  @Column({ type: 'varchar', nullable: true })
-  charge_id?: string;
-
-  @Column({ type: 'datetime', nullable: true })
-  date: Date;
-
-  @Column({ nullable: true })
-  account_id?: number;
-
-  @Column({ type: 'varchar', nullable: true })
-  transaction_type?: string;
-
-  @Column({ type: 'varchar', nullable: true })
-  transaction_description?: string;
+  @Column()
+  status: number;
 }

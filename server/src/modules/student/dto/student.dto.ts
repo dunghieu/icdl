@@ -1,7 +1,9 @@
 import {
+  IsEnum,
   IsOptional,
   IsString, Matches,
 } from 'class-validator';
+import { StudentType } from 'src/shared';
 
 export class StudentDto {
   @IsString()
@@ -45,8 +47,8 @@ export class StudentDto {
   @IsString()
   certificateType: string;
 
-  @IsString()
-  type: string;
+  @IsEnum(StudentType)
+  type: StudentType;
 
   @IsOptional()
   description: string;

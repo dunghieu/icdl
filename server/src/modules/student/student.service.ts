@@ -8,6 +8,7 @@ import * as moment from 'moment';
 import { EmailService } from '../email';
 import { PaymentService } from '../payment/payment.service';
 import { SearchRequest } from 'src/shared/search-request';
+import { StudentType } from 'src/shared';
 
 @Injectable()
 export class StudentService {
@@ -21,10 +22,17 @@ export class StudentService {
   async create(createStudentDto: CreateStudentDto) {
     //TODO : create a student -> create a paymentIntent -> save the paymentIntent to db -> send email
     const student = this.studentRepository.create(createStudentDto);
-    const payment = await this.paymentService.createPaymentIntent({
+    const paymentIntent = await this.paymentService.createPaymentIntent({
       amount: 1000,
       currency: 'vnd',
     });
+    const payment = await this.paymentService.create({
+      studentId: student.id,
+      paymentId: paymentIntent.paymentId,
+      amount: createStudentDto.type === StudentType.ALL ? 1400000 : StudentType.THI ? 1000000 : 400000,
+      status: 0,
+    });
+
     // await this.emailService.sendInviteEmail(student);
     return this.studentRepository.save(student);
   }

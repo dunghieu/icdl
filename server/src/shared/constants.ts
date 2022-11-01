@@ -10,3 +10,9 @@ export enum Sort {
   ASC= 'ASC',
   DESC= 'DESC',
 }
+
+export enum StudentType {
+  THI = 'thi',
+  ON = 'ôn',
+  ALL = 'thi + ôn',
+}
