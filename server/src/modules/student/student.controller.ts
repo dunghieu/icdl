@@ -18,6 +18,11 @@ export class StudentController {
     return this.studentService.search(query);
   }
 
+  @Get('danh-sach-thi')
+  getDanhSachThi(){
+    return this.studentService.getDanhSachThi();
+  }
+
   @Get()
   findAll(@Query() query : SearchRequest) {
     return this.studentService.findAll(query);

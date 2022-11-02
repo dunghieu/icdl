@@ -1,10 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable, BadRequestException, InternalServerErrorException, NotFoundException} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { Student } from './entities/student.entity';
-import * as moment from 'moment';
 import { EmailService } from '../email';
 import { PaymentService } from '../payment/payment.service';
 import { SearchRequest } from 'src/shared/search-request';
@@ -68,6 +68,16 @@ export class StudentService {
 
   }
 
+  async getDanhSachThi(): Promise<Student[]> {
+    const repo = this.studentRepository;
+    const result = await repo.createQueryBuilder('student')
+      .innerJoinAndSelect('student.payment', 'payment')
+      .where('student.type = :type', { type: StudentType.THI })
+      .andWhere('payment.status = :status', { status: 1 })
+      .getMany();
+    return result;
+  }
+
   async update(id: number, updateUserDto: UpdateStudentDto) {
     const user = await this.studentRepository.createQueryBuilder('student').innerJoinAndSelect('student.payment', 'payment').where('student.id = :id', { id: id }).getOne();
     if (updateUserDto.type && user.type !== updateUserDto.type) {
@@ -76,7 +86,7 @@ export class StudentService {
         amount: amount,
         currency: 'vnd',
       });
-      const payment = await this.paymentService.update(user.payment.id, {
+      await this.paymentService.update(user.payment.id, {
         intentId: paymentIntent.paymentId,
         amount: amount,
       });

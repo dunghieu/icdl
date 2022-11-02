@@ -3,7 +3,7 @@ import {
   IsOptional,
   IsString, Matches,
 } from 'class-validator';
-import { StudentType } from 'src/shared';
+import { CityEnum, EthnicEnum, StudentType } from 'src/shared';
 
 export class StudentDto {
   @IsString()
@@ -28,7 +28,8 @@ export class StudentDto {
   yearOfBirth: string;
 
   @IsString()
-  placeOfBirth: string;
+  @IsEnum(CityEnum)
+  placeOfBirth: CityEnum;
 
   @IsString()
   @Matches(/((84|0)[3|5|7|8|9])+([0-9]{8})\b/, { message: 'Phone number is not valid' })
@@ -38,7 +39,8 @@ export class StudentDto {
   email: string;
 
   @IsString()
-  ethnic: string;
+  @IsEnum(EthnicEnum)
+  ethnic: EthnicEnum;
 
   @IsString()
   @Matches(/^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$/, { message: 'Invalid date format' })

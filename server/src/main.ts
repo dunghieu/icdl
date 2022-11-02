@@ -1,4 +1,4 @@
-import { ValidationPipe } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './modules/main/app.module';
 
@@ -11,6 +11,8 @@ async function bootstrap() {
   );
   app.enableCors();
   app.setGlobalPrefix('api');
-  await app.listen(8080);
+  await app.listen(process.env.PORT, () => {
+    Logger.log(`Server is running on port ${process.env.PORT}`);
+  });
 }
 bootstrap();
