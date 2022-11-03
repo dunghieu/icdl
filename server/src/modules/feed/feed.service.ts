@@ -1,7 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { SearchRequest } from 'src/shared/search-request';
 import { Repository } from 'typeorm';
 import { CreateFeedDto } from './dto/create-feed.dto';
+import { FeedSearchRequest } from './dto/feed-search-request.dto';
 import { UpdateFeedDto } from './dto/update-feed.dto';
 import { Feed } from './entities/feed.entity';
 
@@ -16,8 +18,13 @@ export class FeedService {
     return this.feedRepository.save(createFeedDto);
   }
 
-  findAll() {
-    return this.feedRepository.find();
+  findAll(query?: FeedSearchRequest) {
+    const { limit, page, category} = query;
+    const where = category ? {category} : {};
+    const offset = (page - 1) * limit;
+    const skip = offset > 0 ? offset : 0;
+    const take = limit > 0 ? limit : 0;
+    return this.feedRepository.createQueryBuilder('feed').where(where).skip(skip).take(take).getMany();
   }
 
   findOneBy(id: number) {
