@@ -10,6 +10,7 @@ import cookie from 'cookie';
 import routes from 'routes';
 import {Router, Route, Switch} from 'react-router-dom';
 import {createBrowserHistory} from 'history';
+import * as jsPDF from 'jspdf';
 
 const history = createBrowserHistory();
 
