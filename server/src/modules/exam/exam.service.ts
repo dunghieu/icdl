@@ -19,7 +19,10 @@ export class ExamService {
   }
 
   findOneBy(id: number) {
-    return this.examRepository.findBy({id});
+    return this.examRepository.createQueryBuilder('exam')
+      .innerJoinAndSelect('exam.examResult', 'examResult')
+      .where('exam.id = :id', { id })
+      .getOne();
   }
 
   update(id: number, updateExamDto: UpdateExamDto) {

@@ -1,5 +1,6 @@
+import { Exam } from 'src/modules/exam/entities/exam.entity';
 import { BaseEntity } from 'src/shared';
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, OneToOne } from 'typeorm';
 
 @Entity()
 export class ExamResult extends BaseEntity {
@@ -17,4 +18,7 @@ export class ExamResult extends BaseEntity {
 
     @Column()
     status: number;
+
+    @OneToOne(() => Exam, (exam) => exam.id)
+    exam: Exam;
 }

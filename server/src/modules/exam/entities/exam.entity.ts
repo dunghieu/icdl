@@ -1,5 +1,6 @@
+import { ExamResult } from 'src/modules/exam-result';
 import { BaseEntity } from 'src/shared';
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
 
 @Entity()
 export class Exam extends BaseEntity {
@@ -20,4 +21,8 @@ export class Exam extends BaseEntity {
 
     @Column()
     endTime: string;
+
+    @OneToOne(() => ExamResult, (examResult) => examResult.examId)
+    @JoinColumn({ name: 'id', referencedColumnName: 'examId'})
+    examResult: ExamResult;
 }

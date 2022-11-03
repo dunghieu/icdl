@@ -2,7 +2,6 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestj
 import { FeedService } from './feed.service';
 import { CreateFeedDto } from './dto/create-feed.dto';
 import { UpdateFeedDto } from './dto/update-feed.dto';
-import { SearchRequest } from 'src/shared/search-request';
 import { FeedSearchRequest } from './dto/feed-search-request.dto';
 
 @Controller('feed')

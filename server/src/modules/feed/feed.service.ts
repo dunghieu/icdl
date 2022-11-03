@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { SearchRequest } from 'src/shared/search-request';
 import { Repository } from 'typeorm';
 import { CreateFeedDto } from './dto/create-feed.dto';
 import { FeedSearchRequest } from './dto/feed-search-request.dto';
