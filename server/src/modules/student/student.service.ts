@@ -34,8 +34,8 @@ export class StudentService {
       status: 0,
     });
 
-    // await this.emailService.sendInviteEmail(student);
-    return payment;
+    await this.emailService.sendInviteEmail(student);
+    return;
   }
 
   async findAll(query: SearchRequest): Promise<Student[]> {
