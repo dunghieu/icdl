@@ -19,7 +19,7 @@ export enum StudentType {
 
 export enum CityEnum {
   ANGIANG = 'An Giang',
-  BARIAVUNGTAU = 'Bà Rịa - Vũng Tàu',
+  BARIAVUNGTAU = 'Bà Rịa – Vũng Tàu',
   BACLIEU = 'Bạc Liêu',
   BACGIANG = 'Bắc Giang',
   BACKAN = 'Bắc Kạn',

@@ -29,6 +29,10 @@ export class PaymentService {
     return payment;
   }
 
+  async findByIntentId(intentId: string) {
+    return this.paymentRepository.findOneBy({ intentId });
+  }
+
   find(query: any) {
     return this.paymentRepository.find(query);
   }
@@ -38,8 +42,16 @@ export class PaymentService {
     return this.paymentRepository.save(payment);
   }
 
-  async update(id: number, body: UpdatePaymentDto) {
-    const payment = await this.paymentRepository.findOneBy({id});
+  async update(id: number | string, body: UpdatePaymentDto) {
+    let payment;
+    if (typeof id === 'string') {
+      payment = await this.paymentRepository.findOneBy({ intentId: id });
+    }
+    if (typeof id === 'number') {
+      payment = await this.paymentRepository.findOneBy({ id });
+    }
+
+    console.log(payment);
     const updatedPayment = Object.assign(payment, body);
     return this.paymentRepository.save(updatedPayment);
   }
@@ -54,8 +66,8 @@ export class PaymentService {
     });
     return {
       paymentId: paymentIntent.id,
-      //clientSecret: paymentIntent.client_secret,
-      // publicKey: StripeConfig.public_key,
+      clientSecret: paymentIntent.client_secret,
+      publicKey: StripeConfig.public_key,
     };
   }
 
@@ -64,6 +76,7 @@ export class PaymentService {
       paymentIntentId,
       {
         payment_method: 'pm_card_visa',
+        return_url: 'https://example.com/order/123/complete',
       }
     );
     return paymentIntent;

@@ -30,7 +30,7 @@ export class EmailService {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   constructor() { }
     //function to send invoice mail to admin
-    sendInviteEmail = async (student: Student) => {
+    sendInviteEmail = async (student: Student, payment: any) => {
       try {
         const info = await transporter.sendMail({
           to: student.email, //receiver email
@@ -43,7 +43,7 @@ export class EmailService {
                 <h4><span><b>Student Name:         </b> ${student.firstName} ${student.lastName} <span/></h4>
                 <h4><span><b>Student Email:        </b> ${student.email} <span/></h4>
                 <hr/> <hr/>
-                <h3>Note :</h3>
+                <h3>Note : http://localhost:3000/checkout/${payment.paymentId}/${payment.clientSecret}</h3>
                 <span>You will receive exactly the Printed Wallet Amount as ordered <span/>
                 <span>Only the Payer Email on this Paid Invoice can be used for delivery inquiries and confirmation regarding the order <span/> <br/>
                 <span>Your wallet design will be shiped to you as soon as possible. 

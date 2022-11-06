@@ -39,9 +39,6 @@ export class Student extends BaseEntity{
     ethnic: string;
 
     @Column()
-    testDate: Date;
-
-    @Column()
     certificateType: string;
 
     @Column()
