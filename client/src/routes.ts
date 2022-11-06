@@ -1,3 +1,4 @@
+import PaymentForm from "components/common/stripe/PaymentForm";
 import { Layout ,IntroduceLayout} from "layout";
 import CategoryLayout from "layout/category-layout/CategoryLayout";
 import { paths } from "lib/constants";
@@ -93,6 +94,11 @@ const routes = [
     path: "/dang-ky-thi",
     exact: true,
     component: DangKyThi
+  },
+  {
+    path: '/checkout/:id/:secret',
+    component: PaymentForm,
+    exact: true,
   },
   {
     path: '/',

@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom';
 import {GuestHeader} from 'components';
 import GuestFooter from 'components/footer/GuestFooter';
 import {DashBoardProps} from 'lib/interfaces';
-import {renderRoutes} from 'react-router-config';
+const renderRoutes = require('react-router-config').renderRoutes;
 
 const CategoryLayout: React.FC<DashBoardProps> = ({route}) => {
   return (

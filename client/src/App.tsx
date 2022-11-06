@@ -1,15 +1,15 @@
+const renderRoutes = require('react-router-config').renderRoutes;
+const createBrowserHistory = require('history').createBrowserHistory;
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {Actions} from './store';
 import {createTheme, CssBaseline, ThemeProvider} from '@mui/material';
 import {getDesignTokens} from 'lib/themes';
-import {renderRoutes} from 'react-router-config';
 import {SnackbarProvider} from 'notistack';
 import {RootState} from 'store/reducers';
 import cookie from 'cookie';
 import routes from 'routes';
 import {Router, Route, Switch} from 'react-router-dom';
-import {createBrowserHistory} from 'history';
 
 const history = createBrowserHistory();
 

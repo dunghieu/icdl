@@ -3,7 +3,7 @@ import {Drawer, Header} from 'components';
 import React, {Suspense} from 'react';
 import {styled} from '@mui/material/styles';
 import {DrawerHeader} from '../../components/drawer/Drawer';
-import {renderRoutes} from 'react-router-config';
+const renderRoutes = require('react-router-config').renderRoutes;
 import {DashBoardProps} from 'lib/interfaces';
 
 const drawerwidth = 240;
