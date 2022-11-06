@@ -2,6 +2,8 @@ import {Container, Typography, Box, TextField, InputLabel, Button} from '@mui/ma
 import {GuestHeader} from 'components';
 import GuestFooter from 'components/footer/GuestFooter';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
+import axios from 'axios';
+import {useState} from 'react';
 
 const theme = createTheme({
   palette: {
@@ -13,6 +15,20 @@ const theme = createTheme({
 });
 
 const TraCuuDanhSachThi = () => {
+  const [fullName, setFullName] = useState('');
+  const [citizenId, setCitizenId] = useState('');
+  const [result, setResult] = useState({});
+
+  const handleOnClick = async () => {
+    if (fullName === '' || citizenId === '') {
+      alert('Bạn chưa nhập đầy đủ thông tin');
+      return;
+    }
+    const res = await axios.get(
+      `http://localhost:3000/api/certificates?fullName=${fullName}&citizenId=${citizenId}`
+    );
+    setResult(res.data);
+  };
   return (
     <>
       <ThemeProvider theme={theme}>
@@ -46,6 +62,8 @@ const TraCuuDanhSachThi = () => {
           >
             <InputLabel sx={{fontWeight: 700}}>Họ tên đầy đủ:</InputLabel>
             <TextField
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
               variant="outlined"
               color="neutral"
               margin="dense"
@@ -58,6 +76,8 @@ const TraCuuDanhSachThi = () => {
             <br />
             <InputLabel sx={{fontWeight: 700}}>CMND (Không có khoảng cách giữa các số):</InputLabel>
             <TextField
+              value={citizenId}
+              onChange={(e) => setCitizenId(e.target.value)}
               variant="outlined"
               color="neutral"
               margin="dense"
@@ -68,6 +88,7 @@ const TraCuuDanhSachThi = () => {
           </Box>
           <Button
             variant="contained"
+            onClick={handleOnClick}
             sx={{
               fontWeight: 700,
               backgroundColor: '#b20530',

@@ -27,6 +27,11 @@ const routes = [
         component: lazy(() => import("pages/admin/Home")),
       },
       {
+        path: `${paths.Admin}/candidate`,
+        exact: true,
+        component: lazy(() => import("pages/admin/Candidate")),
+      },
+      {
         path: `${paths.Admin}/new`,
         exact: true,
         component: CreateFeed

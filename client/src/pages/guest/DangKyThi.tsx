@@ -79,8 +79,11 @@ const DangKyThi = () => {
   const [checkThi, setCheckThi] = useState(false);
   const [checked, setChecked] = useState('');
   const [errorChecked, setErrorChecked] = useState({});
+  const [student, setStudent] = useState({} as any);
 
   const history = useHistory();
+  const search = history.location.search;
+  const params = new URLSearchParams(search).get('id');
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -118,6 +121,26 @@ const DangKyThi = () => {
     const getEthnic = await axios.get('http://localhost:8080/api/ethnic');
     setCityList(getCity.data);
     setEthnicList(getEthnic.data);
+
+    if (params) {
+      const getStudent = await axios.get(`http://localhost:8080/api/student/${params}`);
+      setFirstName(getStudent.data.firstName);
+      setLastName(getStudent.data.lastName);
+      if (getStudent.data.gender === 'Nam') {
+        setGender('Nam');
+      } else {
+        setGender('Nữ');
+      }
+      setDayOfBirth(getStudent.data.dayOfBirth);
+      setMonthOfBirth(getStudent.data.monthOfBirth);
+      setYearOfBirth(getStudent.data.yearOfBirth);
+      setEmail(getStudent.data.email);
+      setPhone(getStudent.data.phoneNumber);
+      setCitizenId(getStudent.data.citizenId);
+      setCertificate(getStudent.data.certificate);
+      setCity(getStudent.data.city);
+      setEthnic(getStudent.data.ethnic);
+    }
   };
 
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -138,7 +161,12 @@ const DangKyThi = () => {
       type: checked,
     };
     try {
-      const result = await axios.post('http://localhost:8080/api/student', data);
+      let result;
+      if (params) {
+        result = await axios.patch(`http://localhost:8080/api/student/${params}`, data);
+      } else {
+        result = await axios.post('http://localhost:8080/api/student', data);
+      }
       console.log(result);
       if (result.status === 201) {
         handleClickOpen();
@@ -225,6 +253,7 @@ const DangKyThi = () => {
                   />
                 }
                 label="Nam"
+                checked={gender === 'Nam'}
               />
               <FormControlLabel
                 value="Nữ"
@@ -239,6 +268,7 @@ const DangKyThi = () => {
                   />
                 }
                 label="Nữ"
+                checked={gender === 'Nữ'}
               />
             </RadioGroup>
           </Grid>
@@ -293,7 +323,7 @@ const DangKyThi = () => {
                 MenuProps: {sx: {height: '300px'}},
               }}
               onChange={(event) => setCity(event.target.value)}
-              value={city}
+              value={city ? city : student.placeOfBirth}
             >
               {cityList.map((item: any) => (
                 <MenuItem value={item.name} key={item.id}>
