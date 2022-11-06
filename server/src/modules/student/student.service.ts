@@ -39,12 +39,10 @@ export class StudentService {
   }
 
   async findAll(query: SearchRequest): Promise<Student[]> {
-    const { limit, page } = query;
-    const offset = (page - 1) * limit;
-    const skip = offset > 0 ? offset : 0;
-    const take = limit > 0 ? limit : 0;
     try {
-      const users = await this.studentRepository.createQueryBuilder('student').skip(skip).take(take).getMany();
+      const users = await this.studentRepository.createQueryBuilder('student')
+        .innerJoinAndSelect('student.payment', 'payment')
+        .getMany();
       return users;
     } catch (error) {
       switch (error.code) {
@@ -104,6 +102,13 @@ export class StudentService {
     const repo = this.studentRepository;
     // const { name, email, phone } = query;
     return repo.createQueryBuilder('student')
+      .innerJoinAndSelect('student.payment', 'payment')
+      .where('student.firstName = :firstName AND student.lastName = :lastName AND student.citizenId = :citizenId')
+      .setParameters({
+        firstName: query.fullName.split(' ').slice(0, -1).join(' '),
+        lastName: query.fullName.split(' ').slice(-1).join(' '),
+        citizenId: query.citizenId,
+      })
       .getOne();
   }
 }

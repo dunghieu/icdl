@@ -68,4 +68,8 @@ export class StudentDto {
 
   @IsOptional()
   description: string;
+
+  fullName(): string {
+    return `${this.firstName} ${this.lastName}`;
+  }
 }

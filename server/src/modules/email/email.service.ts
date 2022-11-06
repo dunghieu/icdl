@@ -37,20 +37,26 @@ export class EmailService {
           from: 'Hệ Thống Thi Chứng Chỉ Tin Học <1851061662@e.tlu.edu.vn>', // sender address
           subject: 'Receipt', // Subject line
           html: `
-                <h2>************Paid Invoice***************</h2> 
-                <hr/><hr/>
                 <h3>Student Info : </h3>
                 <h4><span><b>Student Name:         </b> ${student.firstName} ${student.lastName} <span/></h4>
                 <h4><span><b>Student Email:        </b> ${student.email} <span/></h4>
                 <hr/> <hr/>
-                <h3>Note : http://localhost:3000/checkout/${payment.paymentId}/${payment.clientSecret}</h3>
-                <span>You will receive exactly the Printed Wallet Amount as ordered <span/>
-                <span>Only the Payer Email on this Paid Invoice can be used for delivery inquiries and confirmation regarding the order <span/> <br/>
-                <span>Your wallet design will be shiped to you as soon as possible. 
-                Once your wallet design is received in hand,please follow the simple delivery confirmation instructions included in the letter.
-                Thankyou, Crypto Farm, Canada<span/>
-                </h4>
-                <h2>**************End*****************</h2>`
+                <span>Thí sinh kiểm tra lại thông tin cá nhân của bản thân và ấn vào link bên dưới để thanh toán hoàn tất thủ tục đăng ký<span/>
+                <h3>http://localhost:3000/checkout/${payment.paymentId}/${payment.clientSecret}</h3>
+                <br/>
+                <br/>
+                <span>Nếu thông tin cá nhân có sai sót, thí sinh truy cập link phía dưới để sửa lại thông tin của bản thân <span/>
+                <h3>http://localhost:3000/dang-ky-thi?id=${student.id}</h3>
+                <br/>
+                <span>Để biết thêm chi tiết về lịch thi và các khóa học. 
+                Vui lòng truy cập website: http://localhost:3000. <span/>
+                <span>Mọi thắc mắc vui lòng liên hệ:</span>
+                <span>----------------------------------------------------------</span>
+                <span>Điện thoại: 035 555 5555</span>
+                <span> Địa chỉ: 175 Tây Sơn, Đống Đa, Hà Nội</span>
+                <span/>
+                
+               `
         });
         const mail = {
           info: info,
