@@ -34,6 +34,7 @@ CREATE TABLE IF NOT EXISTS `student` (
   `email` varchar(255) NOT NULL,
   `ethnic` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_vietnamese_ci NOT NULL,
   `certificateType` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_vietnamese_ci NOT NULL,
+  `code` varchar(50) NOT NULL,
   `type` varchar(255) NOT NULL,
   `description` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),

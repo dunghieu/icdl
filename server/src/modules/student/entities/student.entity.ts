@@ -44,6 +44,9 @@ export class Student extends BaseEntity{
     @Column()
     type: string;
 
+    @Column({nullable: true})
+    code: string;
+
     @Column({ nullable: true })
     description: string;
 
