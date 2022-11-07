@@ -17,6 +17,28 @@ import LastPageIcon from '@mui/icons-material/LastPage';
 import {TableHead} from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { DataGrid, GridColumns, GridRowsProp, GridColDef  } from '@mui/x-data-grid';
+
+const rows: GridRowsProp = [
+  { id: 1, col1: 'Hello', col2: 'World' },
+  { id: 2, col1: 'DataGridPro', col2: 'is Awesome' },
+  { id: 3, col1: 'MUI', col2: 'is Amazing' },
+];
+
+const columns: GridColumns = [
+  { field: 'name', headerName: 'Họ và tên', width: 180 },
+  { field: 'gender', headerName: 'Giới tính', width: 180 },
+  { field: 'birthday', headerName: 'Ngày sinh', width: 180 },
+  { field: 'birthplace', headerName: 'Nơi sinh', width: 180 },
+  { field: 'phone', headerName: 'Số điện thoại', width: 180 },
+  { field: 'email', headerName: 'Email', width: 180 },
+  { field: 'ethnic', headerName: 'Dân tộc', width: 180 },
+  { field: 'amount', headerName: 'Số tiền', width: 180 },
+  { field: 'type', headerName: 'Hình thức đăng ký', width: 180 },
+  { field: 'note', headerName: 'Ghi chú', width: 180, editable: true },
+  { field: 'actions', headerName: 'Actions', width: 180 },
+];
+
 
 interface TablePaginationActionsProps {
   count: number;
@@ -146,7 +168,7 @@ export default function CustomPaginationActionsTable({rows}: any) {
               <TableCell style={{width: 110}}>
                 {
                   <>
-                    <IconButton aria-label="">
+                    <IconButton   >
                       <EditIcon />
                     </IconButton>
                     <IconButton aria-label="">

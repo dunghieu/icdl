@@ -1,4 +1,4 @@
-import {Container, Typography, Box, TextField, InputLabel, Button} from '@mui/material';
+import {Container, Typography, Box, TextField, InputLabel, Button, CircularProgress} from '@mui/material';
 import {GuestHeader} from 'components';
 import GuestFooter from 'components/footer/GuestFooter';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
@@ -15,23 +15,26 @@ const theme = createTheme({
 });
 
 const TraCuuDanhSachThi = () => {
-  const [fullName, setFullName] = useState('');
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [code, setCode] = useState('');
   const [citizenId, setCitizenId] = useState('');
   const [result, setResult] = useState({});
 
   const handleOnClick = async () => {
-    if (fullName === '' || citizenId === '') {
+    if (code === '' || citizenId === '') {
       alert('Bạn chưa nhập đầy đủ thông tin');
       return;
     }
     const res = await axios.get(
-      `http://localhost:3000/api/certificates?fullName=${fullName}&citizenId=${citizenId}`
+      `http://localhost:3000/api/certificates?code=${code}&citizenId=${citizenId}`
     );
     setResult(res.data);
   };
   return (
     <>
       <ThemeProvider theme={theme}>
+
         <GuestHeader />
         <Container
           maxWidth="md"
@@ -60,20 +63,6 @@ const TraCuuDanhSachThi = () => {
               width: '100%',
             }}
           >
-            <InputLabel sx={{fontWeight: 700}}>Họ tên đầy đủ:</InputLabel>
-            <TextField
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
-              variant="outlined"
-              color="neutral"
-              margin="dense"
-              size="small"
-              placeholder="Ví Dụ: Nguyễn Văn Nam"
-              fullWidth
-            />
-            <br />
-            <br />
-            <br />
             <InputLabel sx={{fontWeight: 700}}>CMND (Không có khoảng cách giữa các số):</InputLabel>
             <TextField
               value={citizenId}
@@ -83,6 +72,20 @@ const TraCuuDanhSachThi = () => {
               margin="dense"
               size="small"
               placeholder="Ví dụ: 900800700"
+              fullWidth
+            />
+            <br />
+            <br />
+            <br />
+            <InputLabel sx={{fontWeight: 700}}>Mã xác nhận (4 chữ số):</InputLabel>
+            <TextField
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
+              variant="outlined"
+              color="neutral"
+              margin="dense"
+              size="small"
+              placeholder="Ví Dụ: 0000"
               fullWidth
             />
           </Box>
@@ -102,6 +105,14 @@ const TraCuuDanhSachThi = () => {
             Tìm
           </Button>
           <Typography>Vui lòng nhập đầy đủ thông tin.</Typography>
+          <CircularProgress sx={{display: loading ? 'block' : 'none'}}/>
+          <Box
+            sx={{
+              display: open ? 'block' : 'none',
+              border: '1px solid #b20530',
+            }}
+          >asd</Box>
+
         </Container>
         <GuestFooter />
       </ThemeProvider>
