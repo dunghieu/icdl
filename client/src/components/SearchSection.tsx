@@ -36,7 +36,7 @@ const SearchSection = () => {
               alignItems: 'center',
             }}
           >
-            <Link to="/tra-cuu-danh-sach-thi">
+            <Link to="/tra-cuu-danh-sach-thi" target="_blank">
               <Box
                 sx={{
                   display: 'flex',
@@ -73,7 +73,7 @@ const SearchSection = () => {
               alignItems: 'center',
             }}
           >
-            <Link to="/tra-cuu-ket-qua-thi">
+            <Link to="/tra-cuu-ket-qua-thi" target="_blank">
               <Box
                 sx={{
                   display: 'flex',
@@ -111,7 +111,7 @@ const SearchSection = () => {
               alignItems: 'center',
             }}
           >
-            <Link to="/tra-cuu-chung-chi">
+            <Link to="/tra-cuu-chung-chi" target="_blank">
               <Box
                 sx={{
                   display: 'flex',
