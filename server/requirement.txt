@@ -23,3 +23,8 @@ mẫu thẻ dự thi
 danh sách ảnh
 
 bất cập: thêm 1 ng vào danh sách phải làm lại từ đầu.
+
+
+2 mô hình client -server 
+2 phân rã chức năng
+use case -  tiến trình - activity - class - thực thể database
