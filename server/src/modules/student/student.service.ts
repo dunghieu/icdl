@@ -104,7 +104,8 @@ export class StudentService {
     const repo = this.studentRepository;
     // const { name, email, phone } = query;
     return repo.createQueryBuilder('student')
-      .innerJoinAndSelect('student.payment', 'payment')
+      .leftJoinAndSelect('student.payment', 'payment')
+      .leftJoinAndSelect('student.studentExamMapping', 'exams')
       .where('student.code = :code AND student.citizenId = :citizenId')
       .setParameters({
         code: query.code,

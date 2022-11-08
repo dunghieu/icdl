@@ -12,9 +12,9 @@ Tạo danh sách ảnh
 Thu bài thực hành
 Đánh số phách bài thi thực hành
 Vào điểm lý thuyết/ thực hành
-Lập danh sách công bố điểm, thí sinh tra cứu điểm theo thông tin đã đăng ký, hoặc xem theo danh sách
+Lập danh sách công bố điểm, thí sinh tra cứu điểm theo thông tin đã đăng ký, hoặc xem theo danh sách -- Gồm những thí sinh đã hoàn thành bài thi
 Nhận đơn phúc tra
-Lập danh sách được cấp chứng chỉ
+Lập danh sách được cấp chứng chỉ -- Gồm những thí sinh đã đạt điểm tối thiếu trong bài thi
 Công bố quyết định cấp chứng chỉ
 
 Bảng tỉnh thành + dân tộc

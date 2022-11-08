@@ -1,5 +1,6 @@
 import { Expose } from 'class-transformer';
 import { Payment } from 'src/modules/payment/entities';
+import { StudentExamMapping } from 'src/modules/student-exam-mapping';
 import { BaseEntity } from 'src/shared';
 import { Entity, Column, JoinColumn, OneToOne, OneToMany } from 'typeorm';
 
@@ -52,4 +53,7 @@ export class Student extends BaseEntity{
 
     @OneToOne(() => Payment, (payment) => payment.studentId)
     payment: Payment;
+
+    @OneToMany(() => StudentExamMapping, (studentExamMapping) => studentExamMapping.student)
+    studentExamMapping: StudentExamMapping[];
 }
