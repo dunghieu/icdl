@@ -106,6 +106,7 @@ export class StudentService {
     return repo.createQueryBuilder('student')
       .leftJoinAndSelect('student.payment', 'payment')
       .leftJoinAndSelect('student.studentExamMapping', 'exams')
+      .leftJoinAndSelect('exams.exam', 'exam')
       .where('student.code = :code AND student.citizenId = :citizenId')
       .setParameters({
         code: query.code,
