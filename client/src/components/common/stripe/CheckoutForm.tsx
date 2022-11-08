@@ -1,5 +1,5 @@
 import {Button} from '@mui/material';
-import {useStripe, useElements, PaymentElement} from '@stripe/react-stripe-js';
+const {useStripe, useElements, PaymentElement} = require('@stripe/react-stripe-js');
 import axios from 'axios';
 import React from 'react';
 import {useHistory} from 'react-router-dom';

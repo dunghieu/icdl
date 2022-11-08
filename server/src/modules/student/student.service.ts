@@ -9,6 +9,7 @@ import { EmailService } from '../email';
 import { PaymentService } from '../payment/payment.service';
 import { SearchRequest } from 'src/shared/search-request';
 import { StudentType } from 'src/shared';
+import { generateID } from 'src/utils/Helper';
 
 @Injectable()
 export class StudentService {
@@ -20,8 +21,9 @@ export class StudentService {
   ) {}
 
   async create(createStudentDto: CreateStudentDto) {
-    //TODO : create a student -> create a paymentIntent -> save the paymentIntent to db -> send email
-    const student = await this.studentRepository.save(createStudentDto);
+    const create = this.studentRepository.create(createStudentDto);
+    create.code = generateID(4);
+    const student = await this.studentRepository.save(create);
     const amount = createStudentDto.type === StudentType.ON ? 400000 : createStudentDto.type === StudentType.THI ? 1000000 : 1400000;
     const paymentIntent = await this.paymentService.createPaymentIntent({
       amount: amount,
@@ -102,11 +104,12 @@ export class StudentService {
     const repo = this.studentRepository;
     // const { name, email, phone } = query;
     return repo.createQueryBuilder('student')
-      .innerJoinAndSelect('student.payment', 'payment')
-      .where('student.firstName = :firstName AND student.lastName = :lastName AND student.citizenId = :citizenId')
+      .leftJoinAndSelect('student.payment', 'payment')
+      .leftJoinAndSelect('student.studentExamMapping', 'exams')
+      .leftJoinAndSelect('exams.exam', 'exam')
+      .where('student.code = :code AND student.citizenId = :citizenId')
       .setParameters({
-        firstName: query.fullName.split(' ').slice(0, -1).join(' '),
-        lastName: query.fullName.split(' ').slice(-1).join(' '),
+        code: query.code,
         citizenId: query.citizenId,
       })
       .getOne();
