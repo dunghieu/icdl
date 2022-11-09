@@ -1,8 +1,11 @@
-import { IsNotEmpty, IsString, Matches } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString, Matches } from 'class-validator';
 
 export class ExamDto {
     @IsString()
     name: string;
+
+    @IsString()
+    type: string;
 
     @IsString()
     code: string;
@@ -21,4 +24,7 @@ export class ExamDto {
     @IsNotEmpty()
     @Matches(/^(?:(?:([01]?\d|2[0-3]):)?([0-5]?\d):)?([0-5]?\d)$/, { message: 'Invalid time format' })
     endTime: string;
+
+    @IsNumber()
+    series: number;
 }

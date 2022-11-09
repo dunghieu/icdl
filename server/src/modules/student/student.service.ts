@@ -20,8 +20,22 @@ export class StudentService {
     private paymentService: PaymentService
   ) {}
 
+  async findByEmail(email: string): Promise<Student> {
+    const student = await this.studentRepository.findOneBy({ email });
+    if (!student) {
+      throw new NotFoundException('Student not found');
+    }
+
+    return student;
+  }
+
   async create(createStudentDto: CreateStudentDto) {
-    const create = this.studentRepository.create(createStudentDto);
+    const isExist = await this.studentRepository.findOneBy({ email: createStudentDto.email, citizenId: createStudentDto.citizenId });
+    let create;
+    if (isExist) {
+      create = await this.update(isExist.id, createStudentDto);
+    }
+    create = this.studentRepository.create(createStudentDto);
     create.code = generateID(4);
     const student = await this.studentRepository.save(create);
     const amount = createStudentDto.type === StudentType.ON ? 400000 : createStudentDto.type === StudentType.THI ? 1000000 : 1400000;
@@ -107,6 +121,37 @@ export class StudentService {
       .leftJoinAndSelect('student.payment', 'payment')
       .leftJoinAndSelect('student.studentExamMapping', 'exams')
       .leftJoinAndSelect('exams.exam', 'exam')
+      .leftJoinAndSelect('exam.examResult', 'examResult')
+      .where('student.code = :code AND student.citizenId = :citizenId')
+      .setParameters({
+        code: query.code,
+        citizenId: query.citizenId,
+      })
+      .getOne();
+  }
+
+  async searchKQ(query): Promise<Student> {
+    const repo = this.studentRepository;
+    // const { name, email, phone } = query;
+    return repo.createQueryBuilder('student')
+      .leftJoinAndSelect('student.payment', 'payment')
+      .leftJoinAndSelect('student.studentExamMapping', 'exams')
+      .leftJoinAndSelect('exams.exam', 'exam')
+      .leftJoinAndSelect('exam.examResult', 'examResult')
+      .where('student.code = :code AND student.citizenId = :citizenId AND exam.date = :date') // date format: YYYY/MM/DD
+      .setParameters({
+        code: query.code,
+        citizenId: query.citizenId,
+        date: query.date,
+      })
+      .getOne();
+  }
+
+  async searchTC(query): Promise<Student> {
+    const repo = this.studentRepository;
+    // const { name, email, phone } = query;
+    return repo.createQueryBuilder('student')
+      .leftJoinAndSelect('student.payment', 'payment')
       .where('student.code = :code AND student.citizenId = :citizenId')
       .setParameters({
         code: query.code,
