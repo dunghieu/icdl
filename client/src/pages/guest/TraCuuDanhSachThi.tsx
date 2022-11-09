@@ -1,4 +1,12 @@
-import {Container, Typography, Box, TextField, InputLabel, Button, CircularProgress} from '@mui/material';
+import {
+  Container,
+  Typography,
+  Box,
+  TextField,
+  InputLabel,
+  Button,
+  CircularProgress,
+} from '@mui/material';
 import {GuestHeader} from 'components';
 import GuestFooter from 'components/footer/GuestFooter';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
@@ -19,7 +27,7 @@ const TraCuuDanhSachThi = () => {
   const [loading, setLoading] = useState(false);
   const [code, setCode] = useState('');
   const [citizenId, setCitizenId] = useState('');
-  const [result, setResult] = useState({});
+  const [result, setResult] = useState({}) as any;
 
   const handleOnClick = async () => {
     if (code === '' || citizenId === '') {
@@ -34,10 +42,9 @@ const TraCuuDanhSachThi = () => {
   return (
     <>
       <ThemeProvider theme={theme}>
-
         <GuestHeader />
         <Container
-          maxWidth="md"
+          maxWidth='md'
           sx={{
             display: 'flex',
             flexDirection: 'column',
@@ -48,7 +55,7 @@ const TraCuuDanhSachThi = () => {
           }}
         >
           <Typography
-            variant="h5"
+            variant='h5'
             sx={{
               fontWeight: 700,
               color: '#b20530',
@@ -63,34 +70,38 @@ const TraCuuDanhSachThi = () => {
               width: '100%',
             }}
           >
-            <InputLabel sx={{fontWeight: 700}}>CMND (Không có khoảng cách giữa các số):</InputLabel>
+            <InputLabel sx={{fontWeight: 700}}>
+              CMND (Không có khoảng cách giữa các số):
+            </InputLabel>
             <TextField
               value={citizenId}
               onChange={(e) => setCitizenId(e.target.value)}
-              variant="outlined"
-              color="neutral"
-              margin="dense"
-              size="small"
-              placeholder="Ví dụ: 900800700"
+              variant='outlined'
+              color='neutral'
+              margin='dense'
+              size='small'
+              placeholder='Ví dụ: 900800700'
               fullWidth
             />
             <br />
             <br />
             <br />
-            <InputLabel sx={{fontWeight: 700}}>Mã xác nhận (4 chữ số):</InputLabel>
+            <InputLabel sx={{fontWeight: 700}}>
+              Mã xác nhận (4 chữ số):
+            </InputLabel>
             <TextField
               value={code}
               onChange={(e) => setCode(e.target.value)}
-              variant="outlined"
-              color="neutral"
-              margin="dense"
-              size="small"
-              placeholder="Ví Dụ: 0000"
+              variant='outlined'
+              color='neutral'
+              margin='dense'
+              size='small'
+              placeholder='Ví Dụ: 0000'
               fullWidth
             />
           </Box>
           <Button
-            variant="contained"
+            variant='contained'
             onClick={handleOnClick}
             sx={{
               fontWeight: 700,
@@ -105,14 +116,31 @@ const TraCuuDanhSachThi = () => {
             Tìm
           </Button>
           <Typography>Vui lòng nhập đầy đủ thông tin.</Typography>
-          <CircularProgress sx={{display: loading ? 'block' : 'none'}}/>
-          <Box
+          <CircularProgress sx={{display: loading ? 'block' : 'none'}} />
+          <Container
+            maxWidth='md'
             sx={{
-              display: open ? 'block' : 'none',
+              // display: open ? 'block' : 'none',
               border: '1px solid #b20530',
             }}
-          >asd</Box>
-
+          >
+            <Box>
+              <Typography
+                variant='h6'
+                sx={{
+                  fontWeight: 700,
+                  color: '#b20530',
+                }}
+              >
+                Kết quả tra cứu
+              </Typography>
+              <Typography>
+                Họ và tên: {result?.firstName} {result?.lastName}
+              </Typography>
+              <Typography>Ngày sinh: {result?.birthday}</Typography>
+              <Typography>CCCD: {result?.citizenId}</Typography>
+            </Box>
+          </Container>
         </Container>
         <GuestFooter />
       </ThemeProvider>

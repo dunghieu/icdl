@@ -8,6 +8,9 @@ export class Exam extends BaseEntity {
     name: string;
 
     @Column()
+    type: string;
+
+    @Column()
     code: string;
 
     @Column()
@@ -21,6 +24,9 @@ export class Exam extends BaseEntity {
 
     @Column()
     endTime: string;
+
+    @Column()
+    series: number;
 
     @OneToOne(() => ExamResult, (examResult) => examResult.examId)
     @JoinColumn({ name: 'id', referencedColumnName: 'examId'})

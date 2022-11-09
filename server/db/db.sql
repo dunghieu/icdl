@@ -190,19 +190,21 @@ CREATE TABLE IF NOT EXISTS `exam` (
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `name` varchar(50) NOT NULL,
+  `type` varchar(50) NOT NULL,
   `code` varchar(15) NOT NULL,
   `instruction` varchar(255) DEFAULT NULL,
   `date` date NOT NULL,
   `startTime` time NOT NULL,
   `endTime` time NOT NULL,
+  `series` int(11) NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
 
 -- Dumping data for table datn.exam: ~1 rows (approximately)
 DELETE FROM `exam`;
 /*!40000 ALTER TABLE `exam` DISABLE KEYS */;
-INSERT INTO `exam` (`id`, `created_at`, `updated_at`, `name`, `code`, `instruction`, `date`, `startTime`, `endTime`) VALUES
-	(1, '2022-11-08 09:54:37', '2022-11-08 09:54:38', 'IC3', 'ic3', 'NULL', '2022-11-08', '09:55:04', '09:55:05');
+INSERT INTO `exam` (`id`, `created_at`, `updated_at`, `name`, `type`, `code`, `instruction`, `date`, `startTime`, `endTime`, `series`) VALUES
+	(1, '2022-11-08 09:54:37', '2022-11-08 09:54:38', 'IC3', 'IC3-MOS', 'ic3', 'NULL', '2022-11-08', '09:55:04', '09:55:05', 'NULL');
 /*!40000 ALTER TABLE `exam` ENABLE KEYS */;
 
 -- Dumping structure for table datn.feed
