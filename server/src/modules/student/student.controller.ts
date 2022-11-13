@@ -33,6 +33,11 @@ export class StudentController {
     return this.studentService.findById(+id);
   }
 
+  @Patch('updateCode')
+  updateCode(@Body() updateUserDto) {
+    return this.studentService.updateCode(updateUserDto);
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateStudentDto) {
     return this.studentService.update(+id, updateUserDto);

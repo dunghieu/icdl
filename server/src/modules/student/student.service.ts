@@ -10,6 +10,7 @@ import { PaymentService } from '../payment/payment.service';
 import { SearchRequest } from 'src/shared/search-request';
 import { StudentType } from 'src/shared';
 import { generateID } from 'src/utils/Helper';
+import { RegistrationService } from '../registration';
 
 @Injectable()
 export class StudentService {
@@ -17,7 +18,8 @@ export class StudentService {
     @InjectRepository(Student)
     private studentRepository: Repository<Student>,
     private emailService: EmailService,
-    private paymentService: PaymentService
+    private paymentService: PaymentService,
+    private registrationService: RegistrationService,
   ) {}
 
   async findByEmail(email: string): Promise<Student> {
@@ -31,26 +33,46 @@ export class StudentService {
 
   async create(createStudentDto: CreateStudentDto) {
     const isExist = await this.studentRepository.findOneBy({ email: createStudentDto.email, citizenId: createStudentDto.citizenId });
-    let create;
+    const amount = createStudentDto.type === StudentType.ON ? 400000 : createStudentDto.type === StudentType.THI ? 1000000 : 1400000;
     if (isExist) {
-      create = await this.update(isExist.id, createStudentDto);
+      await this.registrationService.create({
+        studentId: isExist.id,
+        type: createStudentDto.type,
+        certificateType: createStudentDto.certificateType,
+      });
+      const paymentIntent = await this.paymentService.createPaymentIntent({
+        amount: amount,
+        currency: 'vnd',
+      });
+      await this.paymentService.create({
+        studentId: isExist.id,
+        intentId: paymentIntent.paymentId,
+        amount: amount,
+        status: 0,
+        secret: paymentIntent.clientSecret,
+      });
+      await this.emailService.sendInviteEmail(isExist, paymentIntent);
+      return paymentIntent;
     }
-    create = this.studentRepository.create(createStudentDto);
+    const create = this.studentRepository.create(createStudentDto);
     create.code = generateID(4);
     const student = await this.studentRepository.save(create);
-    const amount = createStudentDto.type === StudentType.ON ? 400000 : createStudentDto.type === StudentType.THI ? 1000000 : 1400000;
+    await this.registrationService.create({
+      studentId: student.id,
+      type: createStudentDto.type,
+      certificateType: createStudentDto.certificateType,
+    });
     const paymentIntent = await this.paymentService.createPaymentIntent({
       amount: amount,
       currency: 'vnd',
     });
-    const payment = await this.paymentService.create({
+    await this.paymentService.create({
       studentId: student.id,
       intentId: paymentIntent.paymentId,
       amount: amount,
       status: 0,
       secret: paymentIntent.clientSecret,
     });
-
     await this.emailService.sendInviteEmail(student, paymentIntent);
     return paymentIntent;
   }
@@ -59,6 +81,7 @@ export class StudentService {
     try {
       const users = await this.studentRepository.createQueryBuilder('student')
         .innerJoinAndSelect('student.payment', 'payment')
+        .innerJoinAndSelect('student.registration', 'registration')
         .getMany();
       return users;
     } catch (error) {
@@ -93,10 +116,23 @@ export class StudentService {
     return result;
   }
 
+  async updateCode(args: { id: string, code: string }) {
+    const { id, code } = args;
+    const student = await this.studentRepository.findOneBy({ id: +id });
+    if (!student) {
+      throw new NotFoundException('Student not found');
+    }
+    student.code = code;
+    const result = await this.studentRepository.save(student);
+    return result;
+  }
+
   async update(id: number, updateUserDto: UpdateStudentDto) {
     const user = await this.studentRepository.createQueryBuilder('student').innerJoinAndSelect('student.payment', 'payment').where('student.id = :id', { id: id }).getOne();
-    if (updateUserDto.type && user.type !== updateUserDto.type) {
-      const amount = updateUserDto.type === StudentType.ON ? 400000 : updateUserDto.type === StudentType.THI ? 1000000 : 1400000;
+    const payment = await this.paymentService.findById(41);
+    const amount = updateUserDto.type === StudentType.ON ? 400000 : updateUserDto.type === StudentType.THI ? 1000000 : 1400000;
+    console.log(user);
+    if (updateUserDto.type && payment.amount !== amount) {
       const paymentIntent = await this.paymentService.createPaymentIntent({
         amount: amount,
         currency: 'vnd',

@@ -89,13 +89,13 @@ const navigationItems: NavigationItem[] = [
     subtitle: 'Account & settings',
     type: 'group',
     children: [
-      {
-        id: 'profile.account',
-        title: 'My account',
-        type: 'basic',
-        icon: <PersonOutlineOutlinedIcon />,
-        link: '/profile',
-      },
+      // {
+      //   id: 'profile.account',
+      //   title: 'My account',
+      //   type: 'basic',
+      //   icon: <PersonOutlineOutlinedIcon />,
+      //   link: '/profile',
+      // },
       // {
       //   id: 'profile.setting',
       //   title: 'Setting',
@@ -105,7 +105,7 @@ const navigationItems: NavigationItem[] = [
       // },
       {
         id: 'profile.signout',
-        title: 'Sign out',
+        title: 'Đăng xuất',
         type: 'basic',
         icon: <ExitToAppOutlinedIcon />,
         link: '/sign-out',

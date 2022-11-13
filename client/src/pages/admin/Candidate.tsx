@@ -10,19 +10,25 @@ const Candidate = () => {
   const [data, setData] = useState([]);
   const fetchData = async () => {
     const getData = await axios.get('http://localhost:8080/api/student');
-    const finalData = getData.data.map((item: any, index: number) => {
-      if (item.payment.length > 1) {
-        return (item = {
-          ...item,
-          payment: item.payment[index],
-        });
-      } else {
-        return (item = {
-          ...item,
-          payment: item.payment[0],
-        });
-      }
-    });
+    const finalData = getData.data
+      .map((item: any, index: number) => {
+        if (item.registration.length > 1) {
+          return item.registration.map((item2: any, index2: number) => {
+            console.log(index2);
+            return {
+              ...item,
+              registration: item.registration[index2],
+            };
+          });
+        } else {
+          return (item = {
+            ...item,
+            registration: item.registration[0],
+          });
+        }
+      })
+      .flat();
+
     setData(finalData);
   };
   useEffect(() => {

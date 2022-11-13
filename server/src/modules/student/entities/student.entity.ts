@@ -1,5 +1,6 @@
 import { Expose } from 'class-transformer';
 import { Payment } from 'src/modules/payment/entities';
+import { Registration } from 'src/modules/registration';
 import { StudentExamMapping } from 'src/modules/student-exam-mapping';
 import { BaseEntity } from 'src/shared';
 import { Entity, Column, JoinColumn, OneToOne, OneToMany } from 'typeorm';
@@ -39,12 +40,6 @@ export class Student extends BaseEntity{
     @Column()
     ethnic: string;
 
-    @Column()
-    certificateType: string;
-
-    @Column()
-    type: string;
-
     @Column({nullable: true})
     code: string;
 
@@ -53,6 +48,9 @@ export class Student extends BaseEntity{
 
     @OneToMany(() => Payment, (payment) => payment.studentId)
     payment: Payment;
+
+    @OneToMany(() => Registration, (regist) => regist.studentId)
+    registration: Registration;
 
     @OneToMany(() => StudentExamMapping, (studentExamMapping) => studentExamMapping.student)
     studentExamMapping: StudentExamMapping[];

@@ -14,6 +14,7 @@ import { ExamModule } from '../exam';
 import { ExamResultModule } from '../exam-result';
 import { EmailModule } from '../email';
 import { PaymentModule } from '../payment/payment.module';
+import { RegistrationModule } from '../registration';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { PaymentModule } from '../payment/payment.module';
         } as TypeOrmModuleAsyncOptions;
       },
     }),
+    RegistrationModule,
     EmailModule,
     AccountModule,
     StudentModule,

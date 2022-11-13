@@ -8,6 +8,7 @@ import {
   IconButton,
   CircularProgress,
   Tooltip,
+  Modal,
 } from '@mui/material';
 import {GuestHeader} from 'components';
 import GuestFooter from 'components/footer/GuestFooter';
@@ -18,7 +19,7 @@ import LocalPrintshopIcon from '@mui/icons-material/LocalPrintshop';
 import CancelIcon from '@mui/icons-material/Cancel';
 import PaidIcon from '@mui/icons-material/Paid';
 import {DataGrid, GridColDef, GridValueGetterParams} from '@mui/x-data-grid';
-import {Link} from 'react-router-dom';
+import {Link, Redirect, useHistory} from 'react-router-dom';
 import TheDuThi from 'components/pdf/TheDuThi';
 const moment = require('moment');
 
@@ -32,9 +33,14 @@ const theme = createTheme({
 });
 
 const TraCuuDanhSachThi = () => {
+  const [openModal, setOpenModal] = useState(false);
+  const handleOpen = () => setOpenModal(true);
+  const handleClose = () => setOpenModal(false);
+
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [code, setCode] = useState('');
+  const [updateCode, setUpdateCode] = useState('');
 
   const [citizenId, setCitizenId] = useState('');
 
@@ -80,7 +86,21 @@ const TraCuuDanhSachThi = () => {
     });
   }, [result]);
 
-  const printPdf = () => {};
+  const onUpdateCode = async (id: any) => {
+    const res = await axios.patch(`http://localhost:8080/api/student/updateCode`, {
+      code: updateCode,
+      id: id,
+    });
+    if (res.data) {
+      alert('Cập nhật mã đăng ký thành công');
+      setUpdateCode('');
+      setOpen(false);
+      setOpenModal(false);
+      return;
+    }
+    alert('Cập nhật mã đăng ký thất bại');
+    return;
+  };
 
   const columns: GridColDef[] = [
     {field: 'intentId'},
@@ -114,14 +134,14 @@ const TraCuuDanhSachThi = () => {
                   <CancelIcon />
                 </IconButton>
               </Tooltip>
-              <TheDuThi {...result} {...params.row} onClick={printPdf} />
+              <TheDuThi {...result} {...params.row} />
             </>
           );
         } else {
           return (
             <Tooltip title="Thanh toán">
               <IconButton>
-                <Link to={`/checkout/${params.row.intentId}/${params.row.clientSecret}`}>
+                <Link to={`/checkout/${params.row.intentId}/${params.row.clientSecret}`} replace>
                   <PaidIcon />
                 </Link>
               </IconButton>
@@ -150,7 +170,7 @@ const TraCuuDanhSachThi = () => {
             display: 'flex',
             flexDirection: 'column',
             gap: '50px',
-            marginTop: '50px',
+            marginY: '50px',
             alignItems: 'center',
             minHeight: '50vh',
           }}
@@ -256,7 +276,42 @@ const TraCuuDanhSachThi = () => {
               Email: <strong>{result?.email}</strong>
             </Typography>
           </Box>
-
+          <Box marginY={1} sx={{textAlign: 'right'}}>
+            <Button variant="contained" onClick={handleOpen}>
+              ĐỔI MÃ XÁC NHẬN
+            </Button>
+            <Modal
+              open={openModal}
+              onClose={handleClose}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '20px',
+                  position: 'absolute' as 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  width: 500,
+                  bgcolor: 'background.paper',
+                  border: '2px solid #000',
+                  boxShadow: 24,
+                  p: 4,
+                }}
+              >
+                <Typography id="modal-modal-title" variant="h6" component="h2">
+                  Nhập mã xác nhận mới
+                </Typography>
+                <TextField value={updateCode} onChange={(e) => setUpdateCode(e.target.value)} />
+                <Button variant="contained" onClick={() => onUpdateCode(result?.id)}>
+                  Submit
+                </Button>
+              </Box>
+            </Modal>
+          </Box>
           <DataGrid
             sx={{width: '100%', marginY: '50px'}}
             autoHeight

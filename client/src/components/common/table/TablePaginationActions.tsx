@@ -154,8 +154,8 @@ export default function CustomPaginationActionsTable({rows}: any) {
               <TableCell>{row.phoneNumber}</TableCell>
               <TableCell>{row.email}</TableCell>
               <TableCell>{row.ethnic}</TableCell>
-              <TableCell>{row.certificateType}</TableCell>
-              <TableCell align="center">{row.type}</TableCell>
+              <TableCell>{row.registration.certificateType}</TableCell>
+              <TableCell align="center">{row.registration.type}</TableCell>
               <TableCell>{row.payment?.status === 1 ? 'Chốt' : ''}</TableCell>
               <TableCell>
                 {
