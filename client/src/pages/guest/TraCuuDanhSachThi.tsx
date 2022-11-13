@@ -5,13 +5,22 @@ import {
   TextField,
   InputLabel,
   Button,
+  IconButton,
   CircularProgress,
+  Tooltip,
 } from '@mui/material';
 import {GuestHeader} from 'components';
 import GuestFooter from 'components/footer/GuestFooter';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 import axios from 'axios';
-import {useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
+import LocalPrintshopIcon from '@mui/icons-material/LocalPrintshop';
+import CancelIcon from '@mui/icons-material/Cancel';
+import PaidIcon from '@mui/icons-material/Paid';
+import {DataGrid, GridColDef, GridValueGetterParams} from '@mui/x-data-grid';
+import {Link} from 'react-router-dom';
+import TheDuThi from 'components/pdf/TheDuThi';
+const moment = require('moment');
 
 const theme = createTheme({
   palette: {
@@ -26,36 +35,128 @@ const TraCuuDanhSachThi = () => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [code, setCode] = useState('');
-  const [citizenId, setCitizenId] = useState('');
-  const [result, setResult] = useState({}) as any;
 
+  const [citizenId, setCitizenId] = useState('');
+
+  const [result, setResult] = useState({}) as any;
+  const [rows, setRows] = useState([]) as any;
   const handleOnClick = async () => {
     if (code === '' || citizenId === '') {
       alert('Bạn chưa nhập đầy đủ thông tin');
       return;
     }
     const res = await axios.get(
-      `http://localhost:3000/api/certificates?code=${code}&citizenId=${citizenId}`
+      `http://localhost:8080/api/student/search?code=${code}&citizenId=${citizenId}`
     );
+    if (res.data.length === 0) {
+      alert('Không tìm thấy thông tin');
+      return;
+    }
     setResult(res.data);
+    setCode('');
+    setCitizenId('');
+    setOpen(true);
+    return;
   };
+
+  useEffect(() => {
+    console.log(result);
+    const arr: any = [];
+    result?.studentExamMapping?.map((item: any, index: number) => {
+      arr.push({
+        intentId: item.exam?.payment?.intentId,
+        clientSecret: item.exam?.payment?.secret,
+        id: index + 1,
+        name: item.exam.name,
+        time: `${item.exam.startTime.slice(0, 5)} - ${item.exam.endTime.slice(0, 5)}`,
+        date: moment(item.exam.date).format('DD/MM/YYYY'),
+        room: item.room,
+        type: item.exam.type,
+        sbd: item.sbd,
+        dotthi: item.exam.series,
+        description: item.exam?.payment?.status === 1 ? 'Đã thanh toán' : 'Chưa thanh toán',
+      });
+      setRows(arr);
+    });
+  }, [result]);
+
+  const printPdf = () => {};
+
+  const columns: GridColDef[] = [
+    {field: 'intentId'},
+    {field: 'clientSecret'},
+    {field: 'id', headerName: 'ID', width: 50},
+    {field: 'name', headerName: 'Tên chứng chỉ', width: 350},
+    {field: 'date', headerName: 'Ngày thi', width: 150},
+    {field: 'time', headerName: 'Thời gian', width: 150},
+    {field: 'room', headerName: 'Phòng thi', width: 150},
+    {field: 'sbd', headerName: 'Số báo danh', width: 100},
+    {field: 'type', headerName: 'Hình thức thi', width: 100},
+    {field: 'dotthi', headerName: 'Đợt thi', width: 80},
+    {field: 'lanthi', headerName: 'Lần thi', width: 80},
+    {
+      field: 'description',
+      headerName: 'Ghi chú',
+      width: 200,
+      flex: 1,
+      // renderCell: (params: any) => params.value,
+    },
+    {
+      field: 'action',
+      width: 100,
+      headerName: '',
+      renderCell: (params: any) => {
+        if (params.row.description !== 'Chưa thanh toán') {
+          return (
+            <>
+              <Tooltip title="Hoãn thi">
+                <IconButton>
+                  <CancelIcon />
+                </IconButton>
+              </Tooltip>
+              <TheDuThi {...result} {...params.row} onClick={printPdf} />
+            </>
+          );
+        } else {
+          return (
+            <Tooltip title="Thanh toán">
+              <IconButton>
+                <Link to={`/checkout/${params.row.intentId}/${params.row.clientSecret}`}>
+                  <PaidIcon />
+                </Link>
+              </IconButton>
+            </Tooltip>
+          );
+        }
+      },
+    },
+    // {
+    //   field: 'fullName',
+    //   headerName: 'Họ và tên',
+    //   description: 'This column has a value getter and is not sortable.',
+    //   sortable: false,
+    //   width: 160,
+    //   valueGetter: (params: GridValueGetterParams) =>
+    //     `${params.row.firstName || ''} ${params.row.lastName || ''}`,
+    // },
+  ];
   return (
     <>
       <ThemeProvider theme={theme}>
         <GuestHeader />
         <Container
-          maxWidth='md'
+          maxWidth="md"
           sx={{
             display: 'flex',
             flexDirection: 'column',
             gap: '50px',
+            marginTop: '50px',
             alignItems: 'center',
-            marginY: '50px',
             minHeight: '50vh',
           }}
         >
           <Typography
-            variant='h5'
+            variant="h5"
             sx={{
               fontWeight: 700,
               color: '#b20530',
@@ -70,38 +171,34 @@ const TraCuuDanhSachThi = () => {
               width: '100%',
             }}
           >
-            <InputLabel sx={{fontWeight: 700}}>
-              CMND (Không có khoảng cách giữa các số):
-            </InputLabel>
+            <InputLabel sx={{fontWeight: 700}}>CMND (Không có khoảng cách giữa các số):</InputLabel>
             <TextField
-              value={citizenId}
               onChange={(e) => setCitizenId(e.target.value)}
-              variant='outlined'
-              color='neutral'
-              margin='dense'
-              size='small'
-              placeholder='Ví dụ: 900800700'
+              value={citizenId}
+              variant="outlined"
+              color="neutral"
+              margin="dense"
+              size="small"
+              placeholder="Ví dụ: 900800700"
               fullWidth
             />
             <br />
             <br />
             <br />
-            <InputLabel sx={{fontWeight: 700}}>
-              Mã xác nhận (4 chữ số):
-            </InputLabel>
+            <InputLabel sx={{fontWeight: 700}}>Mã xác nhận (4 chữ số):</InputLabel>
             <TextField
               value={code}
               onChange={(e) => setCode(e.target.value)}
-              variant='outlined'
-              color='neutral'
-              margin='dense'
-              size='small'
-              placeholder='Ví Dụ: 0000'
+              variant="outlined"
+              color="neutral"
+              margin="dense"
+              size="small"
+              placeholder="Ví Dụ: 0000"
               fullWidth
             />
           </Box>
           <Button
-            variant='contained'
+            variant="contained"
             onClick={handleOnClick}
             sx={{
               fontWeight: 700,
@@ -117,30 +214,61 @@ const TraCuuDanhSachThi = () => {
           </Button>
           <Typography>Vui lòng nhập đầy đủ thông tin.</Typography>
           <CircularProgress sx={{display: loading ? 'block' : 'none'}} />
-          <Container
-            maxWidth='md'
-            sx={{
-              // display: open ? 'block' : 'none',
-              border: '1px solid #b20530',
+        </Container>
+        <Container
+          maxWidth="xl"
+          sx={{
+            display: open ? 'block' : 'none',
+            // marginY: '50px',
+            border: '1px solid #b20530',
+          }}
+        >
+          <Box>
+            <Typography
+              variant="h6"
+              sx={{
+                textAlign: 'center',
+                fontWeight: 700,
+                color: '#b20530',
+                marginY: '50px',
+              }}
+              gutterBottom
+            >
+              KẾT QUẢ TRA CỨU
+            </Typography>
+            <Typography sx={{display: 'inline-block', width: '50%'}} gutterBottom>
+              Họ và tên:
+              <strong>
+                {' '}
+                {result?.firstName} {result?.lastName}
+              </strong>
+            </Typography>
+            <Typography sx={{display: 'inline-block', width: '50%'}} gutterBottom>
+              Ngày sinh:{' '}
+              <strong>
+                {result?.dayOfBirth} - {result?.monthOfBirth} - {result?.yearOfBirth}
+              </strong>
+            </Typography>
+            <Typography sx={{display: 'inline-block', width: '50%'}}>
+              Số điện thoại: <strong>{result?.phoneNumber}</strong>
+            </Typography>
+            <Typography sx={{display: 'inline-block', width: '50%'}}>
+              Email: <strong>{result?.email}</strong>
+            </Typography>
+          </Box>
+
+          <DataGrid
+            sx={{width: '100%', marginY: '50px'}}
+            autoHeight
+            rows={rows}
+            columns={columns}
+            pageSize={5}
+            rowsPerPageOptions={[5]}
+            columnVisibilityModel={{
+              intentId: false,
+              clientSecret: false,
             }}
-          >
-            <Box>
-              <Typography
-                variant='h6'
-                sx={{
-                  fontWeight: 700,
-                  color: '#b20530',
-                }}
-              >
-                Kết quả tra cứu
-              </Typography>
-              <Typography>
-                Họ và tên: {result?.firstName} {result?.lastName}
-              </Typography>
-              <Typography>Ngày sinh: {result?.birthday}</Typography>
-              <Typography>CCCD: {result?.citizenId}</Typography>
-            </Box>
-          </Container>
+          />
         </Container>
         <GuestFooter />
       </ThemeProvider>

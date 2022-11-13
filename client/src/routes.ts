@@ -1,4 +1,5 @@
 import PaymentForm from "components/common/stripe/PaymentForm";
+import TheDuThi from "components/pdf/TheDuThi";
 import { Layout ,IntroduceLayout} from "layout";
 import CategoryLayout from "layout/category-layout/CategoryLayout";
 import { paths } from "lib/constants";
@@ -105,6 +106,11 @@ const routes = [
     component: PaymentForm,
     exact: true,
   },
+  // {
+  //   path: '/test',
+  //   component: TheDuThi,
+  //   exact: true,
+  // },
   {
     path: '/',
     component: GuestHome,

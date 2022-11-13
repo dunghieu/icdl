@@ -18,9 +18,10 @@ import {GuestHeader} from 'components';
 import GuestFooter from 'components/footer/GuestFooter';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 import axios from 'axios';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import PopupDialog from 'components/common/alert/PopupDialog';
 import {useHistory} from 'react-router-dom';
+import moment from 'moment';
 
 const theme = createTheme({
   palette: {
@@ -35,14 +36,17 @@ const certificateList = [
   {
     id: 1,
     name: 'Công nghệ thông tin cơ bản',
+    value: 'CNTT Cơ bản',
   },
   {
     id: 2,
     name: 'Công nghệ thông tin nâng cao',
+    value: 'CNTT Nâng cao',
   },
   {
     id: 3,
     name: 'IC3, MOS',
+    value: 'IC3, MOS',
   },
 ];
 
@@ -50,35 +54,24 @@ const DangKyThi = () => {
   const [open, setOpen] = React.useState(false);
   const [open2, setOpen2] = React.useState(false);
   const [firstName, setFirstName] = useState('');
-  const [errorFirstName, setErrorFirstName] = useState({});
   const [lastName, setLastName] = useState('');
-  const [errorLastName, setErrorLastName] = useState({});
   const [gender, setGender] = useState('');
-  const [errorGender, setErrorGender] = useState({});
   const [dayOfBirth, setDayOfBirth] = useState('');
-  const [errorDay, setErrorDay] = useState({});
   const [monthOfBirth, setMonthOfBirth] = useState('');
-  const [errorMonth, setErrorMonth] = useState({});
   const [yearOfBirth, setYearOfBirth] = useState('');
-  const [errorYear, setErrorYear] = useState({});
   const [email, setEmail] = useState('');
-  const [errorEmail, setErrorEmail] = useState({});
   const [phone, setPhone] = useState('');
-  const [errorPhone, setErrorPhone] = useState({});
   const [citizenId, setCitizenId] = useState('');
-  const [errorCitizenId, setErrorCitizenId] = useState({});
   const [certificate, setCertificate] = useState('');
-  const [errorCertificate, setErrorCertificate] = useState({});
+  const [course, setCourse] = useState('');
+  const [courseList, setCourseList] = useState([]);
   const [city, setCity] = useState('');
-  const [errorCity, setErrorCity] = useState({});
   const [cityList, setCityList] = useState([]);
   const [ethnic, setEthnic] = useState('');
-  const [errorEthnic, setErrorEthnic] = useState({});
   const [ethnicList, setEthnicList] = useState([]);
   const [checkOn, setCheckOn] = useState(false);
   const [checkThi, setCheckThi] = useState(false);
   const [checked, setChecked] = useState('');
-  const [errorChecked, setErrorChecked] = useState({});
   const [student, setStudent] = useState({} as any);
 
   const history = useHistory();
@@ -105,6 +98,10 @@ const DangKyThi = () => {
   }, []);
 
   useEffect(() => {
+    if (!checkOn) {
+      setCourse('');
+    }
+
     if (checkOn === true && checkThi === true) {
       setChecked('ôn + thi');
     }
@@ -119,8 +116,10 @@ const DangKyThi = () => {
   const fetchData = async () => {
     const getCity = await axios.get('http://localhost:8080/api/city');
     const getEthnic = await axios.get('http://localhost:8080/api/ethnic');
+    const getCourse = await axios.get('http://localhost:8080/api/course/available');
     setCityList(getCity.data);
     setEthnicList(getEthnic.data);
+    setCourseList(getCourse.data);
 
     if (params) {
       const getStudent = await axios.get(`http://localhost:8080/api/student/${params}`);
@@ -408,7 +407,7 @@ const DangKyThi = () => {
               onChange={(event) => setCertificate(event.target.value)}
             >
               {certificateList.map((item: any) => (
-                <MenuItem value={item.name} key={item.id}>
+                <MenuItem value={item.value} key={item.id}>
                   {item.name}
                 </MenuItem>
               ))}
@@ -450,6 +449,31 @@ const DangKyThi = () => {
                 label="Thi"
               />
             </FormGroup>
+          </Grid>
+          <Grid item xs={6}>
+            <InputLabel sx={{fontWeight: 700}}>KHÓA HỌC</InputLabel>
+            <TextField
+              disabled={!checkOn}
+              select
+              variant="outlined"
+              color="neutral"
+              size="small"
+              fullWidth
+              value={course}
+              onChange={(event) => setCourse(event.target.value)}
+            >
+              {checkOn &&
+                courseList.map((item: any) => {
+                  if (item.name === certificate) {
+                    return (
+                      <MenuItem value={item.id} key={item.id}>
+                        Thứ {item.day} ({item.start} - {item.end}) Khai giảng ngày{' '}
+                        {moment(item.open).format('DD/MM/YYYY')}
+                      </MenuItem>
+                    );
+                  }
+                })}
+            </TextField>
           </Grid>
         </Grid>
         <Button

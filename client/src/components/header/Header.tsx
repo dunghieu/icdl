@@ -52,7 +52,7 @@ const Header: React.FC<HeaderProps> = ({open, handleToggleDrawer, drawerwidth}) 
           <Link to="/admin/new">
             <Button variant="contained">
               <AddCircleRoundedIcon />
-              &nbsp; Create Post
+              &nbsp; TẠO BÀI VIẾT
             </Button>
           </Link>
         </Box>

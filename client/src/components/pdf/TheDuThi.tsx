@@ -1,8 +1,11 @@
-import {Box, Grid, Typography} from '@mui/material';
+import {Box, Grid, Typography, Tooltip, IconButton} from '@mui/material';
 import {printDocument} from 'utils/helper';
+import LocalPrintshopIcon from '@mui/icons-material/LocalPrintshop';
 
 const TheDuThi = (props: any) => {
-  const savePdf = () => {
+  const savePdf = (e: any) => {
+    e.preventDefault();
+    e.stopPropagation();
     const elem = document.getElementById('divToPrint');
     const opt = {
       orientation: 'l',
@@ -10,11 +13,24 @@ const TheDuThi = (props: any) => {
     };
     printDocument(elem, opt);
   };
-
   return (
     <>
-      <button onClick={savePdf}>Save</button>
-      <div id="divToPrint" style={{width: '1122px'}}>
+      {/* <button onClick={savePdf}>Save</button> */}
+      <Tooltip title="In thẻ dự thi">
+        <IconButton onClick={savePdf}>
+          <LocalPrintshopIcon />
+        </IconButton>
+      </Tooltip>
+      <div
+        id="divToPrint"
+        style={{
+          width: '1122px',
+          minWidth: '1122px',
+          maxHeight: '1122px',
+          position: 'absolute',
+          zIndex: -10000,
+        }}
+      >
         <Box sx={{display: 'flex', gap: '200px', paddingTop: '75px', justifyContent: 'center'}}>
           <Typography variant="h6" fontFamily="serif" gutterBottom>
             TRƯỜNG ĐẠI HỌC THỦY LỢI
@@ -49,8 +65,10 @@ const TheDuThi = (props: any) => {
           <Typography variant="h6" fontFamily="serif">
             <strong>THẺ DỰ THI</strong>
           </Typography>
-          <Typography variant="h6" fontFamily="serif">
-            <strong>KỲ THI CHUẨN CÔNG NGHỆ THÔNG TIN CƠ BẢN ĐỢT 12</strong>
+          <Typography variant="h6" fontFamily="serif" sx={{textTransform: 'uppercase'}}>
+            <strong>
+              KỲ THI CHUẨN {props.name} ĐỢT {props.dotthi}
+            </strong>
           </Typography>
         </Box>
         <Box
@@ -78,17 +96,17 @@ const TheDuThi = (props: any) => {
           <Grid container sx={{width: '800px'}}>
             <Grid item xs={6}>
               <Typography sx={{textOverflow: 'ellipsis'}} variant="body2" fontFamily="serif">
-                Phòng thi: {props.phongThi}
+                Phòng thi: {props.room}
               </Typography>
             </Grid>
             <Grid item xs={6}>
               <Typography variant="body2" fontFamily="serif">
-                SBD: {props.SBD}
+                SBD: {props.sbd}
               </Typography>
             </Grid>
             <Grid item xs={6}>
               <Typography variant="body2" fontFamily="serif">
-                Họ và tên: {props.fullname}
+                Họ và tên: {props.firstName} {props.lastName}
               </Typography>
             </Grid>
             <Grid item xs={6}>
@@ -98,12 +116,12 @@ const TheDuThi = (props: any) => {
             </Grid>
             <Grid item xs={4}>
               <Typography variant="body2" fontFamily="serif">
-                Ngày sinh:{props.birthday}
+                Ngày sinh:{props.dayOfBirth} - {props.monthOfBirth} - {props.yearOfBirth}
               </Typography>
             </Grid>
             <Grid item xs={4}>
               <Typography variant="body2" fontFamily="serif">
-                Nơi sinh:{props.birthplace}
+                Nơi sinh:{props.placeOfBirth}
               </Typography>
             </Grid>
             <Grid item xs={4}>

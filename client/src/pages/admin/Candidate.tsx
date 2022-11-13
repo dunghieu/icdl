@@ -10,13 +10,36 @@ const Candidate = () => {
   const [data, setData] = useState([]);
   const fetchData = async () => {
     const getData = await axios.get('http://localhost:8080/api/student');
-    setData(getData.data);
+    const finalData = getData.data.map((item: any, index: number) => {
+      if (item.payment.length > 1) {
+        return (item = {
+          ...item,
+          payment: item.payment[index],
+        });
+      } else {
+        return (item = {
+          ...item,
+          payment: item.payment[0],
+        });
+      }
+    });
+    setData(finalData);
   };
   useEffect(() => {
     fetchData();
   }, []);
 
-  return <CustomPaginationActionsTable rows={data} />;
+  return (
+    <>
+      <Box marginBottom={1} sx={{textAlign: 'right'}}>
+        <Button variant="contained">
+          {/* <AddCircleRoundedIcon /> */}
+          &nbsp; CHỐT DANH SÁCH THI
+        </Button>
+      </Box>
+      <CustomPaginationActionsTable rows={data} />
+    </>
+  );
 };
 
 export default Candidate;

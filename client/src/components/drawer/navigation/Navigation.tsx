@@ -39,25 +39,33 @@ const navigationItems: NavigationItem[] = [
     children: [
       {
         id: 'dashboard.feed',
-        title: 'Feeds',
+        title: 'Bảng tin',
         type: 'basic',
         icon: <HomeOutlinedIcon />,
         link: '/admin',
       },
       {
+        id: 'dashboard.candidate',
+        title: 'Thí sinh',
+        type: 'basic',
+        icon: <SchoolOutlinedIcon />,
+        link: '/admin/candidate',
+      },
+      {
         id: 'dashboard.course',
-        title: 'Course',
+        title: 'Khóa học',
         type: 'basic',
         icon: <LocalLibraryOutlinedIcon />,
         link: '/admin/course',
       },
       {
-        id: 'dashboard.candidate',
-        title: 'Candidate',
+        id: 'dashboard.exam',
+        title: 'Kì thi',
         type: 'basic',
-        icon: <SchoolOutlinedIcon />,
-        link: '/admin/candidate',
+        icon: <LocalLibraryOutlinedIcon />,
+        link: '/admin/exam',
       },
+
       // {
       //   id: 'dashboard.commerce',
       //   title: 'E-Commerce',

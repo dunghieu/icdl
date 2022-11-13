@@ -17,28 +17,27 @@ import LastPageIcon from '@mui/icons-material/LastPage';
 import {TableHead} from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { DataGrid, GridColumns, GridRowsProp, GridColDef  } from '@mui/x-data-grid';
+import {DataGrid, GridColumns, GridRowsProp, GridColDef} from '@mui/x-data-grid';
 
 const rows: GridRowsProp = [
-  { id: 1, col1: 'Hello', col2: 'World' },
-  { id: 2, col1: 'DataGridPro', col2: 'is Awesome' },
-  { id: 3, col1: 'MUI', col2: 'is Amazing' },
+  {id: 1, col1: 'Hello', col2: 'World'},
+  {id: 2, col1: 'DataGridPro', col2: 'is Awesome'},
+  {id: 3, col1: 'MUI', col2: 'is Amazing'},
 ];
 
 const columns: GridColumns = [
-  { field: 'name', headerName: 'Họ và tên', width: 180 },
-  { field: 'gender', headerName: 'Giới tính', width: 180 },
-  { field: 'birthday', headerName: 'Ngày sinh', width: 180 },
-  { field: 'birthplace', headerName: 'Nơi sinh', width: 180 },
-  { field: 'phone', headerName: 'Số điện thoại', width: 180 },
-  { field: 'email', headerName: 'Email', width: 180 },
-  { field: 'ethnic', headerName: 'Dân tộc', width: 180 },
-  { field: 'amount', headerName: 'Số tiền', width: 180 },
-  { field: 'type', headerName: 'Hình thức đăng ký', width: 180 },
-  { field: 'note', headerName: 'Ghi chú', width: 180, editable: true },
-  { field: 'actions', headerName: 'Actions', width: 180 },
+  {field: 'name', headerName: 'Họ và tên', maxWidth: 180},
+  {field: 'gender', headerName: 'Giới tính', maxWidth: 180},
+  {field: 'birthday', headerName: 'Ngày sinh', maxWidth: 180},
+  {field: 'birthplace', headerName: 'Nơi sinh', maxWidth: 180},
+  {field: 'phone', headerName: 'Số điện thoại', maxWidth: 180},
+  {field: 'email', headerName: 'Email', maxWidth: 180},
+  {field: 'ethnic', headerName: 'Dân tộc', maxWidth: 180},
+  {field: 'amount', headerName: 'Số tiền', maxWidth: 180},
+  {field: 'type', headerName: 'Hình thức đăng ký', maxWidth: 180},
+  {field: 'note', headerName: 'Ghi chú', maxWidth: 180, editable: true},
+  {field: 'actions', headerName: 'Actions', maxWidth: 180},
 ];
-
 
 interface TablePaginationActionsProps {
   count: number;
@@ -97,10 +96,6 @@ function TablePaginationActions(props: TablePaginationActionsProps) {
   );
 }
 
-function createData(name: string, calories: number, fat: number) {
-  return {name, calories, fat};
-}
-
 export default function CustomPaginationActionsTable({rows}: any) {
   console.log(rows);
   const [page, setPage] = React.useState(0);
@@ -121,8 +116,11 @@ export default function CustomPaginationActionsTable({rows}: any) {
   };
 
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{minWidth: 500}} aria-label="custom pagination table">
+    <TableContainer
+      component={Paper}
+      sx={{overflowX: 'auto', minWidth: '50vw', maxWidth: '100vw', maxHeight: '90vh'}}
+    >
+      <Table aria-label="custom pagination table">
         <TableHead>
           <TableRow>
             <TableCell>Họ và tên</TableCell>
@@ -132,7 +130,7 @@ export default function CustomPaginationActionsTable({rows}: any) {
             <TableCell>Số điện thoại</TableCell>
             <TableCell>Email</TableCell>
             <TableCell>Dân tộc</TableCell>
-            <TableCell>Số tiền</TableCell>
+            <TableCell>Chứng chỉ</TableCell>
             <TableCell>Hình thức đăng ký</TableCell>
             <TableCell>Ghi chú</TableCell>
             <TableCell>Actions</TableCell>
@@ -145,32 +143,23 @@ export default function CustomPaginationActionsTable({rows}: any) {
           ).map((row: any) => (
             <TableRow key={row.id}>
               <TableCell style={{display: 'none'}}>{row.id}</TableCell>
-              <TableCell style={{width: 250}}>
+              <TableCell>
                 {row.firstName} {row.lastName}
               </TableCell>
-              <TableCell style={{width: 50}}>{row.gender === 'Male' ? 'Nam' : 'Nữ'}</TableCell>
-              <TableCell style={{width: 100}}>
+              <TableCell>{row.gender}</TableCell>
+              <TableCell>
                 {row.dayOfBirth} - {row.monthOfBirth} - {row.yearOfBirth}
               </TableCell>
-              <TableCell style={{width: 100}}>{row.placeOfBirth}</TableCell>
-              <TableCell style={{width: 100}}>{row.phoneNumber}</TableCell>
-              <TableCell style={{width: 250}}>{row.email}</TableCell>
-              <TableCell style={{width: 100}}>{row.ethnic}</TableCell>
-              <TableCell style={{width: 100}}>
-                {row.payment.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-              </TableCell>
-              <TableCell style={{width: 100}} align="center">
-                {row.type}
-              </TableCell>
-              <TableCell style={{width: 160}}>
-                {row.payment.status === 1 ? 'Đã thanh toán' : ''}
-              </TableCell>
-              <TableCell style={{width: 110}}>
+              <TableCell>{row.placeOfBirth}</TableCell>
+              <TableCell>{row.phoneNumber}</TableCell>
+              <TableCell>{row.email}</TableCell>
+              <TableCell>{row.ethnic}</TableCell>
+              <TableCell>{row.certificateType}</TableCell>
+              <TableCell align="center">{row.type}</TableCell>
+              <TableCell>{row.payment?.status === 1 ? 'Chốt' : ''}</TableCell>
+              <TableCell>
                 {
                   <>
-                    <IconButton   >
-                      <EditIcon />
-                    </IconButton>
                     <IconButton aria-label="">
                       <DeleteIcon />
                     </IconButton>
