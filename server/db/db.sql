@@ -1,6 +1,6 @@
 -- --------------------------------------------------------
 -- Host:                         127.0.0.1
--- Server version:               10.11.0-MariaDB - mariadb.org binary distribution
+-- Server version:               10.7.3-MariaDB - mariadb.org binary distribution
 -- Server OS:                    Win64
 -- HeidiSQL Version:             11.3.0.6295
 -- --------------------------------------------------------
@@ -28,7 +28,6 @@ CREATE TABLE IF NOT EXISTS `account` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table datn.account: ~0 rows (approximately)
-DELETE FROM `account`;
 /*!40000 ALTER TABLE `account` DISABLE KEYS */;
 INSERT INTO `account` (`id`, `created_at`, `updated_at`, `email`, `password`) VALUES
 	(1, '2022-10-04 16:12:49', '2022-10-04 16:12:49', 'meat@gmail.com', '$2b$10$C0mvGGMzFN0tjv9G35qsyuh/bKVCbfE86qhATDHY4rDM7M4kPlagW');
@@ -44,8 +43,7 @@ CREATE TABLE IF NOT EXISTS `city` (
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=latin1;
 
--- Dumping data for table datn.city: ~35 rows (approximately)
-DELETE FROM `city`;
+-- Dumping data for table datn.city: ~63 rows (approximately)
 /*!40000 ALTER TABLE `city` DISABLE KEYS */;
 INSERT INTO `city` (`id`, `created_at`, `updated_at`, `name`) VALUES
 	(1, '2022-10-04 10:48:25', '2022-10-04 10:48:25', 'An Giang'),
@@ -125,7 +123,6 @@ CREATE TABLE IF NOT EXISTS `ethnic` (
 ) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table datn.ethnic: ~54 rows (approximately)
-DELETE FROM `ethnic`;
 /*!40000 ALTER TABLE `ethnic` DISABLE KEYS */;
 INSERT INTO `ethnic` (`id`, `created_at`, `updated_at`, `name`, `description`) VALUES
 	(1, '2022-10-04 09:18:32', '2022-10-04 09:18:32', 'Kinh', 'Việt'),
@@ -196,16 +193,30 @@ CREATE TABLE IF NOT EXISTS `exam` (
   `date` date NOT NULL,
   `startTime` time NOT NULL,
   `endTime` time NOT NULL,
-  `series` int(11) NULL,
+  `series` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
 
--- Dumping data for table datn.exam: ~1 rows (approximately)
-DELETE FROM `exam`;
+-- Dumping data for table datn.exam: ~0 rows (approximately)
 /*!40000 ALTER TABLE `exam` DISABLE KEYS */;
-INSERT INTO `exam` (`id`, `created_at`, `updated_at`, `name`, `type`, `code`, `instruction`, `date`, `startTime`, `endTime`, `series`) VALUES
-	(1, '2022-11-08 09:54:37', '2022-11-08 09:54:38', 'IC3', 'IC3-MOS', 'ic3', 'NULL', '2022-11-08', '09:55:04', '09:55:05', 'NULL');
 /*!40000 ALTER TABLE `exam` ENABLE KEYS */;
+
+-- Dumping structure for table datn.exam_result
+CREATE TABLE IF NOT EXISTS `exam_result` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `studentId` int(11) NOT NULL,
+  `examId` int(11) NOT NULL,
+  `theoreticalScore` int(11) NOT NULL,
+  `practicalScore` int(11) NOT NULL,
+  `status` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Dumping data for table datn.exam_result: ~0 rows (approximately)
+/*!40000 ALTER TABLE `exam_result` DISABLE KEYS */;
+/*!40000 ALTER TABLE `exam_result` ENABLE KEYS */;
 
 -- Dumping structure for table datn.feed
 CREATE TABLE IF NOT EXISTS `feed` (
@@ -219,7 +230,6 @@ CREATE TABLE IF NOT EXISTS `feed` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
 
 -- Dumping data for table datn.feed: ~2 rows (approximately)
-DELETE FROM `feed`;
 /*!40000 ALTER TABLE `feed` DISABLE KEYS */;
 INSERT INTO `feed` (`id`, `created_at`, `updated_at`, `title`, `content`, `category`) VALUES
 	(1, '2022-11-03 09:37:23', '2022-11-03 09:37:23', 'title', 'content', 'category'),
@@ -233,23 +243,16 @@ CREATE TABLE IF NOT EXISTS `payment` (
   `updated_at` datetime NOT NULL DEFAULT current_timestamp(),
   `studentId` int(11) NOT NULL,
   `intentId` varchar(255) NOT NULL,
+  `secret` varchar(255) NOT NULL,
   `amount` int(11) NOT NULL,
   `status` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_payment_student` (`studentId`),
   CONSTRAINT `FK_payment_student` FOREIGN KEY (`studentId`) REFERENCES `student` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
--- Dumping data for table datn.payment: ~6 rows (approximately)
-DELETE FROM `payment`;
+-- Dumping data for table datn.payment: ~0 rows (approximately)
 /*!40000 ALTER TABLE `payment` DISABLE KEYS */;
-INSERT INTO `payment` (`id`, `created_at`, `updated_at`, `studentId`, `intentId`, `amount`, `status`) VALUES
-	(1, '2022-11-02 10:35:43', '2022-11-02 10:55:44', 2, 'pi_3LzY3IBllFThz4em0g7SOJJu', 400000, 0),
-	(2, '2022-11-02 10:35:49', '2022-11-02 10:35:49', 3, 'pi_3LzXk1BllFThz4em15oASBnz', 1000000, 0),
-	(3, '2022-11-02 11:18:22', '2022-11-02 11:18:22', 5, 'pi_3LzYPCBllFThz4em0A0y9rgA', 1000000, 0),
-	(4, '2022-11-02 11:18:29', '2022-11-02 11:18:29', 6, 'pi_3LzYPJBllFThz4em3CTRtNpt', 1000000, 0),
-	(5, '2022-11-02 14:05:25', '2022-11-02 14:05:25', 7, 'pi_3Lzb0rBllFThz4em38n1hHjL', 1000000, 0),
-	(6, '2022-11-02 14:06:16', '2022-11-02 14:06:16', 8, 'pi_3Lzb1gBllFThz4em1DrnsGEV', 1000000, 0);
 /*!40000 ALTER TABLE `payment` ENABLE KEYS */;
 
 -- Dumping structure for table datn.student
@@ -257,39 +260,30 @@ CREATE TABLE IF NOT EXISTS `student` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `firstName` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_vietnamese_ci NOT NULL,
-  `lastName` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_vietnamese_ci NOT NULL,
-  `gender` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_vietnamese_ci NOT NULL,
-  `citizenId` varchar(255) NOT NULL,
-  `dayOfBirth` varchar(255) NOT NULL,
-  `monthOfBirth` varchar(255) NOT NULL,
-  `yearOfBirth` varchar(255) NOT NULL,
-  `placeOfBirth` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_vietnamese_ci NOT NULL,
-  `phoneNumber` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `ethnic` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_vietnamese_ci NOT NULL,
-  `testDate` date NOT NULL,
-  `certificateType` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_vietnamese_ci NOT NULL,
+  `firstName` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_vietnamese_ci DEFAULT NULL,
+  `lastName` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_vietnamese_ci DEFAULT NULL,
+  `gender` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_vietnamese_ci DEFAULT NULL,
+  `citizenId` varchar(255) DEFAULT NULL,
+  `dayOfBirth` varchar(255) DEFAULT NULL,
+  `monthOfBirth` varchar(255) DEFAULT NULL,
+  `yearOfBirth` varchar(255) DEFAULT NULL,
+  `placeOfBirth` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_vietnamese_ci DEFAULT NULL,
+  `phoneNumber` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `ethnic` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_vietnamese_ci DEFAULT NULL,
   `code` varchar(50) DEFAULT NULL,
-  `type` varchar(255) NOT NULL,
+  `type` varchar(255) DEFAULT NULL,
+  `certificateType` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_vietnamese_ci DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_student_ethnic` (`ethnic`),
   KEY `FK_student_city` (`placeOfBirth`),
   CONSTRAINT `FK_student_city` FOREIGN KEY (`placeOfBirth`) REFERENCES `city` (`name`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK_student_ethnic` FOREIGN KEY (`ethnic`) REFERENCES `ethnic` (`name`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table datn.student: ~6 rows (approximately)
-DELETE FROM `student`;
+-- Dumping data for table datn.student: ~0 rows (approximately)
 /*!40000 ALTER TABLE `student` DISABLE KEYS */;
-INSERT INTO `student` (`id`, `created_at`, `updated_at`, `firstName`, `lastName`, `gender`, `citizenId`, `dayOfBirth`, `monthOfBirth`, `yearOfBirth`, `placeOfBirth`, `phoneNumber`, `email`, `ethnic`, `testDate`, `certificateType`, `code`, `type`, `description`) VALUES
-	(2, '2022-11-02 10:35:42', '2022-11-02 10:55:45', 'meat', 'ball', 'Nam', '123123123', '22', '1', '2000', 'Ha Nội', '0963725098', 'bearngok96@gmail.com', 'Kinh', '2022-11-11', 'IC3', '0000', 'ôn', NULL),
-	(3, '2022-11-02 10:35:49', '2022-11-02 10:35:49', 'meat', 'ball', 'Nam', '123123123', '22', '1', '2000', 'Hà Nội', '0963725098', 'bearngok96@gmail.com', 'Kinh', '2022-11-11', 'IC3', NULL, 'thi', NULL),
-	(5, '2022-11-02 11:18:21', '2022-11-02 11:18:21', 'meat', 'ball', 'Nam', '123123123', '22', '1', '2000', 'Hà Nội', '0963725098', 'bearngok96@gmail.com', 'Kinh', '2022-11-11', 'IC3', NULL, 'thi', NULL),
-	(6, '2022-11-02 11:18:29', '2022-11-02 11:18:29', 'meat', 'ball', 'Nam', '123123123', '22', '1', '2000', 'Hà Nội', '0963725098', 'bearngok96@gmail.com', 'Kinh', '2022-11-11', 'IC3', NULL, 'thi', NULL),
-	(7, '2022-11-02 14:05:23', '2022-11-02 14:05:23', 'meat', 'ball', 'Nam', '123123123', '22', '1', '2000', 'Hà Nội', '0963725098', 'bearngok96@gmail.com', 'Kinh', '2022-11-11', 'IC3', NULL, 'thi', NULL),
-	(8, '2022-11-02 14:06:15', '2022-11-02 14:06:15', 'meat', 'ball', 'Nam', '123123123', '22', '1', '2000', 'Hà Nội', '0963725098', 'bearngok96@gmail.com', 'Kinh', '2022-11-11', 'IC3', NULL, 'thi', NULL);
 /*!40000 ALTER TABLE `student` ENABLE KEYS */;
 
 -- Dumping structure for table datn.student_exam_mapping
@@ -304,13 +298,10 @@ CREATE TABLE IF NOT EXISTS `student_exam_mapping` (
   KEY `FK_student_exam_mapping_exam` (`examId`),
   CONSTRAINT `FK_student_exam_mapping_exam` FOREIGN KEY (`examId`) REFERENCES `exam` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK_student_exam_mapping_student` FOREIGN KEY (`studentId`) REFERENCES `student` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Dumping data for table datn.student_exam_mapping: ~0 rows (approximately)
-DELETE FROM `student_exam_mapping`;
 /*!40000 ALTER TABLE `student_exam_mapping` DISABLE KEYS */;
-INSERT INTO `student_exam_mapping` (`id`, `created_at`, `updated_at`, `studentId`, `examId`) VALUES
-	(2, '2022-11-08 09:55:36', '2022-11-08 09:55:37', 2, 1);
 /*!40000 ALTER TABLE `student_exam_mapping` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

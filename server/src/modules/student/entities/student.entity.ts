@@ -51,7 +51,7 @@ export class Student extends BaseEntity{
     @Column({ nullable: true })
     description: string;
 
-    @OneToOne(() => Payment, (payment) => payment.studentId)
+    @OneToMany(() => Payment, (payment) => payment.studentId)
     payment: Payment;
 
     @OneToMany(() => StudentExamMapping, (studentExamMapping) => studentExamMapping.student)

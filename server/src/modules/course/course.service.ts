@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import { Course } from './entities/course.entity';
+import * as moment from 'moment';
 
 @Injectable()
 export class CourseService {
@@ -18,6 +19,17 @@ export class CourseService {
 
   findAll() {
     return this.courseRepository.find();
+  }
+
+  async findAvailableCourses() {
+    const course = await this.findAll();
+    const availableCourses = course.filter((course) => {
+      const courseDate = moment(course.open).add(7, 'days').format('YYYY-MM-DD') ;
+      const today = moment().format('YYYY-MM-DD');
+      return courseDate >= today;
+    });
+
+    return availableCourses;
   }
 
   findById(id: number) {

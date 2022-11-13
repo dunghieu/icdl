@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Connection, Repository } from 'typeorm';
 // application
 import { Payment } from './entities';
 import {
@@ -9,12 +9,15 @@ import {
 import Stripe from 'stripe';
 import { StripeConfig } from './stripe.config';
 import { PaymentDto, UpdatePaymentDto } from './dtos';
+import { Student } from '../student';
+import { StudentType } from 'src/shared';
 @Injectable()
 export class PaymentService {
   private stripe : Stripe;
   constructor(
     @InjectRepository(Payment)
     private paymentRepository: Repository<Payment>,
+    private readonly connection: Connection,
   ) {
     this.stripe = new Stripe(StripeConfig.secret_key, {
       apiVersion: '2022-08-01',
@@ -51,7 +54,7 @@ export class PaymentService {
       payment = await this.paymentRepository.findOneBy({ id });
     }
 
-    console.log(payment);
+    // console.log(payment);
     const updatedPayment = Object.assign(payment, body);
     return this.paymentRepository.save(updatedPayment);
   }
@@ -80,5 +83,29 @@ export class PaymentService {
       }
     );
     return paymentIntent;
+  }
+
+  async generate() {
+    // const student = await this.connection.getRepository(Student).find();
+    // const payments = await this.paymentRepository.find();
+    // for (const item of payments) {
+    //   // const amount = item.type === StudentType.ON ? 400000 : item.type === StudentType.THI ? 1000000 : 1400000;
+    //   // const paymentIntent = await this.createPaymentIntent({
+    //   //   amount: amount,
+    //   //   currency: 'vnd',
+    //   // });
+    //   // await this.create({
+    //   //   studentId: item.id,
+    //   //   intentId: paymentIntent.paymentId,
+    //   //   amount: amount,
+    //   //   status: 0,
+    //   //   secret: paymentIntent.clientSecret,
+    //   // });
+
+    //   // const result = await this.confirmPaymentIntent(item.intentId);
+    //   // if (result.status === 'succeeded') {
+    //   //   await this.update(item.id, { status: 1 });
+    //   // }
+    // }
   }
 }

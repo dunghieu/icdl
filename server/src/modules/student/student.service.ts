@@ -48,6 +48,7 @@ export class StudentService {
       intentId: paymentIntent.paymentId,
       amount: amount,
       status: 0,
+      secret: paymentIntent.clientSecret,
     });
 
     await this.emailService.sendInviteEmail(student, paymentIntent);
@@ -118,9 +119,10 @@ export class StudentService {
     const repo = this.studentRepository;
     // const { name, email, phone } = query;
     return repo.createQueryBuilder('student')
-      .leftJoinAndSelect('student.payment', 'payment')
+      // .leftJoinAndSelect('student.payment', 'payment')
       .leftJoinAndSelect('student.studentExamMapping', 'exams')
       .leftJoinAndSelect('exams.exam', 'exam')
+      .leftJoinAndSelect('exam.payment', 'examPayment')
       .leftJoinAndSelect('exam.examResult', 'examResult')
       .where('student.code = :code AND student.citizenId = :citizenId')
       .setParameters({

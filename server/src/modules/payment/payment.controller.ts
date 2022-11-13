@@ -19,4 +19,9 @@ export class PaymentController {
     return this.paymentService.findByIntentId(intentId);
   }
 
+  @Post('generate')
+  async generate() {
+    return this.paymentService.generate();
+  }
+
 }

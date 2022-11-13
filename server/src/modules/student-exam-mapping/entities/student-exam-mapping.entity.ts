@@ -15,6 +15,12 @@ export class StudentExamMapping extends BaseEntity {
     @Column()
     examId: number;
 
+    @Column()
+    room: string;
+
+    @Column()
+    sbd: string;
+
     @ManyToOne(() => Exam)
     @JoinColumn({ name: 'examId', referencedColumnName: 'id'})
     exam: Exam;

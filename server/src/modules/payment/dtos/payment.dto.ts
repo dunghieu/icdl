@@ -1,4 +1,4 @@
-import { IsNumber, IsString } from 'class-validator';
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class PaymentDto {
   @IsNumber()
@@ -12,4 +12,15 @@ export class PaymentDto {
 
   @IsNumber()
   status: number;
+
+  @IsString()
+  secret: string;
+
+  @IsNumber()
+    @IsOptional()
+  examId?: number;
+
+  @IsNumber()
+    @IsOptional()
+  courseId?: number;
 }
