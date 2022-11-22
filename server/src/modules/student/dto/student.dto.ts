@@ -60,8 +60,7 @@ export class StudentDto {
   // @Matches(/^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$/, { message: 'Invalid date format' })
   // testDate: string;
   @IsNotEmpty()
-  @IsString()
-  certificateType: string;
+  certificateId: number;
 
   @IsEnum(StudentType)
   type: StudentType;

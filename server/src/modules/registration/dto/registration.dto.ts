@@ -8,5 +8,5 @@ export class RegistrationDto{
     type: string;
 
     @IsNotEmpty()
-    certificateType: string;
+    certificateId: number;
 }

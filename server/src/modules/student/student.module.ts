@@ -5,12 +5,12 @@ import { StudentController } from './student.controller';
 import { Student } from './entities/student.entity';
 import { EmailService } from '../email';
 import { PaymentModule } from '../payment/payment.module';
-import { RegistrationModule, RegistrationService } from '../registration';
+import { Registration, RegistrationModule, RegistrationService } from '../registration';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Student]), PaymentModule, RegistrationModule],
+  imports: [TypeOrmModule.forFeature([Student, Registration]), PaymentModule],
   controllers: [StudentController],
   exports: [StudentService],
-  providers: [StudentService, EmailService]
+  providers: [StudentService, EmailService, RegistrationService]
 })
 export class StudentModule {}

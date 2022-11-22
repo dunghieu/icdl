@@ -11,10 +11,10 @@ import { EthnicModule } from '../ethnic';
 import { CityModule } from '../city';
 import { FeedModule } from '../feed';
 import { ExamModule } from '../exam';
-import { ExamResultModule } from '../exam-result';
 import { EmailModule } from '../email';
 import { PaymentModule } from '../payment/payment.module';
 import { RegistrationModule } from '../registration';
+import { CertificateModule } from '../certificate';
 
 @Module({
   imports: [
@@ -39,7 +39,6 @@ import { RegistrationModule } from '../registration';
     AccountModule,
     StudentModule,
     ExamModule,
-    ExamResultModule,
     FeedModule,
     EthnicModule,
     CityModule,
@@ -47,6 +46,7 @@ import { RegistrationModule } from '../registration';
     ConfigModule,
     AuthModule,
     PaymentModule,
+    CertificateModule,
   ],
   controllers: [AppController],
   providers: [AppService],

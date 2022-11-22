@@ -34,33 +34,17 @@ export class StudentService {
   async create(createStudentDto: CreateStudentDto) {
     const isExist = await this.studentRepository.findOneBy({ email: createStudentDto.email, citizenId: createStudentDto.citizenId });
     const amount = createStudentDto.type === StudentType.ON ? 400000 : createStudentDto.type === StudentType.THI ? 1000000 : 1400000;
-    if (isExist) {
-      await this.registrationService.create({
-        studentId: isExist.id,
-        type: createStudentDto.type,
-        certificateType: createStudentDto.certificateType,
-      });
-      const paymentIntent = await this.paymentService.createPaymentIntent({
-        amount: amount,
-        currency: 'vnd',
-      });
-      await this.paymentService.create({
-        studentId: isExist.id,
-        intentId: paymentIntent.paymentId,
-        amount: amount,
-        status: 0,
-        secret: paymentIntent.clientSecret,
-      });
-      await this.emailService.sendInviteEmail(isExist, paymentIntent);
-      return paymentIntent;
+    let student;
+    if (!isExist) {
+      const create = this.studentRepository.create(createStudentDto);
+      create.code = generateID(4);
+      student = await this.studentRepository.save(create);
     }
-    const create = this.studentRepository.create(createStudentDto);
-    create.code = generateID(4);
-    const student = await this.studentRepository.save(create);
+    student = isExist;
     await this.registrationService.create({
       studentId: student.id,
       type: createStudentDto.type,
-      certificateType: createStudentDto.certificateType,
+      certificateId: createStudentDto.certificateId,
     });
     const paymentIntent = await this.paymentService.createPaymentIntent({
       amount: amount,

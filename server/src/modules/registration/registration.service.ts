@@ -16,7 +16,7 @@ export class RegistrationService {
     const params = {
       studentId: createRegistrationDto.studentId,
       type: createRegistrationDto.type,
-      certificateType: createRegistrationDto.certificateType,
+      certificateType: createRegistrationDto.certificateId,
     };
     const regist = this.registrationRepository.createQueryBuilder()
       .where('studentId = :studentId AND type = :type AND certificateType = :certificateType')
@@ -30,7 +30,9 @@ export class RegistrationService {
   }
 
   findAll() {
-    return this.registrationRepository.find();
+    return this.registrationRepository.find({
+      relations: ['student'],
+    });
   }
 
   findOne(id: number) {

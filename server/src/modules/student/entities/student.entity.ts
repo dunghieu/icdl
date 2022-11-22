@@ -49,9 +49,6 @@ export class Student extends BaseEntity{
     @OneToMany(() => Payment, (payment) => payment.studentId)
     payment: Payment;
 
-    @OneToMany(() => Registration, (regist) => regist.studentId)
-    registration: Registration;
-
     @OneToMany(() => StudentExamMapping, (studentExamMapping) => studentExamMapping.student)
     studentExamMapping: StudentExamMapping[];
 }
