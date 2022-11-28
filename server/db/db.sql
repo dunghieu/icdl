@@ -14,10 +14,12 @@
 
 
 -- Dumping database structure for datn
+DROP DATABASE IF EXISTS `datn`;
 CREATE DATABASE IF NOT EXISTS `datn` /*!40100 DEFAULT CHARACTER SET latin1 */;
 USE `datn`;
 
 -- Dumping structure for table datn.account
+DROP TABLE IF EXISTS `account`;
 CREATE TABLE IF NOT EXISTS `account` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
@@ -33,7 +35,26 @@ INSERT INTO `account` (`id`, `created_at`, `updated_at`, `email`, `password`) VA
 	(1, '2022-10-04 16:12:49', '2022-10-04 16:12:49', 'meat@gmail.com', '$2b$10$C0mvGGMzFN0tjv9G35qsyuh/bKVCbfE86qhATDHY4rDM7M4kPlagW');
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
 
+-- Dumping structure for table datn.certificate
+DROP TABLE IF EXISTS `certificate`;
+CREATE TABLE IF NOT EXISTS `certificate` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_vietnamese_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+-- Dumping data for table datn.certificate: ~3 rows (approximately)
+/*!40000 ALTER TABLE `certificate` DISABLE KEYS */;
+INSERT INTO `certificate` (`id`, `created_at`, `updated_at`, `name`) VALUES
+	(1, '2022-11-22 22:04:53', '2022-11-22 22:04:53', 'Công nghệ thông tin cơ bản'),
+	(2, '2022-11-22 22:05:12', '2022-11-22 22:05:12', 'Công nghệ thông tin nâng cao'),
+	(3, '2022-11-22 22:05:29', '2022-11-22 22:05:29', 'IC3, MOS');
+/*!40000 ALTER TABLE `certificate` ENABLE KEYS */;
+
 -- Dumping structure for table datn.city
+DROP TABLE IF EXISTS `city`;
 CREATE TABLE IF NOT EXISTS `city` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
@@ -43,7 +64,7 @@ CREATE TABLE IF NOT EXISTS `city` (
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=latin1;
 
--- Dumping data for table datn.city: ~63 rows (approximately)
+-- Dumping data for table datn.city: ~59 rows (approximately)
 /*!40000 ALTER TABLE `city` DISABLE KEYS */;
 INSERT INTO `city` (`id`, `created_at`, `updated_at`, `name`) VALUES
 	(1, '2022-10-04 10:48:25', '2022-10-04 10:48:25', 'An Giang'),
@@ -111,7 +132,32 @@ INSERT INTO `city` (`id`, `created_at`, `updated_at`, `name`) VALUES
 	(63, '2022-10-04 10:54:16', '2022-10-04 10:54:16', 'Yên Bái');
 /*!40000 ALTER TABLE `city` ENABLE KEYS */;
 
+-- Dumping structure for table datn.course
+DROP TABLE IF EXISTS `course`;
+CREATE TABLE IF NOT EXISTS `course` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `created_at` datetime DEFAULT current_timestamp(),
+  `updated_at` datetime DEFAULT current_timestamp(),
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_vietnamese_ci DEFAULT NULL,
+  `day` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_vietnamese_ci DEFAULT NULL,
+  `start` time DEFAULT NULL,
+  `end` time DEFAULT NULL,
+  `open` date DEFAULT NULL,
+  `certificateId` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_course_certificate` (`certificateId`),
+  CONSTRAINT `FK_course_certificate` FOREIGN KEY (`certificateId`) REFERENCES `certificate` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+-- Dumping data for table datn.course: ~1 rows (approximately)
+/*!40000 ALTER TABLE `course` DISABLE KEYS */;
+INSERT INTO `course` (`id`, `created_at`, `updated_at`, `name`, `day`, `start`, `end`, `open`, `certificateId`) VALUES
+	(1, '2022-11-13 13:32:00', '2022-11-13 13:32:01', 'CNTT Cơ bản', '2, 4, 6', '13:00:00', '16:00:00', '2022-12-31', 1),
+	(2, '2022-11-27 16:19:53', '2022-11-27 16:19:53', 'Test CNTT Cơ bản 1', '2, 3, 4', '00:00:00', '22:00:00', '2022-01-01', 1);
+/*!40000 ALTER TABLE `course` ENABLE KEYS */;
+
 -- Dumping structure for table datn.ethnic
+DROP TABLE IF EXISTS `ethnic`;
 CREATE TABLE IF NOT EXISTS `ethnic` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
@@ -182,43 +228,33 @@ INSERT INTO `ethnic` (`id`, `created_at`, `updated_at`, `name`, `description`) V
 /*!40000 ALTER TABLE `ethnic` ENABLE KEYS */;
 
 -- Dumping structure for table datn.exam
+DROP TABLE IF EXISTS `exam`;
 CREATE TABLE IF NOT EXISTS `exam` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `name` varchar(50) NOT NULL,
-  `type` varchar(50) NOT NULL,
-  `code` varchar(15) NOT NULL,
-  `instruction` varchar(255) DEFAULT NULL,
-  `date` date NOT NULL,
-  `startTime` time NOT NULL,
-  `endTime` time NOT NULL,
+  `name` varchar(50) DEFAULT NULL,
+  `certificateId` int(11) DEFAULT NULL,
+  `type` varchar(50) DEFAULT NULL,
+  `code` varchar(15) DEFAULT NULL,
+  `date` date DEFAULT NULL,
   `series` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
+  PRIMARY KEY (`id`),
+  KEY `FK_exam_certificate` (`certificateId`),
+  CONSTRAINT `FK_exam_certificate` FOREIGN KEY (`certificateId`) REFERENCES `certificate` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3;
 
--- Dumping data for table datn.exam: ~0 rows (approximately)
+-- Dumping data for table datn.exam: ~4 rows (approximately)
 /*!40000 ALTER TABLE `exam` DISABLE KEYS */;
+INSERT INTO `exam` (`id`, `created_at`, `updated_at`, `name`, `certificateId`, `type`, `code`, `date`, `series`) VALUES
+	(1, '2022-11-13 14:14:19', '2022-11-25 22:37:43', 'Công nghệ thông tin cơ bản', 1, 'Lý thuyết', NULL, '2022-07-13', 1),
+	(2, '2022-11-13 20:41:55', '2022-11-24 20:51:36', 'Công nghệ thông tin cơ bản', 1, 'Thực hành', NULL, '2022-11-13', 1),
+	(4, '2022-11-27 16:30:45', '2022-11-27 16:30:45', 'Test CNTT Cơ bản 1', 1, 'Lý thuyết', NULL, '2022-01-01', 2),
+	(7, '2022-11-27 16:33:18', '2022-11-27 16:33:18', 'Test CNTT Cơ bản 3', 1, 'Thực hành', NULL, '2024-04-01', 2);
 /*!40000 ALTER TABLE `exam` ENABLE KEYS */;
 
--- Dumping structure for table datn.exam_result
-CREATE TABLE IF NOT EXISTS `exam_result` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `studentId` int(11) NOT NULL,
-  `examId` int(11) NOT NULL,
-  `theoreticalScore` int(11) NOT NULL,
-  `practicalScore` int(11) NOT NULL,
-  `status` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- Dumping data for table datn.exam_result: ~0 rows (approximately)
-/*!40000 ALTER TABLE `exam_result` DISABLE KEYS */;
-/*!40000 ALTER TABLE `exam_result` ENABLE KEYS */;
-
 -- Dumping structure for table datn.feed
+DROP TABLE IF EXISTS `feed`;
 CREATE TABLE IF NOT EXISTS `feed` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
@@ -237,25 +273,55 @@ INSERT INTO `feed` (`id`, `created_at`, `updated_at`, `title`, `content`, `categ
 /*!40000 ALTER TABLE `feed` ENABLE KEYS */;
 
 -- Dumping structure for table datn.payment
+DROP TABLE IF EXISTS `payment`;
 CREATE TABLE IF NOT EXISTS `payment` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `studentId` int(11) NOT NULL,
   `intentId` varchar(255) NOT NULL,
   `secret` varchar(255) NOT NULL,
   `amount` int(11) NOT NULL,
   `status` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK_payment_student` (`studentId`),
-  CONSTRAINT `FK_payment_student` FOREIGN KEY (`studentId`) REFERENCES `student` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
 
--- Dumping data for table datn.payment: ~0 rows (approximately)
+-- Dumping data for table datn.payment: ~2 rows (approximately)
 /*!40000 ALTER TABLE `payment` DISABLE KEYS */;
+INSERT INTO `payment` (`id`, `created_at`, `updated_at`, `intentId`, `secret`, `amount`, `status`) VALUES
+	(1, '2022-11-24 02:28:31', '2022-11-24 02:28:31', 'pi_3M7OcSBllFThz4em3hSLxT1Y', 'pi_3M7OcSBllFThz4em3hSLxT1Y_secret_bCBByhKocCMGKEKx1cNvDTB0s', 1400000, 0),
+	(2, '2022-11-24 15:14:15', '2022-11-24 15:14:15', 'pi_3M7aZWBllFThz4em35MP4cHu', 'pi_3M7aZWBllFThz4em35MP4cHu_secret_mCvJvO0hO7rJTjgyJPzQBPywv', 400000, 0),
+	(3, '2022-11-27 16:56:35', '2022-11-27 16:56:35', 'pi_3M8hbCBllFThz4em3W6soi0c', 'pi_3M8hbCBllFThz4em3W6soi0c_secret_53j1nCjf6Msjk5h8y4dZDBeI5', 1400000, 1);
 /*!40000 ALTER TABLE `payment` ENABLE KEYS */;
 
+-- Dumping structure for table datn.registration
+DROP TABLE IF EXISTS `registration`;
+CREATE TABLE IF NOT EXISTS `registration` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `studentId` int(11) DEFAULT NULL,
+  `type` varchar(50) DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
+  `certificateId` int(11) DEFAULT NULL,
+  `paymentId` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_registration_student` (`studentId`),
+  KEY `FK_registration_certificate` (`certificateId`),
+  KEY `FK_registration_payment` (`paymentId`),
+  CONSTRAINT `FK_registration_certificate` FOREIGN KEY (`certificateId`) REFERENCES `certificate` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `FK_registration_payment` FOREIGN KEY (`paymentId`) REFERENCES `payment` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `FK_registration_student` FOREIGN KEY (`studentId`) REFERENCES `student` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+-- Dumping data for table datn.registration: ~2 rows (approximately)
+/*!40000 ALTER TABLE `registration` DISABLE KEYS */;
+INSERT INTO `registration` (`id`, `created_at`, `updated_at`, `studentId`, `type`, `status`, `certificateId`, `paymentId`) VALUES
+	(1, '2022-11-24 02:28:30', '2022-11-24 02:28:30', 1, 'ôn + thi', 0, 2, 1),
+	(3, '2022-11-27 16:56:35', '2022-11-27 20:17:44', 3, 'ôn + thi', 1, 1, 3);
+/*!40000 ALTER TABLE `registration` ENABLE KEYS */;
+
 -- Dumping structure for table datn.student
+DROP TABLE IF EXISTS `student`;
 CREATE TABLE IF NOT EXISTS `student` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
@@ -272,36 +338,67 @@ CREATE TABLE IF NOT EXISTS `student` (
   `email` varchar(255) DEFAULT NULL,
   `ethnic` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_vietnamese_ci DEFAULT NULL,
   `code` varchar(50) DEFAULT NULL,
-  `type` varchar(255) DEFAULT NULL,
-  `certificateType` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_vietnamese_ci DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_student_ethnic` (`ethnic`),
   KEY `FK_student_city` (`placeOfBirth`),
   CONSTRAINT `FK_student_city` FOREIGN KEY (`placeOfBirth`) REFERENCES `city` (`name`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK_student_ethnic` FOREIGN KEY (`ethnic`) REFERENCES `ethnic` (`name`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
--- Dumping data for table datn.student: ~0 rows (approximately)
+-- Dumping data for table datn.student: ~1 rows (approximately)
 /*!40000 ALTER TABLE `student` DISABLE KEYS */;
+INSERT INTO `student` (`id`, `created_at`, `updated_at`, `firstName`, `lastName`, `gender`, `citizenId`, `dayOfBirth`, `monthOfBirth`, `yearOfBirth`, `placeOfBirth`, `phoneNumber`, `email`, `ethnic`, `code`, `description`) VALUES
+	(1, '2022-11-24 02:15:45', '2022-11-24 02:15:45', 'A Nguyễn Văn', 'Thanh', 'Nam', '023456789', '01', '01', '2000', 'An Giang', '0909121377', 'bearngok96@gmail.com', 'Kinh', '7dor', NULL),
+	(3, '2022-11-27 16:56:35', '2022-11-27 16:56:35', 'B Fistname', 'Lastname', 'Nữ', '123456789', '09', '12', '2009', 'Bà Rịa – Vũng Tàu', '0909121378', 'test@mail.com', 'Tày', 'Ney9', NULL);
 /*!40000 ALTER TABLE `student` ENABLE KEYS */;
 
+-- Dumping structure for table datn.student_course_mapping
+DROP TABLE IF EXISTS `student_course_mapping`;
+CREATE TABLE IF NOT EXISTS `student_course_mapping` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `created_at` datetime DEFAULT current_timestamp(),
+  `updated_at` datetime DEFAULT current_timestamp(),
+  `studentId` int(11) DEFAULT NULL,
+  `courseId` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_student_course_mapping_student` (`studentId`),
+  KEY `FK_student_course_mapping_course` (`courseId`),
+  CONSTRAINT `FK_student_course_mapping_course` FOREIGN KEY (`courseId`) REFERENCES `course` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `FK_student_course_mapping_student` FOREIGN KEY (`studentId`) REFERENCES `student` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+-- Dumping data for table datn.student_course_mapping: ~0 rows (approximately)
+/*!40000 ALTER TABLE `student_course_mapping` DISABLE KEYS */;
+/*!40000 ALTER TABLE `student_course_mapping` ENABLE KEYS */;
+
 -- Dumping structure for table datn.student_exam_mapping
+DROP TABLE IF EXISTS `student_exam_mapping`;
 CREATE TABLE IF NOT EXISTS `student_exam_mapping` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `studentId` int(11) NOT NULL,
-  `examId` int(11) NOT NULL,
+  `examId` int(11) DEFAULT NULL,
+  `studentId` int(11) DEFAULT NULL,
+  `room` varchar(50) DEFAULT NULL,
+  `sbd` varchar(50) DEFAULT NULL,
+  `start` time DEFAULT NULL,
+  `end` time DEFAULT NULL,
+  `theoreticalScore` int(11) DEFAULT NULL,
+  `practicalScore` int(11) DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `FK_student_exam_mapping_student` (`studentId`),
   KEY `FK_student_exam_mapping_exam` (`examId`),
+  KEY `FK_student_exam_mapping_student` (`studentId`),
   CONSTRAINT `FK_student_exam_mapping_exam` FOREIGN KEY (`examId`) REFERENCES `exam` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK_student_exam_mapping_student` FOREIGN KEY (`studentId`) REFERENCES `student` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
--- Dumping data for table datn.student_exam_mapping: ~0 rows (approximately)
+-- Dumping data for table datn.student_exam_mapping: ~2 rows (approximately)
 /*!40000 ALTER TABLE `student_exam_mapping` DISABLE KEYS */;
+INSERT INTO `student_exam_mapping` (`id`, `created_at`, `updated_at`, `examId`, `studentId`, `room`, `sbd`, `start`, `end`, `theoreticalScore`, `practicalScore`, `status`) VALUES
+	(1, '2022-11-27 20:16:42', '2022-11-27 20:16:42', 4, 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(2, '2022-11-27 20:16:42', '2022-11-27 20:16:42', 7, 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 /*!40000 ALTER TABLE `student_exam_mapping` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
