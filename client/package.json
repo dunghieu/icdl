@@ -8,6 +8,7 @@
     "@mui/icons-material": "5.8.4",
     "@mui/material": "5.8.5",
     "@mui/x-data-grid": "^5.17.10",
+    "@mui/x-date-pickers": "^5.0.9",
     "@stripe/react-stripe-js": "^1.14.2",
     "@stripe/stripe-js": "^1.42.1",
     "@testing-library/jest-dom": "^5.14.1",

@@ -2,6 +2,7 @@ import {Container, Typography, Box, TextField, InputLabel, Button} from '@mui/ma
 import {GuestHeader} from 'components';
 import GuestFooter from 'components/footer/GuestFooter';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
+import TraCuuHeader from 'components/header/TraCuuHeader';
 
 const theme = createTheme({
   palette: {
@@ -16,7 +17,7 @@ const TraCuuKetQuaThi = () => {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <GuestHeader />
+        <TraCuuHeader />
         <Container
           maxWidth="md"
           sx={{

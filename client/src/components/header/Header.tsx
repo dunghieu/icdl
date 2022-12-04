@@ -5,7 +5,6 @@ import {IconButton, Toolbar, Box, Button} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import {HeaderProps} from 'lib/interfaces';
 import {capitalize} from '@mui/material/utils';
-import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 import {Link} from 'react-router-dom';
 
 interface AppBarProps extends MuiAppBarProps {
@@ -48,14 +47,10 @@ const Header: React.FC<HeaderProps> = ({open, handleToggleDrawer, drawerwidth}) 
             <MenuIcon />
           </IconButton>
         </Box>
-        <Box display="flex" alignItems="center" marginLeft="auto">
+        {/* <Box display="flex" alignItems="center" marginLeft="auto">
           <Link to="/admin/new">
-            <Button variant="contained">
-              <AddCircleRoundedIcon />
-              &nbsp; TẠO BÀI VIẾT
-            </Button>
           </Link>
-        </Box>
+        </Box> */}
       </Toolbar>
     </AppBar>
   );

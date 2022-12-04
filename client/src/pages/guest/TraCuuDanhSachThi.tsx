@@ -21,6 +21,8 @@ import PaidIcon from '@mui/icons-material/Paid';
 import {DataGrid, GridColDef, GridValueGetterParams} from '@mui/x-data-grid';
 import {Link, Redirect, useHistory} from 'react-router-dom';
 import TheDuThi from 'components/pdf/TheDuThi';
+import TraCuuHeader from 'components/header/TraCuuHeader';
+import DanhSachThiTable from 'components/common/table/DanhSachThiTable';
 const moment = require('moment');
 
 const theme = createTheme({
@@ -45,7 +47,6 @@ const TraCuuDanhSachThi = () => {
   const [citizenId, setCitizenId] = useState('');
 
   const [result, setResult] = useState({}) as any;
-  const [rows, setRows] = useState([]) as any;
   const handleOnClick = async () => {
     if (code === '' || citizenId === '') {
       alert('Bạn chưa nhập đầy đủ thông tin');
@@ -65,26 +66,17 @@ const TraCuuDanhSachThi = () => {
     return;
   };
 
-  useEffect(() => {
-    console.log(result);
-    const arr: any = [];
-    result?.studentExamMapping?.map((item: any, index: number) => {
-      arr.push({
-        intentId: item.exam?.payment?.intentId,
-        clientSecret: item.exam?.payment?.secret,
-        id: index + 1,
-        name: item.exam.name,
-        time: `${item.exam.startTime.slice(0, 5)} - ${item.exam.endTime.slice(0, 5)}`,
-        date: moment(item.exam.date).format('DD/MM/YYYY'),
-        room: item.room,
-        type: item.exam.type,
-        sbd: item.sbd,
-        dotthi: item.exam.series,
-        description: item.exam?.payment?.status === 1 ? 'Đã thanh toán' : 'Chưa thanh toán',
-      });
-      setRows(arr);
-    });
-  }, [result]);
+  const handleHoanThi = async (studentId: number) => {
+    // const res = await axios.patch(`http://localhost:8080/api/registration/`);
+    // if (res.data.length === 0) {
+    //   alert('Không tìm thấy thông tin');
+    //   return;
+    // }
+    // setResult(res.data);
+    // setUpdateCode('');
+    // setOpen(true);
+    return;
+  };
 
   const onUpdateCode = async (id: any) => {
     const res = await axios.patch(`http://localhost:8080/api/student/updateCode`, {
@@ -130,7 +122,7 @@ const TraCuuDanhSachThi = () => {
           return (
             <>
               <Tooltip title="Hoãn thi">
-                <IconButton>
+                <IconButton onClick={() => handleHoanThi(params.row.id)}>
                   <CancelIcon />
                 </IconButton>
               </Tooltip>
@@ -163,11 +155,11 @@ const TraCuuDanhSachThi = () => {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <GuestHeader />
+        <TraCuuHeader />
         <Container
           maxWidth="md"
           sx={{
-            display: 'flex',
+            display: open ? 'none' : 'flex',
             flexDirection: 'column',
             gap: '50px',
             marginY: '50px',
@@ -239,8 +231,8 @@ const TraCuuDanhSachThi = () => {
           maxWidth="xl"
           sx={{
             display: open ? 'block' : 'none',
-            // marginY: '50px',
-            border: '1px solid #b20530',
+            paddingY: '50px',
+            // border: '1px solid #b20530',
           }}
         >
           <Box>
@@ -312,18 +304,7 @@ const TraCuuDanhSachThi = () => {
               </Box>
             </Modal>
           </Box>
-          <DataGrid
-            sx={{width: '100%', marginY: '50px'}}
-            autoHeight
-            rows={rows}
-            columns={columns}
-            pageSize={5}
-            rowsPerPageOptions={[5]}
-            columnVisibilityModel={{
-              intentId: false,
-              clientSecret: false,
-            }}
-          />
+          {result.registration && <DanhSachThiTable rows={result.registration} />}
         </Container>
         <GuestFooter />
       </ThemeProvider>

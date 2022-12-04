@@ -52,6 +52,7 @@ export default function MultipleSelectChip(props: MultipleSelectChipProps) {
 
   const handleDelete = (chipToDelete: string) => () => {
     setSelectName((chips) => chips.filter((chip) => chip !== chipToDelete));
+    props.get(selectName.filter((chip) => chip !== chipToDelete));
   };
 
   return (

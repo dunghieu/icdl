@@ -4,24 +4,24 @@ import {Actions} from 'store';
 import {RootState} from 'store/reducers';
 import {useEffect, useState} from 'react';
 import axios from 'axios';
-import CourseTable from 'components/common/table/CourseTable';
+import ExamTable from 'components/common/table/ExamTable';
 
-const Course = () => {
+const Exam = () => {
   const [data, setData] = useState([]);
   const fetchData = async () => {
-    const getData = await axios.get('http://localhost:8080/api/course');
+    const getData = await axios.get('http://localhost:8080/api/exam');
     const finalData = getData.data;
     setData(finalData);
   };
   useEffect(() => {
     fetchData();
   }, []);
-  console.log(data);
+
   return (
     <>
-      <CourseTable rows={data} />
+      <ExamTable rows={data} />
     </>
   );
 };
 
-export default Course;
+export default Exam;

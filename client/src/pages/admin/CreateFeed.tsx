@@ -80,7 +80,7 @@ function CreateFeed(props: {history: string[]}) {
         <TextField
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          label="Title"
+          label="Tiêu đề"
           InputLabelProps={{shrink: true}}
           variant="outlined"
           fullWidth
@@ -90,7 +90,7 @@ function CreateFeed(props: {history: string[]}) {
         />
 
         <MultipleSelectChip
-          label="Category"
+          label="Danh mục"
           value={categories}
           get={(value: string | string[]) => {
             if (typeof value === 'string') {
@@ -102,11 +102,7 @@ function CreateFeed(props: {history: string[]}) {
           }}
         />
       </ThemeProvider>
-      <QuillEditor
-        placeholder={'Start Posting Something'}
-        onEditorChange={onEditorChange}
-        onFilesChange={onFilesChange}
-      />
+      <QuillEditor placeholder={''} onEditorChange={onEditorChange} onFilesChange={onFilesChange} />
 
       <form onSubmit={onSubmit}>
         <div style={{textAlign: 'center', margin: '2rem'}}>

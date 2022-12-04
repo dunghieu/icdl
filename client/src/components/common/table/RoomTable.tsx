@@ -109,9 +109,7 @@ function createData(
   };
 }
 
-// [createData('CNTT Cơ bản', '2, 4, 6', '12:00 - 14:00', '22/01/2023', 1)];
-
-export default function CourseTable(props: any) {
+export default function RoomTable(props: any) {
   const rows = props.rows.map((row: any) => {
     return createData(
       row.id,

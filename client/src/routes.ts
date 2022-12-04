@@ -4,6 +4,8 @@ import { Layout ,IntroduceLayout} from "layout";
 import CategoryLayout from "layout/category-layout/CategoryLayout";
 import { paths } from "lib/constants";
 import { GuestHome, Home } from "pages";
+import CreateCourse from "pages/admin/CreateCourse";
+import CreateExam from "pages/admin/CreateExam";
 import CreateFeed from "pages/admin/CreateFeed";
 import ThongBao from "pages/guest/category/ThongBao";
 import DangKyThi from "pages/guest/DangKyThi";
@@ -28,6 +30,11 @@ const routes = [
         component: lazy(() => import("pages/admin/Home")),
       },
       {
+        path: `${paths.Admin}/registration`,
+        exact: true,
+        component: lazy(() => import("pages/admin/Registration")),
+      },
+      {
         path: `${paths.Admin}/candidate`,
         exact: true,
         component: lazy(() => import("pages/admin/Candidate")),
@@ -38,9 +45,29 @@ const routes = [
         component: lazy(() => import("pages/admin/Course")),
       },
       {
-        path: `${paths.Admin}/new`,
+        path: `${paths.Admin}/exam`,
+        exact: true,
+        component: lazy(() => import("pages/admin/Exam")),
+      },
+      {
+        path: `${paths.Admin}/room`,
+        exact: true,
+        component: lazy(() => import("pages/admin/Room")),
+      },
+      {
+        path: `${paths.Admin}/feed/create`,
         exact: true,
         component: CreateFeed
+      },
+      {
+        path: `${paths.Admin}/exam/create`,
+        exact: true,
+        component: CreateExam
+      },
+      {
+        path: `${paths.Admin}/course/create`,
+        exact: true,
+        component: CreateCourse
       }
     ],
   },

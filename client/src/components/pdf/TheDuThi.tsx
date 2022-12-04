@@ -2,7 +2,21 @@ import {Box, Grid, Typography, Tooltip, IconButton} from '@mui/material';
 import {printDocument} from 'utils/helper';
 import LocalPrintshopIcon from '@mui/icons-material/LocalPrintshop';
 
-const TheDuThi = (props: any) => {
+const TheDuThi = (props: {
+  name: string;
+  dotthi: number;
+  room: string;
+  sbd: string;
+  firstName: string;
+  lastName: string;
+  gender: string;
+  dayOfBirth: string;
+  monthOfBirth: string;
+  yearOfBirth: string;
+  placeOfBirth: string;
+  testTime: string;
+  testDate: string;
+}) => {
   const savePdf = (e: any) => {
     e.preventDefault();
     e.stopPropagation();
@@ -28,6 +42,8 @@ const TheDuThi = (props: any) => {
           minWidth: '1122px',
           maxHeight: '1122px',
           position: 'absolute',
+          left: '-9999px',
+          top: '-9999px',
           zIndex: -10000,
         }}
       >
@@ -122,11 +138,6 @@ const TheDuThi = (props: any) => {
             <Grid item xs={4}>
               <Typography variant="body2" fontFamily="serif">
                 Nơi sinh:{props.placeOfBirth}
-              </Typography>
-            </Grid>
-            <Grid item xs={4}>
-              <Typography variant="body2" fontFamily="serif">
-                MSV:{props.MSV}
               </Typography>
             </Grid>
           </Grid>

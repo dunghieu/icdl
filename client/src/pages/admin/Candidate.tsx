@@ -1,49 +1,75 @@
-import {Button, Paper, Box, IconButton} from '@mui/material';
+import {Button, Paper, Box, IconButton, TextField, MenuItem} from '@mui/material';
 import {useDispatch, useSelector} from 'react-redux';
 import {Actions} from 'store';
 import {RootState} from 'store/reducers';
-import CustomPaginationActionsTable from 'components/common/table/TablePaginationActions';
-import {useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import axios from 'axios';
+import AdminCandidateTable from 'components/common/table/AdminCandidateTable';
+
+const filters = [
+  {
+    value: '?',
+    label: 'Tất cả',
+  },
+  {
+    value: '?status=-1',
+    label: 'Chưa thi',
+  },
+  {
+    value: '?status=1',
+    label: 'Đã thi',
+  },
+];
 
 const Candidate = () => {
   const [data, setData] = useState([]);
+  const [filter, setFilter] = useState('');
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFilter(event.target.value);
+  };
   const fetchData = async () => {
-    const getData = await axios.get('http://localhost:8080/api/student');
-    const finalData = getData.data
-      .map((item: any, index: number) => {
-        if (item.registration.length > 1) {
-          return item.registration.map((item2: any, index2: number) => {
-            console.log(index2);
-            return {
-              ...item,
-              registration: item.registration[index2],
-            };
-          });
-        } else {
-          return (item = {
-            ...item,
-            registration: item.registration[0],
-          });
-        }
-      })
-      .flat();
+    const getData = await axios.get(`http://localhost:8080/api/student-exam-mapping${filter}`);
+    const finalData = getData.data;
 
     setData(finalData);
   };
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [filter]);
+
+  const handleGenerateRoom = async () => {
+    await axios.post('http://localhost:8080/api/student-exam-mapping/generate-room').then(() => {
+      fetchData();
+    });
+  };
 
   return (
     <>
-      <Box marginBottom={1} sx={{textAlign: 'right'}}>
-        <Button variant="contained">
-          {/* <AddCircleRoundedIcon /> */}
-          &nbsp; CHỐT DANH SÁCH THI
-        </Button>
+      <Box marginBottom={1} sx={{display: 'flex', justifyContent: 'space-between'}}>
+        <TextField
+          select
+          label="Lọc"
+          value={filter}
+          onChange={handleChange}
+          sx={{
+            width: 200,
+          }}
+        >
+          {filters.map((option: any) => (
+            <MenuItem key={option.value} value={option.value}>
+              {option.label}
+            </MenuItem>
+          ))}
+        </TextField>
+        {filter === '?status=-1' && (
+          <Button variant="contained" onClick={handleGenerateRoom}>
+            {/* <AddCircleRoundedIcon /> */}
+            &nbsp; LẬP PHÒNG THI
+          </Button>
+        )}
       </Box>
-      <CustomPaginationActionsTable rows={data} />
+      <AdminCandidateTable rows={data} printable={filter === '?status=-1'} />
     </>
   );
 };

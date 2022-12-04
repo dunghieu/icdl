@@ -18,8 +18,10 @@ import ExitToAppOutlinedIcon from '@mui/icons-material/ExitToAppOutlined';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import {Link} from 'react-router-dom';
+import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 import {Basic, Collapsable} from './components';
 import LocalLibraryOutlinedIcon from '@mui/icons-material/LocalLibraryOutlined';
+import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
 
 export interface NavigationItem {
   id?: string;
@@ -45,6 +47,13 @@ const navigationItems: NavigationItem[] = [
         link: '/admin',
       },
       {
+        id: 'dashboard.registration',
+        title: 'Nguyện vọng',
+        type: 'basic',
+        icon: <SchoolOutlinedIcon />,
+        link: '/admin/registration',
+      },
+      {
         id: 'dashboard.candidate',
         title: 'Thí sinh',
         type: 'basic',
@@ -65,22 +74,13 @@ const navigationItems: NavigationItem[] = [
         icon: <LocalLibraryOutlinedIcon />,
         link: '/admin/exam',
       },
-
-      // {
-      //   id: 'dashboard.commerce',
-      //   title: 'E-Commerce',
-      //   type: 'collapsable',
-      //   icon: <ShoppingCartOutlinedIcon />,
-      //   children: [
-      //     {
-      //       id: 'dashboard.academy',
-      //       title: 'Academy',
-      //       type: 'basic',
-      //       icon: <SchoolOutlinedIcon />,
-      //       link: '/academy',
-      //     },
-      //   ],
-      // },
+      {
+        id: 'dashboard.room',
+        title: 'Phòng thi',
+        type: 'basic',
+        icon: <MeetingRoomIcon />,
+        link: '/admin/room',
+      },
     ],
   },
   {
@@ -103,6 +103,27 @@ const navigationItems: NavigationItem[] = [
       //   icon: <SettingsOutlinedIcon />,
       //   link: '/setting',
       // },
+      {
+        id: 'profile.feed',
+        title: 'Tạo bài viết',
+        type: 'basic',
+        icon: <AddCircleRoundedIcon />,
+        link: '/admin/feed/create',
+      },
+      {
+        id: 'profile.exam',
+        title: 'Tạo kì thi',
+        type: 'basic',
+        icon: <AddCircleRoundedIcon />,
+        link: '/admin/exam/create',
+      },
+      {
+        id: 'profile.course',
+        title: 'Tạo khóa học',
+        type: 'basic',
+        icon: <AddCircleRoundedIcon />,
+        link: '/admin/course/create',
+      },
       {
         id: 'profile.signout',
         title: 'Đăng xuất',

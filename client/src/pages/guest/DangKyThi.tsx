@@ -36,17 +36,17 @@ const certificateList = [
   {
     id: 1,
     name: 'Công nghệ thông tin cơ bản',
-    value: 'CNTT Cơ bản',
+    value: '1',
   },
   {
     id: 2,
     name: 'Công nghệ thông tin nâng cao',
-    value: 'CNTT Nâng cao',
+    value: '2',
   },
   {
     id: 3,
     name: 'IC3, MOS',
-    value: 'IC3, MOS',
+    value: '3',
   },
 ];
 
@@ -156,15 +156,16 @@ const DangKyThi = () => {
       phoneNumber: phone,
       citizenId,
       ethnic,
-      certificateType: certificate,
+      certificateId: certificate,
       type: checked,
+      courseId: course,
     };
     try {
       let result;
       if (params) {
-        result = await axios.patch(`http://localhost:8080/api/student/${params}`, data);
+        result = await axios.patch(`http://localhost:8080/api/registration/${params}`, data);
       } else {
-        result = await axios.post('http://localhost:8080/api/student', data);
+        result = await axios.post('http://localhost:8080/api/registration', data);
       }
       console.log(result);
       if (result.status === 201) {
@@ -407,7 +408,7 @@ const DangKyThi = () => {
               onChange={(event) => setCertificate(event.target.value)}
             >
               {certificateList.map((item: any) => (
-                <MenuItem value={item.value} key={item.id}>
+                <MenuItem value={item.id} key={item.id}>
                   {item.name}
                 </MenuItem>
               ))}
@@ -464,7 +465,7 @@ const DangKyThi = () => {
             >
               {checkOn &&
                 courseList.map((item: any) => {
-                  if (item.name === certificate) {
+                  if (item.certificateId == certificate) {
                     return (
                       <MenuItem value={item.id} key={item.id}>
                         Thứ {item.day} ({item.start} - {item.end}) Khai giảng ngày{' '}
