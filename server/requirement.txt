@@ -17,6 +17,35 @@ Nhận đơn phúc tra
 Lập danh sách được cấp chứng chỉ -- Gồm những thí sinh đã đạt điểm tối thiếu trong bài thi
 Công bố quyết định cấp chứng chỉ
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 Bảng tỉnh thành + dân tộc
 danh sách phòng thi
 mẫu thẻ dự thi

@@ -13,13 +13,11 @@ import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { AccountService } from '../account';
-import { StudentService } from '../student';
 
 @Controller('auth')
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
-    private readonly studentService: StudentService,
     private readonly accountService: AccountService,
   ) {}
 

@@ -9,8 +9,7 @@ import {
 import Stripe from 'stripe';
 import { StripeConfig } from './stripe.config';
 import { PaymentDto, UpdatePaymentDto } from './dtos';
-import { Student } from '../student';
-import { StudentType } from 'src/shared';
+import { PaymentSearchQueryDto } from './dtos/payment-search-query.dto';
 @Injectable()
 export class PaymentService {
   private stripe : Stripe;
@@ -32,6 +31,14 @@ export class PaymentService {
     return payment;
   }
 
+  async findOneBy(query: PaymentSearchQueryDto) {
+    const payment = await this.paymentRepository.findOneBy(query);
+    if (!payment) {
+      return null;
+    }
+    return payment;
+  }
+
   async findByIntentId(intentId: string) {
     return this.paymentRepository.findOneBy({ intentId });
   }
@@ -41,22 +48,33 @@ export class PaymentService {
   }
 
   async create(body: PaymentDto) {
+    const paymentIntent = await this.createPaymentIntent({
+      amount: body.amount,
+      currency: 'vnd',
+    });
+
     const payment = this.paymentRepository.create(body);
+    payment.intentId = paymentIntent.paymentId;
+    payment.secret = paymentIntent.clientSecret;
     return this.paymentRepository.save(payment);
   }
 
-  async update(id: number | string, body: UpdatePaymentDto) {
+  async update(id: number | string, body: UpdatePaymentDto): Promise<Payment> {
     let payment;
     if (typeof id === 'string') {
-      payment = await this.paymentRepository.findOneBy({ intentId: id });
+      payment = await this.findOneBy({ intentId: id });
     }
     if (typeof id === 'number') {
-      payment = await this.paymentRepository.findOneBy({ id });
+      payment = await this.findById(id);
     }
-
-    // console.log(payment);
-    const updatedPayment = Object.assign(payment, body);
-    return this.paymentRepository.save(updatedPayment);
+    const paymentIntent = await this.createPaymentIntent({
+      amount: body.amount,
+      currency: 'vnd',
+    });
+    payment.intentId = paymentIntent.paymentId;
+    payment.secret = paymentIntent.clientSecret;
+    payment.amount = body.amount;
+    return this.paymentRepository.save(payment);
   }
 
   async createPaymentIntent(body: CreatePaymentIntentPayload) {

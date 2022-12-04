@@ -5,21 +5,15 @@ import { Repository } from 'typeorm';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { Student } from './entities/student.entity';
-import { EmailService } from '../email';
-import { PaymentService } from '../payment/payment.service';
 import { SearchRequest } from 'src/shared/search-request';
 import { StudentType } from 'src/shared';
 import { generateID } from 'src/utils/Helper';
-import { RegistrationService } from '../registration';
 
 @Injectable()
 export class StudentService {
   constructor(
     @InjectRepository(Student)
     private studentRepository: Repository<Student>,
-    private emailService: EmailService,
-    private paymentService: PaymentService,
-    private registrationService: RegistrationService,
   ) {}
 
   async findByEmail(email: string): Promise<Student> {
@@ -31,41 +25,21 @@ export class StudentService {
     return student;
   }
 
+  async isExist(args: { email: string, citizenId: string}): Promise<Student> {
+    return this.studentRepository.findOneBy({ email: args.email, citizenId: args.citizenId });
+  }
+
   async create(createStudentDto: CreateStudentDto) {
-    const isExist = await this.studentRepository.findOneBy({ email: createStudentDto.email, citizenId: createStudentDto.citizenId });
-    const amount = createStudentDto.type === StudentType.ON ? 400000 : createStudentDto.type === StudentType.THI ? 1000000 : 1400000;
-    let student;
-    if (!isExist) {
-      const create = this.studentRepository.create(createStudentDto);
-      create.code = generateID(4);
-      student = await this.studentRepository.save(create);
-    }
-    student = isExist;
-    await this.registrationService.create({
-      studentId: student.id,
-      type: createStudentDto.type,
-      certificateId: createStudentDto.certificateId,
-    });
-    const paymentIntent = await this.paymentService.createPaymentIntent({
-      amount: amount,
-      currency: 'vnd',
-    });
-    await this.paymentService.create({
-      studentId: student.id,
-      intentId: paymentIntent.paymentId,
-      amount: amount,
-      status: 0,
-      secret: paymentIntent.clientSecret,
-    });
-    await this.emailService.sendInviteEmail(student, paymentIntent);
-    return paymentIntent;
+    const create = this.studentRepository.create(createStudentDto);
+    create.code = generateID(4);
+    return this.studentRepository.save(create);
   }
 
   async findAll(query: SearchRequest): Promise<Student[]> {
     try {
       const users = await this.studentRepository.createQueryBuilder('student')
-        .innerJoinAndSelect('student.payment', 'payment')
-        .innerJoinAndSelect('student.registration', 'registration')
+        .leftJoinAndSelect('student.studentExamMapping', 'examMapping')
+        .leftJoinAndSelect('student.studentCourseMapping', 'courseMapping')
         .getMany();
       return users;
     } catch (error) {
@@ -112,23 +86,8 @@ export class StudentService {
   }
 
   async update(id: number, updateUserDto: UpdateStudentDto) {
-    const user = await this.studentRepository.createQueryBuilder('student').innerJoinAndSelect('student.payment', 'payment').where('student.id = :id', { id: id }).getOne();
-    const payment = await this.paymentService.findById(41);
-    const amount = updateUserDto.type === StudentType.ON ? 400000 : updateUserDto.type === StudentType.THI ? 1000000 : 1400000;
-    console.log(user);
-    if (updateUserDto.type && payment.amount !== amount) {
-      const paymentIntent = await this.paymentService.createPaymentIntent({
-        amount: amount,
-        currency: 'vnd',
-      });
-      await this.paymentService.update(user.payment.id, {
-        intentId: paymentIntent.paymentId,
-        amount: amount,
-      });
-    }
-    const updatedUser = Object.assign(user, updateUserDto);
-    const result = await this.studentRepository.save(updatedUser);
-    return result;
+    return this.studentRepository.update(id, updateUserDto);
+
   }
 
   async remove(id: number): Promise<void> {
@@ -138,12 +97,13 @@ export class StudentService {
   async search(query): Promise<Student> {
     const repo = this.studentRepository;
     // const { name, email, phone } = query;
-    return repo.createQueryBuilder('student')
-      // .leftJoinAndSelect('student.payment', 'payment')
+    return repo.createQueryBuilder('s')
+      .leftJoinAndSelect('s.registration', 'registration')
+      .leftJoinAndSelect('registration.payment', 'payment')
+      .leftJoinAndSelect('registration.certificate', 'certificate')
+      .leftJoinAndSelect('registration.student', 'student')
       .leftJoinAndSelect('student.studentExamMapping', 'exams')
       .leftJoinAndSelect('exams.exam', 'exam')
-      .leftJoinAndSelect('exam.payment', 'examPayment')
-      .leftJoinAndSelect('exam.examResult', 'examResult')
       .where('student.code = :code AND student.citizenId = :citizenId')
       .setParameters({
         code: query.code,

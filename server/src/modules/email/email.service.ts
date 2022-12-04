@@ -3,6 +3,7 @@ import * as nodemailer from 'nodemailer';
 import * as sendgridTransport from 'nodemailer-sendgrid-transport';
 import * as dotenv from 'dotenv';
 import { Student } from '../student';
+import { Payment } from '../payment/entities';
 dotenv.config();
 // const a = {
 //   host: 'smtp.gmail.com',
@@ -30,7 +31,7 @@ export class EmailService {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   constructor() { }
     //function to send invoice mail to admin
-    sendInviteEmail = async (student: Student, payment: any) => {
+    sendInviteEmail = async (student: Student, payment: Payment) => {
       try {
         const info = await transporter.sendMail({
           to: student.email, //receiver email
@@ -42,7 +43,7 @@ export class EmailService {
                 <h4><span><b>Student Email:        </b> ${student.email} <span/></h4>
                 <hr/> <hr/>
                 <span>Thí sinh kiểm tra lại thông tin cá nhân của bản thân và ấn vào link bên dưới để thanh toán hoàn tất thủ tục đăng ký<span/>
-                <h3>http://localhost:3000/checkout/${payment.paymentId}/${payment.clientSecret}</h3>
+                <h3>http://localhost:3000/checkout/${payment.intentId}/${payment.secret}</h3>
                 <br/>
                 <br/>
                 <span>Nếu thông tin cá nhân có sai sót, thí sinh truy cập link phía dưới để sửa lại thông tin của bản thân <span/>

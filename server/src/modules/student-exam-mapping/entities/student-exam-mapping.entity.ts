@@ -15,11 +15,21 @@ export class StudentExamMapping extends BaseEntity {
     @Column()
     examId: number;
 
+    @ManyToOne(() => Exam)
+    @JoinColumn({ name: 'examId', referencedColumnName: 'id'})
+    exam: Exam;
+
     @Column()
     room: string;
 
     @Column()
     sbd: string;
+
+    @Column()
+    start: string;
+
+    @Column()
+    end: string;
 
     @Column()
     theoreticalScore: number;
@@ -30,7 +40,4 @@ export class StudentExamMapping extends BaseEntity {
     @Column()
     status: number;
 
-    @ManyToOne(() => Exam)
-    @JoinColumn({ name: 'examId', referencedColumnName: 'id'})
-    exam: Exam;
 }

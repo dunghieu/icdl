@@ -1,26 +1,31 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateStudentCourseMappingDto } from './dto/create-student-course-mapping.dto';
 import { UpdateStudentCourseMappingDto } from './dto/update-student-course-mapping.dto';
+import { StudentCourseMapping } from './entities/student-course-mapping.entity';
 
 @Injectable()
 export class StudentCourseMappingService {
-  create(createStudentCourseMappingDto: CreateStudentCourseMappingDto) {
-    return 'This action adds a new studentCourseMapping';
+  constructor(@InjectRepository(StudentCourseMapping) private studentCourseMappingRepository: Repository<StudentCourseMapping>) {}
+
+  create(createStudentExamMappingDto: CreateStudentCourseMappingDto) {
+    return this.studentCourseMappingRepository.save(createStudentExamMappingDto);
   }
 
   findAll() {
-    return `This action returns all studentCourseMapping`;
+    return this.studentCourseMappingRepository.find();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} studentCourseMapping`;
+    return this.studentCourseMappingRepository.findOneBy({id});
   }
 
-  update(id: number, updateStudentCourseMappingDto: UpdateStudentCourseMappingDto) {
-    return `This action updates a #${id} studentCourseMapping`;
+  update(id: number, updateStudentExamMappingDto: UpdateStudentCourseMappingDto) {
+    return this.studentCourseMappingRepository.update(id, updateStudentExamMappingDto);
   }
 
   remove(id: number) {
-    return `This action removes a #${id} studentCourseMapping`;
+    return this.studentCourseMappingRepository.delete(id);
   }
 }

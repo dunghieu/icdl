@@ -1,11 +1,11 @@
 import { IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class PaymentDto {
-  @IsNumber()
-  studentId: number;
+  // @IsNumber()
+  // registrationId: number;
 
-  @IsString()
-  intentId: string;
+  // @IsString()
+  // intentId: string;
 
   @IsNumber()
   amount: number;
@@ -13,14 +13,14 @@ export class PaymentDto {
   @IsNumber()
   status: number;
 
-  @IsString()
-  secret: string;
+  // @IsString()
+  // secret: string;
 
-  @IsNumber()
-    @IsOptional()
-  examId?: number;
+  // @IsNumber()
+  //   @IsOptional()
+  // examId?: number;
 
-  @IsNumber()
-    @IsOptional()
-  courseId?: number;
+  // @IsNumber()
+  //   @IsOptional()
+  // courseId?: number;
 }

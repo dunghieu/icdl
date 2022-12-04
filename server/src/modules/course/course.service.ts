@@ -18,7 +18,9 @@ export class CourseService {
   }
 
   findAll() {
-    return this.courseRepository.find();
+    return this.courseRepository.find({
+      relations: ['students'],
+    });
   }
 
   async findAvailableCourses() {

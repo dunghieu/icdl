@@ -1,4 +1,6 @@
+import { Exclude } from 'class-transformer';
 import { Certificate } from 'src/modules/certificate';
+import { Payment } from 'src/modules/payment/entities';
 import { Student } from 'src/modules/student';
 import { BaseEntity } from 'src/shared';
 import {
@@ -6,16 +8,16 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
-  OneToMany,
   OneToOne,
 } from 'typeorm';
 
 @Entity()
 export class Registration extends BaseEntity {
+  @Exclude()
   @Column()
   studentId: number;
 
-  @ManyToOne(() => Student, (student) => student.id)
+  @ManyToOne(() => Student)
   @JoinColumn({ name: 'studentId', referencedColumnName: 'id' })
   student: Student;
 
@@ -23,5 +25,24 @@ export class Registration extends BaseEntity {
   type: string;
 
   @Column()
+  @Exclude()
   certificateId: number;
+
+  @JoinColumn({ name: 'certificateId', referencedColumnName: 'id' })
+  @ManyToOne(() => Certificate)
+  certificate: Certificate;
+
+  @Column()
+  courseId: number;
+
+  @Column()
+  status: number;
+
+  @Exclude()
+  @Column()
+  paymentId: number;
+
+  @OneToOne(() => Payment, (payment) => payment.id)
+  @JoinColumn({ name: 'paymentId', referencedColumnName: 'id' })
+  payment: Payment;
 }

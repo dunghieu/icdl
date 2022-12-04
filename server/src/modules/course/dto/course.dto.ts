@@ -1,4 +1,4 @@
-import { IsString } from 'class-validator';
+import { IsNumberString, IsString } from 'class-validator';
 
 export class CourseDto {
   @IsString()
@@ -15,6 +15,9 @@ export class CourseDto {
 
   @IsString()
   open: Date;
+
+  @IsNumberString()
+  certificateId: number;
 
   // subjects: SubjectDto[];
 }

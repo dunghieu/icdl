@@ -15,6 +15,8 @@ import { EmailModule } from '../email';
 import { PaymentModule } from '../payment/payment.module';
 import { RegistrationModule } from '../registration';
 import { CertificateModule } from '../certificate';
+import { StudentExamMappingModule } from '../student-exam-mapping';
+import { StudentCourseMappingModule } from '../student-course-mapping';
 
 @Module({
   imports: [
@@ -47,6 +49,8 @@ import { CertificateModule } from '../certificate';
     AuthModule,
     PaymentModule,
     CertificateModule,
+    StudentCourseMappingModule,
+    StudentExamMappingModule,
   ],
   controllers: [AppController],
   providers: [AppService],

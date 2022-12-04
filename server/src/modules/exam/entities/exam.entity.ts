@@ -1,6 +1,6 @@
-import { Payment } from 'src/modules/payment/entities';
+import { Certificate } from 'src/modules/certificate';
 import { BaseEntity } from 'src/shared';
-import { Column, Entity, JoinColumn, OneToMany, OneToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm';
 
 @Entity()
 export class Exam extends BaseEntity {
@@ -14,9 +14,6 @@ export class Exam extends BaseEntity {
     code: string;
 
     @Column()
-    instruction: string;
-
-    @Column()
     date: Date;
 
     @Column()
@@ -25,6 +22,7 @@ export class Exam extends BaseEntity {
     @Column()
     certificateId: number;
 
-    @OneToOne(() => Payment, (payment) => payment.examId)
-    payment: Payment;
+    @ManyToOne(() => Certificate)
+    @JoinColumn({ name: 'certificateId', referencedColumnName: 'id' })
+    certificate: Certificate;
 }

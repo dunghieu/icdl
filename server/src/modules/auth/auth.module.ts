@@ -6,12 +6,10 @@ import { AccountModule } from '../account';
 import { AuthService } from './auth.service';
 import { JwtStrategy } from './jwt.strategy';
 import { AuthController } from './auth.controller';
-import { StudentModule } from '../student';
 
 @Module({
   imports: [
     AccountModule,
-    StudentModule,
     ConfigModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync({

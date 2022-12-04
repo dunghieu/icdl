@@ -9,8 +9,19 @@ import { Exam } from './entities/exam.entity';
 export class ExamService {
   constructor(@InjectRepository(Exam) private examRepository: Repository<Exam>) {}
 
-  create(createExamDto: CreateExamDto) {
-    const exam = this.examRepository.create(createExamDto);
+  async create(createExamDto: CreateExamDto) {
+    const exist = await this.examRepository.findOne({
+      where: {
+        certificateId: createExamDto.certificateId,
+        type: createExamDto.type,
+      },
+      order: { id: 'DESC' }
+    });
+    const series = exist.series + 1;
+    const exam = this.examRepository.create({
+      ...createExamDto,
+      series: series || 1,
+    });
     return this.examRepository.save(exam);
   }
 

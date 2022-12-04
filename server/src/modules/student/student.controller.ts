@@ -1,10 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseInterceptors, ClassSerializerInterceptor} from '@nestjs/common';
 import { StudentService } from './student.service';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { SearchRequest } from 'src/shared/search-request';
 
 @Controller('student')
+@UseInterceptors(ClassSerializerInterceptor)
 export class StudentController {
   constructor(private readonly studentService: StudentService) {}
 
@@ -24,7 +25,7 @@ export class StudentController {
   }
 
   @Get()
-  findAll(@Query() query : SearchRequest) {
+  findAll(@Query() query: SearchRequest) {
     return this.studentService.findAll(query);
   }
 
