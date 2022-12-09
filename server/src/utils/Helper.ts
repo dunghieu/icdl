@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const Hashids = require('hashids/cjs');
+
 export const generateID = (count: number) => {
   const sym = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890';
   let str = '';
@@ -9,4 +12,31 @@ export const generateID = (count: number) => {
   }
 
   return str;
+};
+
+const hashIdsMap: { [key: string]: any } = {};
+
+const getHashIds = (key: string): any => {
+  if (key in hashIdsMap) {
+    return hashIdsMap[key.toString()];
+  }
+
+  const instance = new Hashids(key + '-' + 'l7y4hac4JHaiBkrd52aDASvZSI42vh3J', 10);
+
+  hashIdsMap[key.toString()] = instance;
+
+  return instance;
+};
+
+export const hashIdEncode = (key: string, id: number): string => {
+  const hashids = getHashIds(key);
+
+  return hashids.encode(id);
+};
+
+export const hashIdDecode = (key: string, hashId: string): number | bigint | undefined => {
+  const hashids = getHashIds(key);
+  const ret = hashids.decode(hashId);
+
+  return ret.length > 0 ? ret[0] : null;
 };
