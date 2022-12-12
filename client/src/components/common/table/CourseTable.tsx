@@ -49,10 +49,10 @@ function Row(props: {row: ReturnType<typeof createData>}) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {row.students.map((studentRow) => (
+                  {row.students.map((studentRow, i) => (
                     <TableRow key={studentRow.id}>
                       <TableCell component="th" scope="row">
-                        {studentRow.id}
+                        {i + 1}
                       </TableCell>
                       <TableCell>{studentRow.name}</TableCell>
                       <TableCell align="right">{studentRow.gender}</TableCell>

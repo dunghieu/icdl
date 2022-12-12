@@ -15,8 +15,7 @@ const Room = () => {
   };
   useEffect(() => {
     fetchData();
-  }, []);
-  console.log(data);
+  }, [data]);
   return (
     <>
       <RoomTable rows={data} />

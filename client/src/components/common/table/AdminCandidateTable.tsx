@@ -105,7 +105,6 @@ export default function AdminCandidateTable({rows, printable}: any) {
             <TableCell width={100}>Ngày sinh</TableCell>
             <TableCell width={100}>Email</TableCell>
             <TableCell width={100}>Chứng chỉ</TableCell>
-            <TableCell width={100}>Hình thức thi</TableCell>
             <TableCell width={100}>Số báo danh</TableCell>
             <TableCell width={100}>Phòng thi</TableCell>
             <TableCell width={100}>Thời gian</TableCell>
@@ -140,7 +139,6 @@ export default function AdminCandidateTable({rows, printable}: any) {
                   ? 'CNTT Nâng cao'
                   : 'IC3, MOS'}
               </TableCell>
-              <TableCell align="center">{row.exam?.type}</TableCell>
               <TableCell align="center">{row.sbd}</TableCell>
               <TableCell align="center">{row.room}</TableCell>
               <TableCell align="center">

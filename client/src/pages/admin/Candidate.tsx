@@ -40,7 +40,9 @@ const Candidate = () => {
 
   const handleGenerateRoom = async () => {
     await axios.post('http://localhost:8080/api/student-exam-mapping/generate-room').then(() => {
-      fetchData();
+      setTimeout(() => {
+        fetchData();
+      }, 1000);
     });
   };
 

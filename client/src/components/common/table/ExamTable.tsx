@@ -98,12 +98,11 @@ export default function ExamTable({rows, printable}: any) {
 
   return (
     <TableContainer component={Paper} sx={{overflowX: 'auto', width: '100%', maxHeight: '90vh'}}>
-      <Table aria-label="custom pagination table" sx={{minWidth: '90vw'}}>
+      <Table aria-label="custom pagination table">
         <TableHead>
           <TableRow>
             <TableCell width={100}>Tên</TableCell>
             <TableCell width={100}>Chứng chỉ</TableCell>
-            <TableCell width={100}>Hình thức thi</TableCell>
             <TableCell width={100}>Ngày thi</TableCell>
             <TableCell width={100}>Đợt thi</TableCell>
           </TableRow>
@@ -123,14 +122,13 @@ export default function ExamTable({rows, printable}: any) {
                   ? 'CNTT Nâng cao'
                   : 'IC3, MOS'}
               </TableCell>
-              <TableCell>{row.type}</TableCell>
               <TableCell>{moment(row.date).format('DD-MM-YYYY')}</TableCell>
               <TableCell>{row.series}</TableCell>
             </TableRow>
           ))}
           {emptyRows > 0 && (
             <TableRow style={{height: 53 * emptyRows}}>
-              <TableCell colSpan={6} />
+              <TableCell colSpan={4} />
             </TableRow>
           )}
         </TableBody>
@@ -138,7 +136,7 @@ export default function ExamTable({rows, printable}: any) {
           <TableRow>
             <TablePagination
               rowsPerPageOptions={[5, 10, 25, {label: 'All', value: -1}]}
-              colSpan={11}
+              colSpan={4}
               count={rows.length}
               rowsPerPage={rowsPerPage}
               page={page}
