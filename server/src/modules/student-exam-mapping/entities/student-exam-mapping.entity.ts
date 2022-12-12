@@ -23,7 +23,7 @@ export class StudentExamMapping extends BaseEntity {
     room: string;
 
     @Column()
-    sbd: string;
+    sbd: number;
 
     @Column()
     start: string;

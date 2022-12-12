@@ -13,7 +13,7 @@ export class CreateStudentExamMappingDto {
 
     @IsString()
     @IsOptional()
-    sbd?: string;
+    sbd?: number;
 
     @IsString()
     @IsOptional()

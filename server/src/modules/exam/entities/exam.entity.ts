@@ -8,9 +8,6 @@ export class Exam extends BaseEntity {
     name: string;
 
     @Column()
-    type: string;
-
-    @Column()
     code: string;
 
     @Column()

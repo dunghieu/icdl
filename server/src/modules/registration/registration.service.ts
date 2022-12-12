@@ -134,22 +134,6 @@ export class RegistrationService {
       }
       const exam = (await this.certificateService.findOne(item.certificateId)).exams;
       const newestExam = exam.filter((item) => item.series === Math.max(...exam.map((item) => item.series)));
-      const newestPracticeExam = newestExam.find((item) => item.type === 'Thực hành');
-      if (item.status === 1) {
-        await this.studentExamMappingService.create({
-          studentId: item.studentId,
-          examId: newestPracticeExam.id,
-        });
-        return;
-      }
-      const newestTheoryExam = newestExam.find((item) => item.type === 'Lý thuyết');
-      if (item.status === 2) {
-        await this.studentExamMappingService.create({
-          studentId: item.studentId,
-          examId: newestTheoryExam.id,
-        });
-        return;
-      }
       const result = await Promise.all(newestExam.map(async (exam) => {
         return await this.studentExamMappingService.create({
           studentId: item.studentId,
@@ -158,7 +142,7 @@ export class RegistrationService {
       }));
       if (!result.includes(undefined)) {
         await this.update(item.id, {
-          status: 3,
+          status: 1,
         });
       }
     });

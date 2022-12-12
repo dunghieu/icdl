@@ -4,8 +4,6 @@ export class ExamDto {
     @IsString()
     name: string;
 
-    @IsString()
-    type: string;
 
     @IsString()
     @IsOptional()

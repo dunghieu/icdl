@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseInterceptors, ClassSerializerInterceptor } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseInterceptors, ClassSerializerInterceptor, UploadedFile } from '@nestjs/common';
 import { StudentExamMappingService } from './student-exam-mapping.service';
 import { CreateStudentExamMappingDto } from './dto/create-student-exam-mapping.dto';
 import { UpdateStudentExamMappingDto } from './dto/update-student-exam-mapping.dto';
 import { StudentExamMappingQueryDto } from './dto';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('student-exam-mapping')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -42,6 +43,12 @@ export class StudentExamMappingController {
   @Post('generate-room')
   generateRoom() {
     return this.studentExamMappingService.generateRoom();
+  }
+
+  @Post('import')
+  @UseInterceptors(FileInterceptor('file'))
+  uploadFile(@UploadedFile() file: Express.Multer.File) {
+    return this.studentExamMappingService.importTheoreticalScore(file);
   }
 
 }
