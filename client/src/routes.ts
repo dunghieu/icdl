@@ -1,13 +1,16 @@
 import PaymentForm from "components/common/stripe/PaymentForm";
+import FeedDetails from "components/FeedDetails";
 import DanhSachDuThi from "components/pdf/DanhSachDuThi";
 import { Layout ,IntroduceLayout} from "layout";
 import CategoryLayout from "layout/category-layout/CategoryLayout";
+import TraCuuLayout from "layout/tracuu-layout/TraCuuLayout";
 import { paths } from "lib/constants";
 import { GuestHome, Home } from "pages";
 import CreateCourse from "pages/admin/CreateCourse";
 import CreateExam from "pages/admin/CreateExam";
 import CreateFeed from "pages/admin/CreateFeed";
-import ThongBao from "pages/guest/category/ThongBao";
+import Login from "pages/admin/login/Login";
+import Feed from "pages/guest/category/Feed";
 import DangKyThi from "pages/guest/DangKyThi";
 import ChucNangNhiemVu from "pages/guest/introduce/ChucNangNhiemVu";
 import DoiNguNhanSu from "pages/guest/introduce/DoiNguNhanSu";
@@ -15,14 +18,17 @@ import GiangVien from "pages/guest/introduce/GiangVien";
 import GioiThieuTrungTam from "pages/guest/introduce/GioiThieuTrungTam";
 import SoDoToChuc from "pages/guest/introduce/SoDoToChuc";
 import TraCuuChungChi from "pages/guest/TraCuuChungChi";
-import TraCuuDanhSachThi from "pages/guest/TraCuuDanhSachThi";
-import TraCuuKetQuaThi from "pages/guest/TraCuuKetQuaThi";
+import TraCuuDanhSachOnTable from "pages/guest/TraCuuDanhSachOnTable";
+import TraCuuDanhSachThiTable from "pages/guest/TraCuuDanhSachThiTable";
+import TraCuuKetQuaThiTable from "pages/guest/TraCuuKetQuaThiTable";
+import TraCuuKetNguyenVongTable from "pages/guest/TraCuuNguyenVongTable";
 import { lazy } from "react";
 
-const routes = [
+export const adminRoutes = [
   {
     path: paths.Admin,
     component: Layout,
+    key: "admin",
     routes: [
       {
         path: paths.Admin,
@@ -55,6 +61,11 @@ const routes = [
         component: lazy(() => import("pages/admin/Room")),
       },
       {
+        path: `${paths.Admin}/unit`,
+        exact: true,
+        component: lazy(() => import("pages/admin/Unit")),
+      },
+      {
         path: `${paths.Admin}/feed/create`,
         exact: true,
         component: CreateFeed
@@ -71,6 +82,9 @@ const routes = [
       }
     ],
   },
+]
+
+export const routes = [
   {
     path: "/gioi-thieu-trung-tam",
     component: IntroduceLayout,
@@ -103,30 +117,81 @@ const routes = [
     ]
   },
   {
+    path: "/tra-cuu",
+    component: TraCuuLayout,
+    routes: [
+      {
+        path: '/tra-cuu/ket-qua-dang-ky-thi',
+        exact: true,
+        component: TraCuuDanhSachThiTable,
+      },
+      {
+        path: '/tra-cuu/ket-qua-dang-ky-hoc',
+        exact: true,
+        component: TraCuuDanhSachOnTable,
+      },
+      {
+        path: '/tra-cuu/ket-qua-thi',
+        exact: true,
+        component: TraCuuKetQuaThiTable,
+      },
+      {
+        path: '/tra-cuu/nguyen-vong-dang-ky',
+        exact: true,
+        component: TraCuuKetNguyenVongTable,
+      }
+    ]
+  },
+  {
     path: "/category",
     component: CategoryLayout,
     routes: [
       {
         path: '/category/thong-bao',
         exact: true,
-        component: ThongBao,
+        component: Feed,
+      },
+      {
+        path: '/category/cac-khoa-hoc',
+        exact: true,
+        component: Feed,
+      },
+      {
+        path: '/category/thong-bao-cntt-co-ban',
+        exact: true,
+        component: Feed,
+      },
+      {
+        path: '/category/thong-bao-cntt-nang-cao',
+        exact: true,
+        component: Feed,
+      },
+      {
+        path: '/category/thong-bao-ic3-mos',
+        exact: true,
+        component: Feed,
+      },
+      {
+        path: '/category/',
+        component: Feed,
       }
+    ]
+  },
+  {
+    path: "/news",
+    component: CategoryLayout,
+    routes: [
+      {
+        path: '/news/*',
+        exact: true,
+        component: FeedDetails,
+      },
     ]
   },
   {
     path: "/tra-cuu-chung-chi",
     exact: true,
     component: TraCuuChungChi
-  },
-  {
-    path: "/tra-cuu-danh-sach-thi",
-    exact: true,
-    component: TraCuuDanhSachThi
-  },
-  {
-    path: "/tra-cuu-ket-qua-thi",
-    exact: true,
-    component: TraCuuKetQuaThi
   },
   {
     path: "/dang-ky-thi",
@@ -153,4 +218,3 @@ const routes = [
   }
 ];
 
-export default routes;

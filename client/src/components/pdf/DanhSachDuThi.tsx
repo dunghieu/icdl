@@ -5,7 +5,7 @@ const DanhSachDuThi = (props: {
   exam: string;
   series: number;
   room: string;
-  rows: {sbd: string; name: string; citizenId: string}[];
+  rows: {sbd: string; name: string; citizenId: string; avatar: string}[];
 }) => {
   const page = Math.ceil(props.rows.length / 16);
   const pageMap = Array.from(Array(page).keys());
@@ -17,7 +17,7 @@ const DanhSachDuThi = (props: {
       unit: 'px',
     };
     const custom = {
-      pdfName: `DanhSachDuThi_${props.exam}_${props.room}`,
+      pdfName: `DanhSachDuThi_${props.room}`,
     };
     printDocuments(arrayElems, opt, custom);
   };
@@ -46,9 +46,9 @@ const DanhSachDuThi = (props: {
               className={`divToPrint-${props.room}`}
               sx={{
                 display: 'flex',
-                paddingTop: '25px',
+                paddingTop: '20px',
                 flexDirection: 'column',
-                gap: '30px',
+                gap: '25px',
                 justifyContent: 'center',
                 alignItems: 'center',
               }}
@@ -91,7 +91,11 @@ const DanhSachDuThi = (props: {
                           alignItems: 'center',
                         }}
                       >
-                        <Typography variant="body2">Ảnh 3x4</Typography>
+                        {row?.avatar ? (
+                          <img src={row?.avatar} width="100%" height="100%" />
+                        ) : (
+                          <Typography variant="body2">Ảnh 3x4</Typography>
+                        )}
                       </Box>
                     </Grid>
                   ))}

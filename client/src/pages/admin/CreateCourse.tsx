@@ -1,8 +1,6 @@
 import React, {useEffect, useState} from 'react';
 
-import QuillEditor from '../../components/editor/QuillEditor';
 import {
-  Typography,
   Button,
   Snackbar,
   TextField,
@@ -12,9 +10,9 @@ import {
   InputLabel,
   FormControl,
   Box,
+  Typography,
 } from '@mui/material';
 import axios from 'axios';
-import {useSelector} from 'react-redux';
 import MuiAlert, {AlertProps} from '@mui/material/Alert';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 // import type {TimePickerProps} from '@mui/x-date-pickers/TimePicker';
@@ -22,6 +20,7 @@ import {TimePicker} from '@mui/x-date-pickers/TimePicker';
 import {AdapterMoment} from '@mui/x-date-pickers/AdapterMoment';
 import {LocalizationProvider} from '@mui/x-date-pickers';
 import MultipleSelectChip from 'components/common/select/MultipleSelectChip';
+import {useHistory, useLocation} from 'react-router-dom';
 const moment = require('moment');
 
 const theme = createTheme({
@@ -77,15 +76,21 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props,
 });
 
 function CreateCourse(props: {history: string[]}) {
-  const [name, setName] = useState('');
-  const [day, setDay] = useState('');
-  const [month, setMonth] = useState('');
-  const [year, setYear] = useState('');
+  const location = useLocation() as any;
+
+  const [name, setName] = location.state?.name ? useState(location.state.name) : useState('');
+  const [day, setDay] = location.state?.day ? useState(location.state.day) : useState('');
+  const [month, setMonth] = location.state?.month ? useState(location.state.month) : useState('');
+  const [year, setYear] = location.state?.year ? useState(location.state.year) : useState('');
   const [date, setDate] = useState('');
   const [certificateId, setCertificateId] = useState('');
   const [start, setStart] = useState(null) as any;
   const [end, setEnd] = useState(null) as any;
   const [open, setOpen] = React.useState(false);
+
+  const history = useHistory();
+  const search = history.location.search;
+  const params = new URLSearchParams(search);
 
   const handleChangeDay = (event: SelectChangeEvent) => {
     setDay(event.target.value as string);
@@ -108,6 +113,10 @@ function CreateCourse(props: {history: string[]}) {
     setOpen(false);
   };
 
+  const handleCancel = () => {
+    history.goBack();
+  };
+
   const onSubmit = (event: {preventDefault: () => void}) => {
     event.preventDefault();
     const validateDate = date
@@ -118,6 +127,7 @@ function CreateCourse(props: {history: string[]}) {
       .sort()
       .join(', ');
     const variables = {
+      id: location.state?.id ? location.state.id : null,
       name: name,
       open: moment(`${day}/${month}/${year}`, 'DD/MM/YYYY').format('YYYY-MM-DD'),
       certificateId: certificateId,
@@ -134,7 +144,7 @@ function CreateCourse(props: {history: string[]}) {
           setOpen(true);
           setTimeout(() => {
             props.history.push('/admin/course');
-          }, 2000);
+          }, 1000);
         }
       });
     }
@@ -150,6 +160,9 @@ function CreateCourse(props: {history: string[]}) {
       }}
     >
       <ThemeProvider theme={theme}>
+        <Typography variant="h4" component="h2" sx={{textAlign: 'center'}}>
+          {params && params.get('edit') === 'true' ? 'Cập nhật khóa học' : 'Tạo khóa học'}
+        </Typography>
         <TextField
           value={name}
           onChange={(e) => setName(e.target.value)}
@@ -160,8 +173,8 @@ function CreateCourse(props: {history: string[]}) {
           color="neutral"
         />
         <Box sx={{display: 'flex', gap: '25px'}}>
-          <FormControl sx={{minWidth: 80}}>
-            <InputLabel id="label-day">Ngày</InputLabel>
+          <FormControl sx={{minWidth: 80}} fullWidth>
+            <InputLabel id="label-day">Ngày khai giảng</InputLabel>
             <Select
               MenuProps={{sx: {height: '300px'}}}
               labelId="label-day"
@@ -177,8 +190,8 @@ function CreateCourse(props: {history: string[]}) {
               ))}
             </Select>
           </FormControl>
-          <FormControl sx={{minWidth: 120}}>
-            <InputLabel id="label-month">Tháng</InputLabel>
+          <FormControl sx={{minWidth: 120}} fullWidth>
+            <InputLabel id="label-month">Tháng khai giảng</InputLabel>
             <Select
               MenuProps={{sx: {height: '300px'}}}
               labelId="label-month"
@@ -194,8 +207,8 @@ function CreateCourse(props: {history: string[]}) {
               ))}
             </Select>
           </FormControl>
-          <FormControl sx={{minWidth: 100}}>
-            <InputLabel id="label-year">Năm</InputLabel>
+          <FormControl sx={{minWidth: 100}} fullWidth>
+            <InputLabel id="label-year">Năm khai giảng</InputLabel>
             <Select
               MenuProps={{sx: {height: '300px'}}}
               labelId="label-year"
@@ -211,6 +224,8 @@ function CreateCourse(props: {history: string[]}) {
               ))}
             </Select>
           </FormControl>
+        </Box>
+        <Box sx={{display: 'flex', gap: '25px'}}>
           <LocalizationProvider dateAdapter={AdapterMoment}>
             <TimePicker
               label="Giờ bắt đầu"
@@ -218,7 +233,7 @@ function CreateCourse(props: {history: string[]}) {
               onChange={(newValue) => {
                 setStart(newValue);
               }}
-              renderInput={(params) => <TextField {...params} />}
+              renderInput={(params) => <TextField {...params} fullWidth />}
             />
           </LocalizationProvider>
           <LocalizationProvider dateAdapter={AdapterMoment}>
@@ -228,7 +243,7 @@ function CreateCourse(props: {history: string[]}) {
               onChange={(newValue) => {
                 setEnd(newValue);
               }}
-              renderInput={(params) => <TextField {...params} />}
+              renderInput={(params) => <TextField {...params} fullWidth />}
             />
           </LocalizationProvider>
         </Box>
@@ -264,16 +279,21 @@ function CreateCourse(props: {history: string[]}) {
       </ThemeProvider>
 
       <form onSubmit={onSubmit}>
-        <div style={{textAlign: 'center', margin: '2rem'}}>
+        <Box sx={{justifyContent: 'center', margin: '2rem', display: 'flex', gap: '25px'}}>
           <Button type="submit" variant="contained" color="info">
             Submit
           </Button>
+          {params && params.get('edit') == 'true' ? (
+            <Button variant="outlined" color="info" onClick={handleCancel}>
+              Cancel
+            </Button>
+          ) : null}
           <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
             <Alert onClose={handleClose} severity="success" sx={{width: '100%'}}>
-              Create Succeed!
+              {params && params.get('edit') == 'true' ? 'Cập nhật thành công' : 'Tạo thành công'}
             </Alert>
           </Snackbar>
-        </div>
+        </Box>
       </form>
     </div>
   );

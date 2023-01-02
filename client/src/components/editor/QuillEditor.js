@@ -192,7 +192,7 @@ class QuillEditor extends React.Component {
     super(props);
 
     this.state = {
-      editorHtml: __ISMSIE__ ? '<p>&nbsp;</p>' : '',
+      editorHtml: props.editInit ? props.editInit : __ISMSIE__ ? '<p>&nbsp;</p>' : '',
       files: [],
     };
 
@@ -201,8 +201,8 @@ class QuillEditor extends React.Component {
     this.inputOpenImageRef = React.createRef();
     this.inputOpenVideoRef = React.createRef();
     this.inputOpenFileRef = React.createRef();
+    console.log(this.props);
   }
-
   componentDidMount() {
     this._isMounted = true;
   }
@@ -212,7 +212,7 @@ class QuillEditor extends React.Component {
   }
 
   handleChange = (html) => {
-    console.log('html', html);
+    // console.log('html', html);
     // https://youtu.be/BbR-QCoKngE
     // https://www.youtube.com/embed/ZwKhufmMxko
     // https://tv.naver.com/v/9176888

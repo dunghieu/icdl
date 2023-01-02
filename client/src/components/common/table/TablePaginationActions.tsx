@@ -15,30 +15,7 @@ import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
 import {TableHead} from '@mui/material';
-import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import {DataGrid, GridColumns, GridRowsProp, GridColDef} from '@mui/x-data-grid';
-
-const rows: GridRowsProp = [
-  {id: 1, col1: 'Hello', col2: 'World'},
-  {id: 2, col1: 'DataGridPro', col2: 'is Awesome'},
-  {id: 3, col1: 'MUI', col2: 'is Amazing'},
-];
-
-const columns: GridColumns = [
-  {field: 'name', headerName: 'Họ và tên', maxWidth: 180},
-  {field: 'gender', headerName: 'Giới tính', maxWidth: 180},
-  {field: 'birthday', headerName: 'Ngày sinh', maxWidth: 180},
-  {field: 'birthplace', headerName: 'Nơi sinh', maxWidth: 180},
-  {field: 'phone', headerName: 'Số điện thoại', maxWidth: 180},
-  {field: 'email', headerName: 'Email', maxWidth: 180},
-  {field: 'ethnic', headerName: 'Dân tộc', maxWidth: 180},
-  {field: 'amount', headerName: 'Số tiền', maxWidth: 180},
-  {field: 'type', headerName: 'Hình thức đăng ký', maxWidth: 180},
-  {field: 'note', headerName: 'Ghi chú', maxWidth: 180, editable: true},
-  {field: 'actions', headerName: 'Actions', maxWidth: 180},
-];
-
 interface TablePaginationActionsProps {
   count: number;
   page: number;

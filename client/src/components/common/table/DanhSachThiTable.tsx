@@ -184,7 +184,7 @@ function createData(
 
 export default function DanhSachThiTable(props: any) {
   console.log(props);
-  const rows = props.rows?.map((row: any) => {
+  const rows = props.rows?.registration?.map((row: any) => {
     return createData(
       row.id,
       row.payment,

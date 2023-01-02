@@ -8,13 +8,18 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 const moment = require('moment');
 
-function Row(props: {row: ReturnType<typeof createData>}) {
+function Row(props: {
+  row: ReturnType<typeof createData>;
+  handleDelete: (id: number, count: number) => any;
+  handleEdit: (id: number, state?: any) => any;
+}) {
   const {row} = props;
   const [open, setOpen] = React.useState(false);
 
@@ -33,9 +38,27 @@ function Row(props: {row: ReturnType<typeof createData>}) {
         <TableCell align="right">{row.time}</TableCell>
         <TableCell align="right">{row.open}</TableCell>
         <TableCell align="right">{row.count}</TableCell>
+        <TableCell align="right">
+          <IconButton
+            onClick={() =>
+              props.handleEdit(row.id, {
+                name: row.name,
+                day: moment(row.open, 'DD-MM-YYYY').format('D'),
+                month: moment(row.open, 'DD-MM-YYYY').format('M'),
+                year: moment(row.open, 'DD-MM-YYYY').format('YYYY'),
+                count: row.count,
+              })
+            }
+          >
+            <EditIcon />
+          </IconButton>
+          <IconButton onClick={() => props.handleDelete(row.id, row.count)}>
+            <DeleteIcon />
+          </IconButton>
+        </TableCell>
       </TableRow>
       <TableRow>
-        <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={6}>
+        <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={7}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{margin: 1}}>
               <Table size="small" aria-label="purchases">
@@ -92,6 +115,8 @@ function createData(
     id,
     name,
     day,
+    start: moment(start, 'HH:mm:ss').format('HH:mm'),
+    end: moment(end, 'HH:mm:ss').format('HH:mm'),
     time: `${moment(start, 'HH:mm:ss').format('HH:mm')} - ${moment(end, 'HH:mm:ss').format(
       'HH:mm'
     )}`,
@@ -135,11 +160,17 @@ export default function CourseTable(props: any) {
             <TableCell align="right">Giờ học</TableCell>
             <TableCell align="right">Ngày khai giảng</TableCell>
             <TableCell align="right">Sĩ số</TableCell>
+            <TableCell align="right"></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {rows.map((row) => (
-            <Row key={row.id} row={row} />
+            <Row
+              key={row.id}
+              row={row}
+              handleDelete={props.handleDelete}
+              handleEdit={props.handleEdit}
+            />
           ))}
         </TableBody>
       </Table>

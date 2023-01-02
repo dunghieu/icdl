@@ -5,41 +5,21 @@ import background from '../lib/assets/images/course-background.jpg';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import ActionAreaCardHorizontal from './common/card/ActionAreaCardHorizontal';
-
-const courseItems = [
-  {
-    title: 'Course 1',
-    content:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc vel tincidunt lacinia, nisl nisl aliquam nisl, vitae aliquam nisl nisl sit amet nisl. Sed euismod, nunc vel tincidunt lacinia, nisl nisl aliquam nisl, vitae aliquam nisl nisl sit amet nisl.',
-    time: '2 hours',
-  },
-  {
-    title: 'Course 2',
-    content:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc vel tincidunt lacinia, nisl nisl aliquam nisl, vitae aliquam nisl nisl sit amet nisl. Sed euismod, nunc vel tincidunt lacinia, nisl nisl aliquam nisl, vitae aliquam nisl nisl sit amet nisl.',
-    time: '2 hours',
-  },
-  {
-    title: 'Course 3',
-    content:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc vel tincidunt lacinia, nisl nisl aliquam nisl, vitae aliquam nisl nisl sit amet nisl. Sed euismod, nunc vel tincidunt lacinia, nisl nisl aliquam nisl, vitae aliquam nisl nisl sit amet nisl.',
-    time: '2 hours',
-  },
-  {
-    title: 'Course 4',
-    content:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc vel tincidunt lacinia, nisl nisl aliquam nisl, vitae aliquam nisl nisl sit amet nisl. Sed euismod, nunc vel tincidunt lacinia, nisl nisl aliquam nisl, vitae aliquam nisl nisl sit amet nisl.',
-    time: '2 hours',
-  },
-  {
-    title: 'Course 5',
-    content:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc vel tincidunt lacinia, nisl nisl aliquam nisl, vitae aliquam nisl nisl sit amet nisl. Sed euismod, nunc vel tincidunt lacinia, nisl nisl aliquam nisl, vitae aliquam nisl nisl sit amet nisl.',
-    time: '2 hours',
-  },
-];
+import React, {useState, useEffect} from 'react';
+import moment from 'moment';
+import axios from 'axios';
 
 const CourseSection = () => {
+  const [data, setData] = useState<any>([]);
+  const fetchData = async () => {
+    const getData = await axios.get(`http://localhost:8080/api/feed?category=Các Khóa học`);
+    const [finalData] = getData.data;
+    setData(finalData);
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <div
       style={{
@@ -70,12 +50,14 @@ const CourseSection = () => {
           pagination
           loop={true}
         >
-          {courseItems.map((item) => (
-            <SwiperSlide key={item.title}>
+          {data.map((item) => (
+            <SwiperSlide key={item.id}>
               <ActionAreaCardHorizontal
+                id={item.id}
                 title={item.title}
                 content={item.content}
-                time={item.time}
+                time={moment(item.updated_at).format('DD/MM/YYYY')}
+                thumbnail={item.thumbnail}
               />
             </SwiperSlide>
           ))}

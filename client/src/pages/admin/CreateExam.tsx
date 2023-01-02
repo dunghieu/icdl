@@ -1,8 +1,6 @@
 import React, {useEffect, useState} from 'react';
 
-import QuillEditor from '../../components/editor/QuillEditor';
 import {
-  Typography,
   Button,
   Snackbar,
   TextField,
@@ -12,12 +10,12 @@ import {
   InputLabel,
   FormControl,
   Box,
+  Typography,
 } from '@mui/material';
 import axios from 'axios';
-import {useSelector} from 'react-redux';
 import MuiAlert, {AlertProps} from '@mui/material/Alert';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
-import MultipleSelectChip from 'components/common/select/MultipleSelectChip';
+import {useHistory, useLocation} from 'react-router-dom';
 const moment = require('moment');
 
 const theme = createTheme({
@@ -79,12 +77,18 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props,
 });
 
 function CreateExam(props: {history: string[]}) {
-  const [name, setName] = useState('');
-  const [day, setDay] = useState('');
-  const [month, setMonth] = useState('');
-  const [year, setYear] = useState('');
-  const [type, setType] = useState('');
-  const [certificateId, setCertificateId] = useState('');
+  const location = useLocation() as any;
+  const history = useHistory();
+  const search = history.location.search;
+  const params = new URLSearchParams(search);
+  // console.log(location.state);
+  const [name, setName] = location.state?.name ? useState(location.state?.name) : useState('');
+  const [day, setDay] = location.state?.day ? useState(location.state?.day) : useState('');
+  const [month, setMonth] = location.state?.month ? useState(location.state?.month) : useState('');
+  const [year, setYear] = location.state?.year ? useState(location.state?.year) : useState('');
+  const [certificateId, setCertificateId] = location.state?.certificateId
+    ? useState(location.state?.certificateId)
+    : useState('');
   const [open, setOpen] = React.useState(false);
 
   const handleChangeDay = (event: SelectChangeEvent) => {
@@ -99,9 +103,6 @@ function CreateExam(props: {history: string[]}) {
   const handleChangeCertificate = (event: SelectChangeEvent) => {
     setCertificateId(event.target.value as string);
   };
-  const handleChangeType = (event: SelectChangeEvent) => {
-    setType(event.target.value as string);
-  };
 
   const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === 'clickaway') {
@@ -111,26 +112,44 @@ function CreateExam(props: {history: string[]}) {
     setOpen(false);
   };
 
+  const handleCancel = () => {
+    history.goBack();
+  };
+
   const onSubmit = (event: {preventDefault: () => void}) => {
     event.preventDefault();
 
     const variables = {
+      id: location.state?.id ? location.state?.id : null,
       name: name,
       date: moment(`${day}/${month}/${year}`, 'DD/MM/YYYY').format('YYYY-MM-DD'),
       certificateId: certificateId,
-      type: type,
     };
 
     if (!name || !day || !month || !year || !certificateId) {
       return alert('Vui lòng điền đầy đủ thông tin');
     } else {
+      if (params && params.get('edit') === 'true') {
+        axios
+          .patch(`http://localhost:8080/api/exam/${location.state?.id}`, variables)
+          .then((response) => {
+            if (response) {
+              setOpen(true);
+
+              setTimeout(() => {
+                props.history.push('/admin/exam');
+              }, 1000);
+            }
+          });
+        return;
+      }
       axios.post('http://localhost:8080/api/exam', variables).then((response) => {
         if (response) {
           setOpen(true);
 
           setTimeout(() => {
             props.history.push('/admin/exam');
-          }, 2000);
+          }, 1000);
         }
       });
     }
@@ -146,6 +165,9 @@ function CreateExam(props: {history: string[]}) {
       }}
     >
       <ThemeProvider theme={theme}>
+        <Typography variant="h4" component="h2" sx={{textAlign: 'center'}}>
+          {params && params.get('edit') === 'true' ? 'Cập nhật kì thi' : 'Tạo kì thi'}
+        </Typography>
         <TextField
           value={name}
           onChange={(e) => setName(e.target.value)}
@@ -164,7 +186,8 @@ function CreateExam(props: {history: string[]}) {
               value={day}
               label="Ngày"
               onChange={handleChangeDay}
-              autoWidth
+              // autoWidth
+              fullWidth
             >
               {days().map((day) => (
                 <MenuItem key={day} value={day}>
@@ -181,7 +204,8 @@ function CreateExam(props: {history: string[]}) {
               value={month}
               label="Tháng"
               onChange={handleChangeMonth}
-              autoWidth
+              // autoWidth
+              fullWidth
             >
               {months.map((month) => (
                 <MenuItem key={month.value} value={month.value}>
@@ -198,26 +222,14 @@ function CreateExam(props: {history: string[]}) {
               value={year}
               label="Năm"
               onChange={handleChangeYear}
-              autoWidth
+              // autoWidth
+              fullWidth
             >
               {years().map((day) => (
                 <MenuItem key={day} value={day}>
                   {day}
                 </MenuItem>
               ))}
-            </Select>
-          </FormControl>
-          <FormControl fullWidth>
-            <InputLabel id="label-type">Hình thức</InputLabel>
-            <Select
-              // MenuProps={{sx: {height: '300px'}}}
-              labelId="label-type"
-              value={type}
-              label="Hình thức"
-              onChange={handleChangeType}
-            >
-              <MenuItem value="Lý thuyết">Lý thuyết</MenuItem>
-              <MenuItem value="Thực hành">Thực hành</MenuItem>
             </Select>
           </FormControl>
         </Box>
@@ -241,16 +253,21 @@ function CreateExam(props: {history: string[]}) {
       </ThemeProvider>
 
       <form onSubmit={onSubmit}>
-        <div style={{textAlign: 'center', margin: '2rem'}}>
+        <Box sx={{justifyContent: 'center', margin: '2rem', display: 'flex', gap: '25px'}}>
           <Button type="submit" variant="contained" color="info">
             Submit
           </Button>
+          {params && params.get('edit') == 'true' ? (
+            <Button variant="outlined" color="info" onClick={handleCancel}>
+              Cancel
+            </Button>
+          ) : null}
           <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
             <Alert onClose={handleClose} severity="success" sx={{width: '100%'}}>
-              Create Succeed!
+              {params && params.get('edit') == 'true' ? 'Cập nhật thành công' : 'Tạo thành công'}
             </Alert>
           </Snackbar>
-        </div>
+        </Box>
       </form>
     </div>
   );

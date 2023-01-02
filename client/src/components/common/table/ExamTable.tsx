@@ -17,8 +17,6 @@ import LastPageIcon from '@mui/icons-material/LastPage';
 import {TableHead} from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import {DataGrid, GridColumns, GridRowsProp, GridColDef} from '@mui/x-data-grid';
-import TheDuThi from 'components/pdf/TheDuThi';
 const moment = require('moment');
 
 interface TablePaginationActionsProps {
@@ -78,7 +76,7 @@ function TablePaginationActions(props: TablePaginationActionsProps) {
   );
 }
 
-export default function ExamTable({rows, printable}: any) {
+export default function ExamTable({rows, printable, handleEdit, handleDelete}: any) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
@@ -101,10 +99,11 @@ export default function ExamTable({rows, printable}: any) {
       <Table aria-label="custom pagination table">
         <TableHead>
           <TableRow>
-            <TableCell width={100}>Tên</TableCell>
-            <TableCell width={100}>Chứng chỉ</TableCell>
+            <TableCell width={150}>Tên</TableCell>
+            <TableCell width={150}>Chứng chỉ</TableCell>
             <TableCell width={100}>Ngày thi</TableCell>
             <TableCell width={100}>Đợt thi</TableCell>
+            <TableCell width={100} align={'right'}></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -124,6 +123,25 @@ export default function ExamTable({rows, printable}: any) {
               </TableCell>
               <TableCell>{moment(row.date).format('DD-MM-YYYY')}</TableCell>
               <TableCell>{row.series}</TableCell>
+              <TableCell align="right">
+                <IconButton
+                  onClick={() => {
+                    console.log(moment(row.date).utcOffset('+0700').format('D'));
+                    handleEdit(row.id, {
+                      name: row.name,
+                      day: moment(row.date).utcOffset('+0700').format('D'),
+                      month: moment(row.date).utcOffset('+0700').format('M'),
+                      year: moment(row.date).utcOffset('+0700').format('YYYY'),
+                      certificateId: row.certificateId,
+                    });
+                  }}
+                >
+                  <EditIcon />
+                </IconButton>
+                <IconButton onClick={() => handleDelete(row.id)}>
+                  <DeleteIcon />
+                </IconButton>
+              </TableCell>
             </TableRow>
           ))}
           {emptyRows > 0 && (

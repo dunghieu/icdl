@@ -1,11 +1,12 @@
 import React from 'react';
 import {styled} from '@mui/material/styles';
 import MuiAppBar, {AppBarProps as MuiAppBarProps} from '@mui/material/AppBar';
-import {IconButton, Toolbar, Box, Button} from '@mui/material';
+import {IconButton, Toolbar, Box, Button, Avatar, Menu, MenuItem} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import {HeaderProps} from 'lib/interfaces';
 import {capitalize} from '@mui/material/utils';
 import {Link} from 'react-router-dom';
+import AuthContext from 'store/auth-context';
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
@@ -33,6 +34,17 @@ const AppBar = styled(MuiAppBar, {
 }));
 
 const Header: React.FC<HeaderProps> = ({open, handleToggleDrawer, drawerwidth}) => {
+  const ctx = React.useContext(AuthContext);
+
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const openEl = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <AppBar position="fixed" open={open} drawerwidth={drawerwidth}>
       <Toolbar>
@@ -47,10 +59,29 @@ const Header: React.FC<HeaderProps> = ({open, handleToggleDrawer, drawerwidth}) 
             <MenuIcon />
           </IconButton>
         </Box>
-        {/* <Box display="flex" alignItems="center" marginLeft="auto">
-          <Link to="/admin/new">
-          </Link>
-        </Box> */}
+        <Box display="flex" alignItems="center" marginLeft="auto">
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            sx={{mr: 2}}
+            onClick={handleClick}
+          >
+            <Avatar alt="" src="/static/images/avatar/1.jpg" />
+          </IconButton>
+          <Menu
+            id="basic-menu"
+            anchorEl={anchorEl}
+            open={openEl}
+            onClose={handleClose}
+            MenuListProps={{
+              'aria-labelledby': 'basic-button',
+            }}
+          >
+            <MenuItem onClick={handleClose}>Profile</MenuItem>
+            <MenuItem onClick={ctx.onLogout}>Logout</MenuItem>
+          </Menu>
+        </Box>
       </Toolbar>
     </AppBar>
   );

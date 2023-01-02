@@ -1,27 +1,12 @@
-import {useState} from 'react';
-import {
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  ListSubheader,
-  Typography,
-  Collapse,
-} from '@mui/material';
+import {List, ListSubheader, Typography} from '@mui/material';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
-import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
-import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import ExitToAppOutlinedIcon from '@mui/icons-material/ExitToAppOutlined';
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import ExpandMore from '@mui/icons-material/ExpandMore';
-import {Link} from 'react-router-dom';
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 import {Basic, Collapsable} from './components';
 import LocalLibraryOutlinedIcon from '@mui/icons-material/LocalLibraryOutlined';
 import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
+import HistoryEduIcon from '@mui/icons-material/HistoryEdu';
 
 export interface NavigationItem {
   id?: string;
@@ -81,12 +66,19 @@ const navigationItems: NavigationItem[] = [
         icon: <MeetingRoomIcon />,
         link: '/admin/room',
       },
+      {
+        id: 'dashboard.unit',
+        title: 'Danh sách bài thi',
+        type: 'basic',
+        icon: <HistoryEduIcon />,
+        link: '/admin/unit',
+      },
     ],
   },
   {
     id: 'profile',
-    title: 'Profile',
-    subtitle: 'Account & settings',
+    title: 'Shortcut',
+    // subtitle: 'Account & settings',
     type: 'group',
     children: [
       // {
@@ -124,13 +116,13 @@ const navigationItems: NavigationItem[] = [
         icon: <AddCircleRoundedIcon />,
         link: '/admin/course/create',
       },
-      {
-        id: 'profile.signout',
-        title: 'Đăng xuất',
-        type: 'basic',
-        icon: <ExitToAppOutlinedIcon />,
-        link: '/sign-out',
-      },
+      // {
+      //   id: 'profile.signout',
+      //   title: 'Đăng xuất',
+      //   type: 'basic',
+      //   icon: <ExitToAppOutlinedIcon />,
+      //   link: '/sign-out',
+      // },
     ],
   },
 ];

@@ -16,6 +16,7 @@ import PhoneIcon from '@mui/icons-material/Phone';
 import {Link} from 'react-router-dom';
 import ArrowCircleUpOutlinedIcon from '@mui/icons-material/ArrowCircleUpOutlined';
 import {useEffect, useState} from 'react';
+import axios from 'axios';
 
 const theme = createTheme({
   palette: {
@@ -27,6 +28,7 @@ const theme = createTheme({
 });
 
 const GuestFooter = () => {
+  const [data, setData] = useState<any>([]);
   const [showScroll, setShowScroll] = useState('');
   const [scrollPosition, setScrollPosition] = useState(0);
   const scrollToTop = () => {
@@ -37,6 +39,18 @@ const GuestFooter = () => {
     setScrollPosition(window.scrollY);
   };
 
+  const fetchFeed = () => {
+    axios
+      .get('http://localhost:8080/api/feed?limit=2')
+      .then((res) => {
+        const [finalData] = res.data;
+        setData(finalData);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   useEffect(() => {
     if (scrollPosition > 100) {
       setShowScroll('fixed');
@@ -44,6 +58,10 @@ const GuestFooter = () => {
       setShowScroll('absolute');
     }
   }, [scrollPosition]);
+
+  useEffect(() => {
+    fetchFeed();
+  }, []);
 
   useEffect(() => {
     scrollToTop();
@@ -126,9 +144,20 @@ const GuestFooter = () => {
             </Box>
           </Grid>
           <Grid item xs={3}>
-            <Box>
+            <Box sx={{maxHeight: '200px'}}>
               <Typography variant="h6">THÔNG BÁO MỚI NHẤT</Typography>
               <div style={{borderBottom: '3px solid #fff', width: '15%', marginTop: '5px'}}></div>
+              {data.map((item: any) => {
+                return (
+                  <Box sx={{marginTop: '1rem'}} key={item.id}>
+                    <Typography variant="body2" sx={{display: 'flex', alignItems: 'center'}}>
+                      <Link to={`/news/${item.id}`} style={{textDecoration: 'none', color: '#fff'}}>
+                        {item.title}
+                      </Link>
+                    </Typography>
+                  </Box>
+                );
+              })}
             </Box>
           </Grid>
           <Grid item xs={3}>

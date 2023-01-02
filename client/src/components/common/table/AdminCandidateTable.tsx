@@ -15,7 +15,6 @@ import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
 import {TableHead} from '@mui/material';
-import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import TheDuThi from 'components/pdf/TheDuThi';
 const moment = require('moment');
@@ -108,8 +107,6 @@ export default function AdminCandidateTable({rows, printable}: any) {
             <TableCell width={100}>Số báo danh</TableCell>
             <TableCell width={100}>Phòng thi</TableCell>
             <TableCell width={100}>Thời gian</TableCell>
-            <TableCell width={100}>Điểm lý thuyết</TableCell>
-            <TableCell width={100}>Điểm thực hành</TableCell>
             <TableCell width={100}>Ghi chú</TableCell>
             <TableCell width={100}>Actions</TableCell>
           </TableRow>
@@ -149,8 +146,6 @@ export default function AdminCandidateTable({rows, printable}: any) {
                     'HH:mm:ss'
                   ).format('HH:mm')}`}
               </TableCell>
-              <TableCell align="center">{row.theoreticalScore}</TableCell>
-              <TableCell align="center">{row.practicalScore}</TableCell>
               <TableCell></TableCell>
               <TableCell sx={{position: 'relative'}}>
                 {

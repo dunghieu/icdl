@@ -4,8 +4,12 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import {CardActionArea, Divider} from '@mui/material';
+import parse from 'html-react-parser';
+import {useHistory} from 'react-router-dom';
 
-export default function ActionAreaCardHorizontal({title, content, time}: any) {
+export default function ActionAreaCardHorizontal({title, content, time, thumbnail, id}: any) {
+  const history = useHistory();
+
   return (
     <Card
       sx={{
@@ -13,10 +17,15 @@ export default function ActionAreaCardHorizontal({title, content, time}: any) {
         borderRadius: '0',
       }}
     >
-      <CardActionArea>
+      <CardActionArea
+        onClick={(e) => {
+          e.stopPropagation();
+          history.push(`/news/${id}`);
+        }}
+      >
         <CardMedia
           component="img"
-          image="https://material-ui.com/static/images/cards/contemplative-reptile.jpg"
+          image={thumbnail}
           alt="green iguana"
           sx={{
             height: '250px',
@@ -49,7 +58,7 @@ export default function ActionAreaCardHorizontal({title, content, time}: any) {
               whiteSpace: 'nowrap',
             }}
           >
-            {content}
+            ...
           </Typography>
         </CardContent>
       </CardActionArea>

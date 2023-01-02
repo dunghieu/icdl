@@ -8,7 +8,6 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
@@ -20,32 +19,6 @@ const moment = require('moment');
 function Row(props: {row: ReturnType<typeof createData>}) {
   const {row} = props;
   const [open, setOpen] = React.useState(false);
-  const [selectedFile, setSelectedFile] = React.useState<any>(null);
-
-  React.useEffect(() => {
-    if (selectedFile) handleImportFile();
-  }, [selectedFile]);
-
-  const handleImportFile = async () => {
-    const formData = new FormData();
-    formData.append('file', selectedFile);
-    try {
-      const response = await axios({
-        method: 'post',
-        url: 'http://localhost:8080/api/student-exam-mapping/import',
-        data: formData,
-        headers: {'Content-Type': 'multipart/form-data'},
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target && event.target.files && event.target.files.length > 0) {
-      setSelectedFile(event.target.files[0]);
-    }
-  };
 
   return (
     <React.Fragment>
@@ -62,7 +35,7 @@ function Row(props: {row: ReturnType<typeof createData>}) {
         <TableCell align="right">{row.exam.date}</TableCell>
         <TableCell align="right">{row.time}</TableCell>
         <TableCell align="right">{row.student.find((o) => o.status !== 1) ? '' : 'Đóng'}</TableCell>
-        <TableCell width="500px">
+        <TableCell width="300px">
           <Box
             sx={{
               display: 'flex',
@@ -70,16 +43,14 @@ function Row(props: {row: ReturnType<typeof createData>}) {
               gap: '10px',
             }}
           >
-            <Button variant="contained" color="info" component="label">
-              Vào điểm lý thuyết
-              <input id="file" type="file" hidden onChange={handleFileSelect} />
-            </Button>
             <Box
               sx={{
-                display: 'block',
+                display: 'flex',
+                gap: '10px',
               }}
             >
               <DanhSachDuThi
+                key={row.room}
                 exam={row.exam.name}
                 series={row.exam.series}
                 room={row.room}
@@ -90,7 +61,7 @@ function Row(props: {row: ReturnType<typeof createData>}) {
         </TableCell>
       </TableRow>
       <TableRow>
-        <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={6}>
+        <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={8}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{margin: 1}}>
               <Table size="small" aria-label="purchases">
@@ -101,9 +72,9 @@ function Row(props: {row: ReturnType<typeof createData>}) {
                     <TableCell>Tên học sinh</TableCell>
                     <TableCell align="right">Giới tính</TableCell>
                     <TableCell align="right">Ngày sinh</TableCell>
-                    <TableCell align="right">Điểm lý thuyết</TableCell>
-                    <TableCell align="right">Điểm thực hành</TableCell>
-                    <TableCell align="right">Trạng thái</TableCell>
+                    <TableCell align="right">Bài 1</TableCell>
+                    <TableCell align="right">Bài 2</TableCell>
+                    <TableCell align="right">Bài 3</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -116,17 +87,9 @@ function Row(props: {row: ReturnType<typeof createData>}) {
                       <TableCell>{studentRow.name}</TableCell>
                       <TableCell align="right">{studentRow.gender}</TableCell>
                       <TableCell align="right">{studentRow.birthday}</TableCell>
-                      <TableCell align="right">{studentRow.theoreticalScore}</TableCell>
-                      <TableCell align="right">{studentRow.practicalScore}</TableCell>
-                      <TableCell align="right">
-                        {studentRow.status === 1
-                          ? 'Đạt'
-                          : studentRow.status === 0
-                          ? 'Chưa đạt'
-                          : studentRow.status === -1
-                          ? 'Hoãn thi'
-                          : ''}
-                      </TableCell>
+                      <TableCell align="right">{studentRow.bai1 ? 'Đã nộp' : ''}</TableCell>
+                      <TableCell align="right">{studentRow.bai2 ? 'Đã nộp' : ''}</TableCell>
+                      <TableCell align="right">{studentRow.bai3 ? 'Đã nộp' : ''}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -161,7 +124,11 @@ function createData(
     practicalScore: number;
     theoreticalScore: number;
     status: number;
+    avatar: string;
     sbd: string;
+    bai1: string;
+    bai2: string;
+    bai3: string;
   }>
 ) {
   // exam.date = moment(exam.date).format('DD/MM/YYYY');
@@ -185,7 +152,11 @@ function createData(
         practicalScore: s.practicalScore,
         theoreticalScore: s.theoreticalScore,
         status: s.status,
+        avatar: s.avatar,
         sbd: s.sbd,
+        bai1: s.bai1,
+        bai2: s.bai2,
+        bai3: s.bai3,
       };
     }),
   };
@@ -195,6 +166,7 @@ export default function RoomTable(props: any) {
   const rows = props.rows.map((row: any) => {
     return createData(row.room, row.start, row.end, row.exam, row.student);
   }) as ReturnType<typeof createData>[];
+
   return (
     <TableContainer component={Paper}>
       <Table aria-label="collapsible table">
@@ -205,7 +177,6 @@ export default function RoomTable(props: any) {
             <TableCell>Chứng chỉ</TableCell>
             <TableCell align="right">Ngày thi</TableCell>
             <TableCell align="right">Giờ thi</TableCell>
-            <TableCell align="right">Trạng thái</TableCell>
             <TableCell align="right"></TableCell>
           </TableRow>
         </TableHead>

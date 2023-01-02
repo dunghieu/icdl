@@ -8,10 +8,17 @@ import {getDesignTokens} from 'lib/themes';
 import {SnackbarProvider} from 'notistack';
 import {RootState} from 'store/reducers';
 import cookie from 'cookie';
-import routes from 'routes';
+import {routes, adminRoutes} from 'routes';
 import {Router, Route, Switch} from 'react-router-dom';
+import AuthContext from 'store/auth-context';
+import Login from 'pages/admin/login/Login';
+
+import * as firebase from 'firebase/app';
+import 'firebase/auth';
+import firebaseConfig from './firebaseConfig';
 
 const history = createBrowserHistory();
+const firebaseApp = firebase.initializeApp(firebaseConfig);
 
 type Props = {
   children?: React.ReactNode;
@@ -21,6 +28,15 @@ type Props = {
 const App: React.FC<Props> = (props) => {
   const mode = useSelector((state: RootState) => state.Web.mode);
   const dispatch = useDispatch();
+  const ctx = React.useContext(AuthContext);
+  // useEffect(() => {
+  //   console.log(ctx.isLoggedIn);
+  //   if (ctx.isLoggedIn) {
+  //     history.push('/admin');
+  //   } else {
+  //     history.push('/admin');
+  //   }
+  // }, [ctx.isLoggedIn]);
 
   // Get mode from cookie in the first access page
   useEffect(() => {
@@ -35,6 +51,7 @@ const App: React.FC<Props> = (props) => {
   }, []);
   // Update the theme only if the mode changes
   const theme = React.useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -46,7 +63,14 @@ const App: React.FC<Props> = (props) => {
         }}
       >
         <Router history={history}>
-          <Switch>{renderRoutes(routes)}</Switch>
+          {history.location.pathname.includes('/admin') ? (
+            <>
+              {ctx.isLoggedIn && <Switch>{renderRoutes(adminRoutes)}</Switch>}
+              {!ctx.isLoggedIn && <Login />}
+            </>
+          ) : (
+            <Switch>{renderRoutes(routes)}</Switch>
+          )}
         </Router>
       </SnackbarProvider>
     </ThemeProvider>

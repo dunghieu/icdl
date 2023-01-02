@@ -1,7 +1,6 @@
 import {
   Container,
   Typography,
-  Box,
   TextField,
   InputLabel,
   Grid,
@@ -13,12 +12,13 @@ import {
   Button,
   MenuItem,
   FormGroup,
+  Box,
 } from '@mui/material';
 import {GuestHeader} from 'components';
 import GuestFooter from 'components/footer/GuestFooter';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 import axios from 'axios';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import PopupDialog from 'components/common/alert/PopupDialog';
 import {useHistory} from 'react-router-dom';
 import moment from 'moment';
@@ -73,6 +73,8 @@ const DangKyThi = () => {
   const [checkThi, setCheckThi] = useState(false);
   const [checked, setChecked] = useState('');
   const [student, setStudent] = useState({} as any);
+  const [selectedFile, setSelectedFile] = React.useState<any>(null);
+  const [fileUrl, setFileUrl] = React.useState<any>(null);
 
   const history = useHistory();
   const search = history.location.search;
@@ -83,6 +85,13 @@ const DangKyThi = () => {
   };
   const handleClickOpen2 = () => {
     setOpen2(true);
+  };
+
+  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target && event.target.files && event.target.files.length > 0) {
+      setSelectedFile(event.target.files[0]);
+      setFileUrl(URL.createObjectURL(event.target.files[0]));
+    }
   };
 
   const handleClose = () => {
@@ -144,6 +153,22 @@ const DangKyThi = () => {
 
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    const formData = new FormData();
+    formData.append('firstName', firstName);
+    formData.append('lastName', lastName);
+    formData.append('gender', gender);
+    formData.append('dayOfBirth', ('0' + dayOfBirth).slice(-2));
+    formData.append('monthOfBirth', ('0' + monthOfBirth).slice(-2));
+    formData.append('yearOfBirth', yearOfBirth);
+    formData.append('placeOfBirth', city);
+    formData.append('email', email);
+    formData.append('phoneNumber', phone);
+    formData.append('citizenId', citizenId);
+    formData.append('ethnic', ethnic);
+    formData.append('certificateId', certificate);
+    formData.append('type', checked);
+    formData.append('courseId', course);
+    formData.append('avatar', selectedFile);
     const data = {
       firstName,
       lastName,
@@ -165,15 +190,20 @@ const DangKyThi = () => {
       if (params) {
         result = await axios.patch(`http://localhost:8080/api/registration/${params}`, data);
       } else {
-        result = await axios.post('http://localhost:8080/api/registration', data);
+        // result = await axios.post('http://localhost:8080/api/registration', data);
+        result = await axios({
+          method: 'post',
+          url: 'http://localhost:8080/api/registration',
+          data: formData,
+          headers: {'Content-Type': 'multipart/form-data'},
+        });
       }
-      console.log(result);
       if (result.status === 201) {
         handleClickOpen();
       }
     } catch (e) {
-      console.log(e);
-      if (e.response.status === 400) {
+      console.log(e.response.status);
+      if (e.response.status === 400 || e.response.status === 500) {
         handleClickOpen2();
       }
     }
@@ -414,7 +444,7 @@ const DangKyThi = () => {
               ))}
             </TextField>
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={3}>
             <InputLabel sx={{fontWeight: 700}}>HÌNH THỨC</InputLabel>
             <FormGroup row>
               <FormControlLabel
@@ -451,6 +481,13 @@ const DangKyThi = () => {
               />
             </FormGroup>
           </Grid>
+          <Grid item xs={3} sx={{position: 'relative'}}>
+            <Box sx={{position: 'absolute', width: '4cm', height: '6cm', top: '10px', left: '0px'}}>
+              {selectedFile && (
+                <img src={fileUrl} alt="preview image" style={{width: '100%', height: '100%'}} />
+              )}
+            </Box>
+          </Grid>
           <Grid item xs={6}>
             <InputLabel sx={{fontWeight: 700}}>KHÓA HỌC</InputLabel>
             <TextField
@@ -476,6 +513,13 @@ const DangKyThi = () => {
                 })}
             </TextField>
           </Grid>
+          <Grid item xs={3}>
+            <InputLabel sx={{fontWeight: 700}}>Ảnh đại diện</InputLabel>
+            <Button variant="contained" color="info" component="label">
+              Chọn ảnh
+              <input id="file1" type="file" hidden onChange={handleFileSelect} />
+            </Button>
+          </Grid>
         </Grid>
         <Button
           onClick={handleSubmit}
@@ -488,7 +532,7 @@ const DangKyThi = () => {
             },
           }}
         >
-          GỬI
+          ĐĂNG KÝ THI
         </Button>
       </Container>
       <GuestFooter />

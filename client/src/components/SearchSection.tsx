@@ -36,44 +36,7 @@ const SearchSection = () => {
               alignItems: 'center',
             }}
           >
-            <Link to="/tra-cuu-danh-sach-thi" target="_blank">
-              <Box
-                sx={{
-                  display: 'flex',
-                  border: '2px solid #b20530',
-                  width: '200px',
-                  height: '200px',
-                  borderRadius: '100%',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  '&:hover': {
-                    backgroundColor: '#b20530',
-                    cursor: 'pointer',
-                    '& img': {
-                      filter: 'grayscale(1) invert(1) brightness(1.5)',
-                    },
-                  },
-                }}
-              >
-                <img src={searchIcon1} alt="Search 1" style={{width: '50%', height: '120px'}} />
-              </Box>
-            </Link>
-            <Typography
-              variant="h6"
-              sx={{color: '#b20530', textAlign: 'center', marginTop: '10px'}}
-            >
-              DANH SÁCH DỰ THI
-            </Typography>
-          </Box>
-          <Box
-            sx={{
-              width: '250px',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-            }}
-          >
-            <Link to="/tra-cuu-ket-qua-thi" target="_blank">
+            <Link to="/tra-cuu" target="_blank">
               <Box
                 sx={{
                   display: 'flex',
@@ -100,7 +63,7 @@ const SearchSection = () => {
               sx={{color: '#b20530', textAlign: 'center', marginTop: '10px'}}
             >
               {' '}
-              KẾT QUẢ THI CNTT
+              DANH SÁCH DỰ THI VÀ KẾT QUẢ THI CNTT
             </Typography>
           </Box>
           <Box

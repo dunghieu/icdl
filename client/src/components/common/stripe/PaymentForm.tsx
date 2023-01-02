@@ -21,10 +21,11 @@ function PaymentForm(props: any) {
   const paymentIntentId = props.match.params.id;
   const fetchData = async () => {
     const payment = await axios.get(`http://localhost:8080/api/payment/${paymentIntentId}`);
+    console.log(payment.data);
     const student = await axios.get(
-      `http://localhost:8080/api/registration/${payment.data.registrationId}`
+      `http://localhost:8080/api/registration?paymentId=${payment.data.id}`
     );
-    setData(student.data);
+    setData(student.data[0]);
     setPaymentData(payment.data);
   };
   useEffect(() => {
@@ -55,25 +56,30 @@ function PaymentForm(props: any) {
             Thông tin thanh toán
           </Typography>
           <Typography variant="body1" sx={{marginBottom: '20px'}}>
-            Họ và tên: {data.student.firstName} {data.student.lastName}
+            Họ và tên: {data.student?.firstName} {data.student?.lastName}
           </Typography>
           <Typography variant="body1" sx={{marginBottom: '20px'}}>
-            Ngày sinh: {data.student.dayOfBirth} - {data.student.monthOfBirth} -{' '}
-            {data.student.yearOfBirth}
+            Ngày sinh:{' '}
+            {data.student &&
+              `${data.student?.dayOfBirth} - ${data.student?.monthOfBirth} -
+            ${data.student?.yearOfBirth}`}
           </Typography>
 
           <Typography variant="body1" sx={{marginBottom: '20px'}}>
-            Email: {data.student.email}
+            Email: {data.student?.email}
           </Typography>
           <Typography variant="body1" sx={{marginBottom: '20px'}}>
-            Số điện thoại: {data.student.phoneNumber}
+            Số điện thoại: {data.student?.phoneNumber}
           </Typography>
           <Typography variant="body1" sx={{marginBottom: '20px'}}>
-            Địa chỉ: {data.student.placeOfBirth}
+            Địa chỉ: {data.student?.placeOfBirth}
           </Typography>
           <Typography variant="h6" sx={{marginBottom: '20px'}}>
             Số tiền thanh toán:{' '}
-            {paymentData.amount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} VND
+            {paymentData.amount &&
+              new Intl.NumberFormat('it-IT', {style: 'currency', currency: 'VND'}).format(
+                paymentData.amount
+              )}
           </Typography>
         </Box>
         <hr />

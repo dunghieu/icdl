@@ -1,40 +1,20 @@
 import {Container, Grid, Typography} from '@mui/material';
 import ActionAreaCardVertical from './common/card/ActionAreaCardVertical';
-
-const gridItem = [
-  {
-    title: 'title1',
-    content: 'content1',
-    time: '2021-10-10',
-  },
-  {
-    title: 'title2',
-    content: 'content2',
-    time: '2021-10-10',
-  },
-  {
-    title: 'title3',
-    content: 'content3',
-    time: '2021-10-10',
-  },
-  {
-    title: 'title4',
-    content: 'content4',
-    time: '2021-10-10',
-  },
-  {
-    title: 'title5',
-    content: 'content5',
-    time: '2021-10-10',
-  },
-  {
-    title: 'title6',
-    content: 'content6',
-    time: '2021-10-10',
-  },
-];
+import React, {useState, useEffect} from 'react';
+import moment from 'moment';
+import axios from 'axios';
 
 const NewsSection = () => {
+  const [data, setData] = useState<any>([]);
+  const fetchData = async () => {
+    const getData = await axios.get(`http://localhost:8080/api/feed?limit=6`);
+    const [finalData] = getData.data;
+    setData(finalData);
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <Container
       maxWidth="lg"
@@ -50,10 +30,16 @@ const NewsSection = () => {
       <Typography variant="h4" sx={{fontWeight: 700, color: '#b20530'}}>
         THÔNG BÁO VÀ TIN TỨC
       </Typography>
-      <Grid container spacing={2} sx={{marginTop: '50px'}}>
-        {gridItem.map((item) => (
-          <Grid item xs={12} md={6} key={item.title}>
-            <ActionAreaCardVertical title={item.title} content={item.content} time={item.time} />
+      <Grid container spacing={4} sx={{marginTop: '50px'}}>
+        {data.map((item) => (
+          <Grid item xs={12} md={6} key={item.id}>
+            <ActionAreaCardVertical
+              id={item.id}
+              title={item.title}
+              content={item.content}
+              time={moment(item.updated_at).format('DD/MM/YYYY')}
+              thumbnail={item.thumbnail}
+            />
           </Grid>
         ))}
       </Grid>

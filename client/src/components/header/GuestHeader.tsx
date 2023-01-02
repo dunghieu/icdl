@@ -20,6 +20,10 @@ import Logo from '../../lib/assets/images/Logo.png';
 import PhoneIcon from '@mui/icons-material/Phone';
 import {Tooltip} from '@mui/material';
 import useWindowDimensions from 'lib/hooks/useWindowDimentions';
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
+import SearchModal from 'components/common/modal/SearchModal';
+import Modal from '@mui/material/Modal';
+import TextField from '@mui/material/TextField';
 
 const basicPages = [
   {
@@ -71,9 +75,9 @@ const GuestHeader = () => {
   const [anchorElUser2, setAnchorElUser2] = React.useState<null | HTMLElement>(null);
   const {width, height} = useWindowDimensions();
 
-  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget);
-  };
+  const [openSearch, setOpenSearch] = React.useState(false);
+  const [searchText, setSearchText] = React.useState('');
+
   const handleOpenUserMenu1 = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -91,6 +95,10 @@ const GuestHeader = () => {
   };
   const handleCloseUserMenu2 = () => {
     setAnchorElUser2(null);
+  };
+
+  const handleSearch = () => {
+    alert(searchText);
   };
 
   return (
@@ -145,7 +153,7 @@ const GuestHeader = () => {
               <Icon component={HomeOutlinedIcon} />
             </Typography>
 
-            <Box sx={{flexGrow: 1, display: {xs: 'flex', md: 'none'}}}>
+            {/* <Box sx={{flexGrow: 1, display: {xs: 'flex', md: 'none'}}}>
               <IconButton
                 size="large"
                 aria-label="account of current user"
@@ -187,7 +195,8 @@ const GuestHeader = () => {
                   </MenuItem>
                 ))}
               </Menu>
-            </Box>
+            </Box> */}
+
             <Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
               <Button onMouseUp={handleOpenUserMenu1} sx={{my: 2, color: 'white', display: 'flex'}}>
                 Giới thiệu
@@ -298,6 +307,52 @@ const GuestHeader = () => {
                 </Button>
               ))}
             </Box>
+            <IconButton
+              sx={{
+                mr: 2,
+                display: {xs: 'none', md: 'flex'},
+                fontFamily: 'monospace',
+                fontWeight: 700,
+                letterSpacing: '.3rem',
+                color: 'inherit',
+                textDecoration: 'none',
+              }}
+              onClick={() => setOpenSearch(true)}
+            >
+              <Icon component={SearchOutlinedIcon} />
+              <Modal
+                open={openSearch}
+                onClose={(e: any) => {
+                  e.stopPropagation();
+                  setOpenSearch(false);
+                }}
+              >
+                <Box
+                  sx={{
+                    display: 'flex',
+                    position: 'absolute' as 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    width: 500,
+                    bgcolor: 'background.paper',
+                    border: '2px solid #000',
+                    boxShadow: 24,
+                  }}
+                >
+                  <TextField
+                    variant="outlined"
+                    placeholder="Nhập từ khóa tìm kiếm"
+                    fullWidth
+                    value={searchText}
+                    onChange={(e) => setSearchText(e.target.value)}
+                  />
+                  <IconButton onClick={handleSearch}>
+                    <Icon component={SearchOutlinedIcon} />
+                  </IconButton>
+                </Box>
+              </Modal>
+            </IconButton>
           </Toolbar>
         </Container>
       </AppBar>

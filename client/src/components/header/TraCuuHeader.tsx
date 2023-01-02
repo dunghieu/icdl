@@ -27,6 +27,10 @@ const basicPages = [
     route: '/tra-cuu-danh-sach-thi',
   },
   {
+    name: ' Tra cứu danh sách phòng học',
+    route: '/tra-cuu-danh-sach-on',
+  },
+  {
     name: ' Tra cứu kết quả thi',
     route: '/tra-cuu-ket-qua-thi',
   },

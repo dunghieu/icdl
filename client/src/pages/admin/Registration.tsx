@@ -1,11 +1,7 @@
 import {Button, Paper, Box, IconButton, Snackbar, Alert} from '@mui/material';
-import {useDispatch, useSelector} from 'react-redux';
-import {Actions} from 'store';
-import {RootState} from 'store/reducers';
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import AdminRegistrationTable from 'components/common/table/AdminRegistrationTable';
-import FuseAlert, {AlertType, AlertVariant} from 'components/common/alert/FuseAlert';
 
 const Registration = () => {
   const [data, setData] = useState([]);
@@ -34,6 +30,10 @@ const Registration = () => {
       });
   };
   const handleClick = async () => {
+    if (!data.length) {
+      alert('Không có dữ liệu');
+      return;
+    }
     await axios.post('http://localhost:8080/api/registration/assign').then(() => {
       setOpen(true);
       fetchData();
@@ -43,7 +43,7 @@ const Registration = () => {
   return (
     <>
       <Box marginBottom={1} sx={{textAlign: 'right'}}>
-        <Button variant="contained" onClick={handleClick}>
+        <Button variant="contained" onClick={handleClick} color="info">
           {/* <AddCircleRoundedIcon /> */}
           &nbsp; CHỐT DANH SÁCH THI
         </Button>
