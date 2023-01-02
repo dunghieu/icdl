@@ -10,9 +10,10 @@ import { Certificate, CertificateService } from '../certificate';
 import { Payment } from '../payment/entities';
 import { StudentCourseMapping, StudentCourseMappingService } from '../student-course-mapping';
 import { StudentExamMapping, StudentExamMappingService } from '../student-exam-mapping';
+import { FileModule } from '../file/file.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Registration, Student, Certificate, Payment, StudentCourseMapping, StudentExamMapping])],
+  imports: [TypeOrmModule.forFeature([Registration, Student, Certificate, Payment, StudentCourseMapping, StudentExamMapping]), FileModule],
   controllers: [RegistrationController],
   providers: [RegistrationService, EmailService, StudentService, PaymentService, CertificateService, StudentCourseMappingService, StudentExamMappingService],
   exports: [RegistrationService],

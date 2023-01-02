@@ -8,12 +8,14 @@ import { Student } from './entities/student.entity';
 import { SearchRequest } from 'src/shared/search-request';
 import { StudentType } from 'src/shared';
 import { generateID } from 'src/utils/Helper';
+import { StudentCourseMappingService } from '../student-course-mapping';
 
 @Injectable()
 export class StudentService {
   constructor(
     @InjectRepository(Student)
     private studentRepository: Repository<Student>,
+    private studentCourseMappingService: StudentCourseMappingService,
   ) {}
 
   async findByEmail(email: string): Promise<Student> {
@@ -74,20 +76,13 @@ export class StudentService {
     return result;
   }
 
-  async updateCode(args: { id: string, code: string }) {
-    const { id, code } = args;
+  async update(id: number, updateUserDto: UpdateStudentDto) {
     const student = await this.studentRepository.findOneBy({ id: +id });
     if (!student) {
       throw new NotFoundException('Student not found');
     }
-    student.code = code;
-    const result = await this.studentRepository.save(student);
-    return result;
-  }
-
-  async update(id: number, updateUserDto: UpdateStudentDto) {
-    return this.studentRepository.update(id, updateUserDto);
-
+    Object.assign(student, updateUserDto);
+    return this.studentRepository.save(student);
   }
 
   async remove(id: number): Promise<void> {
@@ -96,8 +91,75 @@ export class StudentService {
 
   async search(query): Promise<Student> {
     const repo = this.studentRepository;
+    const result = await repo.createQueryBuilder('s')
+    // Nối các bảng thông tin cần thiết
+      .addSelect(['s.id', 'registration', 'student.id'])
+      .leftJoin('s.registration', 'registration')
+      .leftJoin('registration.student', 'student')
+      .leftJoinAndSelect('registration.payment', 'payment')
+      .leftJoinAndSelect('registration.course', 'courseStandAlone')
+      .leftJoinAndSelect('student.studentCourseMapping', 'courses')
+      .leftJoinAndSelect('courses.course', 'course')
+      .leftJoinAndSelect('registration.certificate', 'certificate')
+      .leftJoinAndSelect('student.studentExamMapping', 'exams')
+      .leftJoinAndSelect('exams.exam', 'exam')
+      // Điều kiện tra cứu, yêu cầu thí sinh nhập đúng mã xác nhận và số CMND
+      .where('s.code = :code AND s.citizenId = :citizenId')
+      .setParameters({
+        code: query.code,
+        citizenId: query.citizenId,
+      })
+      .getOne();
+    // Xử lý dữ liệu đầ ra
+    if (result) {
+      result.registration = await Promise.all(result.registration.map(async (reg) => {
+        delete reg.student.id;
+        if (reg.type === StudentType.ON) {
+          delete reg.student.studentExamMapping;
+          const total = await this.studentCourseMappingService.findAll({
+            courseId: reg.courseId,
+          });
+          Object.assign(reg, { total: total.length });
+          return reg;
+        }
+        if (reg.type === StudentType.THI) {
+          delete reg.student.studentCourseMapping;
+          return reg;
+        }
+      }));
+    }
+    return result;
+  }
+
+  async searchOn(query): Promise<Student> {
+    const repo = this.studentRepository;
+    const result = await repo.createQueryBuilder('s')
+      .leftJoinAndSelect('s.registration', 'registration')
+      .leftJoinAndSelect('registration.student', 'student')
+      .leftJoinAndSelect('registration.payment', 'payment')
+      .leftJoinAndSelect('student.studentCourseMapping', 'courses')
+      .leftJoinAndSelect('courses.course', 'course')
+      .where('student.code = :code AND student.citizenId = :citizenId')
+      .setParameters({
+        code: query.code,
+        citizenId: query.citizenId,
+      })
+      .getOne();
+    result.registration = result.registration.filter((reg) => reg.type === StudentType.ON);
+    result.registration = await Promise.all(result.registration.map(async (reg) => {
+      const total = await this.studentCourseMappingService.findAll({
+        courseId: reg.courseId,
+      });
+      Object.assign(reg, { total: total.length });
+      return reg;
+    }));
+    return result;
+  }
+
+  async searchThi(query): Promise<Student> {
+    const repo = this.studentRepository;
     // const { name, email, phone } = query;
-    return repo.createQueryBuilder('s')
+    const result = await repo.createQueryBuilder('s')
       .leftJoinAndSelect('s.registration', 'registration')
       .leftJoinAndSelect('registration.payment', 'payment')
       .leftJoinAndSelect('registration.certificate', 'certificate')
@@ -110,19 +172,24 @@ export class StudentService {
         citizenId: query.citizenId,
       })
       .getOne();
+    if (!result) {
+      throw new NotFoundException('Student not found');
+    }
+    result.registration = result.registration?.filter((reg) => reg.type === StudentType.THI);
+    return result;
   }
 
   async searchKQ(query): Promise<Student> {
     const repo = this.studentRepository;
-    // const { name, email, phone } = query;
+    const firstName = query?.name?.split(' ').slice(0, -1).join(' ');
+    const lastName = query?.name?.split(' ').slice(-1).toString();
     return repo.createQueryBuilder('student')
-      .leftJoinAndSelect('student.payment', 'payment')
       .leftJoinAndSelect('student.studentExamMapping', 'exams')
       .leftJoinAndSelect('exams.exam', 'exam')
-      .leftJoinAndSelect('exam.examResult', 'examResult')
-      .where('student.code = :code AND student.citizenId = :citizenId AND exam.date = :date') // date format: YYYY/MM/DD
+      .where('student.firstName = :firstName AND student.lastName = :lastName AND student.citizenId = :citizenId AND exam.date = :date') // date format: YYYY/MM/DD
       .setParameters({
-        code: query.code,
+        firstName: firstName,
+        lastName: lastName,
         citizenId: query.citizenId,
         date: query.date,
       })

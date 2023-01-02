@@ -1,9 +1,12 @@
 import { IsNotEmpty, IsNumber, IsOptional, IsString, Matches } from 'class-validator';
 
 export class ExamDto {
+    @IsOptional()
+    @IsNumber()
+    id?: number;
+
     @IsString()
     name: string;
-
 
     @IsString()
     @IsOptional()

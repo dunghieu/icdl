@@ -13,8 +13,8 @@ export class StudentCourseMappingService {
     return this.studentCourseMappingRepository.save(createStudentExamMappingDto);
   }
 
-  findAll() {
-    return this.studentCourseMappingRepository.find();
+  findAll(query?: any) {
+    return this.studentCourseMappingRepository.find({where: query});
   }
 
   findOne(id: number) {

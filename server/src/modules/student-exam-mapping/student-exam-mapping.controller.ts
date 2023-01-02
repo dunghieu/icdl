@@ -21,8 +21,8 @@ export class StudentExamMappingController {
   }
 
   @Get('room')
-  getRoom() {
-    return this.studentExamMappingService.findAllRoom();
+  getRoom(@Query() query) {
+    return this.studentExamMappingService.findAllRoom(query);
   }
 
   @Get(':id')
@@ -49,6 +49,12 @@ export class StudentExamMappingController {
   @UseInterceptors(FileInterceptor('file'))
   uploadFile(@UploadedFile() file: Express.Multer.File) {
     return this.studentExamMappingService.importTheoreticalScore(file);
+  }
+
+  @Post('update-score')
+  async updateScore(@Body() body: any) {
+    await this.studentExamMappingService.updateScore(body);
+    return;
   }
 
 }

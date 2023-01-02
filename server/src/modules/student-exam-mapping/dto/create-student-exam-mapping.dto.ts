@@ -33,5 +33,21 @@ export class CreateStudentExamMappingDto {
 
     @IsNumberString()
     @IsOptional()
+    practicalScore1?: number;
+
+    @IsNumberString()
+    @IsOptional()
+    practicalScore2?: number;
+
+    @IsNumberString()
+    @IsOptional()
+    practicalScore3?: number;
+
+    @IsNumberString()
+    @IsOptional()
     status?: number;
+
+    @IsNumberString()
+    @IsOptional()
+    entry?: number;
 }

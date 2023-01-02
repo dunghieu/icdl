@@ -1,8 +1,15 @@
-import { IsNumberString, IsString } from 'class-validator';
+import { IsNumberString, IsOptional, IsString } from 'class-validator';
 
 export class CourseDto {
+  @IsOptional()
+  id?: number;
+
   @IsString()
   name: string;
+
+  @IsOptional()
+  @IsString()
+  code?: string;
 
   @IsString()
   day: string;

@@ -38,6 +38,17 @@ export class StudentExamMapping extends BaseEntity {
     practicalScore: number;
 
     @Column()
+    practicalScore1: number;
+
+    @Column()
+    practicalScore2: number;
+
+    @Column()
+    practicalScore3: number;
+
+    @Column()
     status: number;
 
+    @Column()
+    entry: number;
 }

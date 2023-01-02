@@ -22,6 +22,10 @@ export class StudentDto {
 
   @IsNotEmpty()
   @IsString()
+  avatar: string;
+
+  @IsNotEmpty()
+  @IsString()
   citizenId: string;
 
   @IsNotEmpty()

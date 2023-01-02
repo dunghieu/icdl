@@ -14,7 +14,9 @@ export class CourseService {
   ) {}
 
   create(createCourseDto: CreateCourseDto) {
-    return this.courseRepository.save(createCourseDto);
+    const create = this.courseRepository.create(createCourseDto);
+    create.code = 'C' + Math.floor(Math.random() * 100000);
+    return this.courseRepository.save(create);
   }
 
   findAll() {

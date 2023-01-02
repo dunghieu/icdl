@@ -1,6 +1,4 @@
-import { Payment } from 'src/modules/payment/entities';
 import { Student } from 'src/modules/student';
-import { StudentCourseMapping } from 'src/modules/student-course-mapping';
 import { BaseEntity } from 'src/shared';
 import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, OneToOne } from 'typeorm';
 
@@ -13,6 +11,9 @@ export class Course extends BaseEntity{
   day: string;
 
   @Column()
+  code: string;
+
+  @Column()
   start: string;
 
   @Column()
@@ -23,6 +24,9 @@ export class Course extends BaseEntity{
 
   @Column()
   certificateId: number;
+
+  @Column()
+  status: number;
 
   @ManyToMany(() => Student)
   @JoinTable({
@@ -37,10 +41,4 @@ export class Course extends BaseEntity{
     },
   })
   students: Student[];
-
-  // @OneToOne(() => Payment, (payment) => payment.courseId)
-  // payment: Payment;
-
-  // @Column()
-  // subjects: SubjectDto[];
 }

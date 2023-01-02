@@ -12,4 +12,9 @@ export class Feed extends BaseEntity{
     @Column()
     category: string;
 
+    @Column()
+    thumbnail: string;
+
+    @Column()
+    authorId: number;
 }

@@ -14,20 +14,26 @@ export class PaymentController {
 
   @Post()
   async create(@Body() body) {
+    // Gọi đến service để gửi request tới Stripe API xác nhận thanh toán
     const result = await this.paymentService.confirmPaymentIntent(
       body.intentId,
     );
+    // Nếu thanh toán thành công thì cập nhật trạng thái thanh toán thành công
     if (result.status === 'succeeded') {
       const payment = await this.paymentService.update(body.intentId, { status: 1 });
-      const registration = await this.registrationService.findOne(payment.id);
-      if (registration.type !== StudentType.THI) {
+      const registration = await this.registrationService.findOneBy({
+        paymentId: payment.id,
+      });
+      // Nếu hình thức đăng ký là ôn thì tạo mới bản ghi trong bảng student-course-mapping
+      if (registration.type === StudentType.ON) {
         await this.studentCourseMappingService.create({
           studentId: registration.student.id,
           courseId: registration.courseId,
         });
       }
     }
-    return result;
+    // Trả về trạng thái thanh toán
+    return result.status;
   }
 
   @Get(':intentId')

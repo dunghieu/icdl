@@ -17,6 +17,7 @@ import { RegistrationModule } from '../registration';
 import { CertificateModule } from '../certificate';
 import { StudentExamMappingModule } from '../student-exam-mapping';
 import { StudentCourseMappingModule } from '../student-course-mapping';
+import { FileModule } from '../file/file.module';
 
 @Module({
   imports: [
@@ -51,6 +52,7 @@ import { StudentCourseMappingModule } from '../student-course-mapping';
     CertificateModule,
     StudentCourseMappingModule,
     StudentExamMappingModule,
+    FileModule
   ],
   controllers: [AppController],
   providers: [AppService],

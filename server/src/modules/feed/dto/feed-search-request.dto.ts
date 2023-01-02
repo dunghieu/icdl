@@ -4,5 +4,8 @@ import { SearchRequest } from 'src/shared/search-request';
 export class FeedSearchRequest extends SearchRequest{
     @IsOptional()
     @IsString()
-    category: string;
+    category?: string;
+
+    @IsOptional()
+    s?: string;
 }

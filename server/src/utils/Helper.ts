@@ -1,5 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const Hashids = require('hashids/cjs');
+import * as fs from 'fs';
 
 export const generateID = (count: number) => {
   const sym = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890';
@@ -40,3 +41,17 @@ export const hashIdDecode = (key: string, hashId: string): number | bigint | und
 
   return ret.length > 0 ? ret[0] : null;
 };
+
+export const getDirectories = (source) =>
+  fs.readdirSync(source, { withFileTypes: true })
+    .filter((dirent) => dirent.isDirectory())
+    .map((dirent) => dirent.name);
+
+export const getFilesFromDirectory = (source) =>
+  fs.readdirSync(source, { withFileTypes: true })
+    .filter((dirent) => dirent.isFile())
+    .map((dirent) => dirent.name);
+
+export function toArrayBuffer(buffer) {
+  return buffer.buffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.byteLength);
+}

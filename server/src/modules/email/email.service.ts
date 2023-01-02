@@ -64,6 +64,7 @@ export class EmailService {
 
         };
         console.log('message checked=>', mail);
+        return mail;
       } catch (err) {
         throw new BadRequestException(err.message);
       }

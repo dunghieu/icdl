@@ -3,12 +3,15 @@ import { IsNumberString, IsOptional } from 'class-validator';
 export class StudentExamMappingQueryDto{
     @IsOptional()
     @IsNumberString()
-    studentId: number;
+    studentId?: number;
 
     @IsOptional()
     @IsNumberString()
-    examId: number;
+    examId?: number;
 
     @IsOptional()
-    status: number;
+    status?: number;
+
+    @IsOptional()
+    status2?: number;
 }

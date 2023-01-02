@@ -14,9 +14,24 @@ export class StudentController {
     return this.studentService.create(createStudentDto);
   }
 
+  @Get('searchThi')
+  searchThi(@Query() query){
+    return this.studentService.searchThi(query);
+  }
+
   @Get('search')
   search(@Query() query){
     return this.studentService.search(query);
+  }
+
+  @Get('searchOn')
+  searchOn(@Query() query){
+    return this.studentService.searchOn(query);
+  }
+
+  @Get('searchKQ')
+  searchKQ(@Query() query){
+    return this.studentService.searchKQ(query);
   }
 
   @Get('danh-sach-thi')
@@ -32,11 +47,6 @@ export class StudentController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.studentService.findById(+id);
-  }
-
-  @Patch('updateCode')
-  updateCode(@Body() updateUserDto) {
-    return this.studentService.updateCode(updateUserDto);
   }
 
   @Patch(':id')
