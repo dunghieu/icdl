@@ -64,21 +64,25 @@ const TraCuuDanhSachOn = (props) => {
 
   useEffect(() => {
     const arr: any = [];
-    result?.registration?.map((registration: any, index: number) => {
-      let i = 0;
-      registration?.student?.studentCourseMapping?.map((mapping: any) => {
-        arr.push({
-          id: ++i,
-          name: mapping?.course?.name,
-          code: mapping?.course?.code,
-          time: `${mapping.course?.start?.slice(0, 5)}-${mapping.course?.end?.slice(0, 5)}`,
-          day: mapping?.course?.day,
-          open: moment(mapping?.course?.open).format('DD/MM/YYYY'),
-          total: registration?.total,
-          description: '',
-        });
+    let i = 0;
+    result?.registration
+      ?.filter((r) => r.type == 'ôn')
+      .map((registration: any, index: number) => {
+        registration?.student?.studentCourseMapping
+          ?.filter((s) => s.courseId == registration.courseId)
+          .map((mapping: any) => {
+            arr.push({
+              id: ++i,
+              name: mapping?.course?.name,
+              code: mapping?.course?.code,
+              time: `${mapping.course?.start?.slice(0, 5)}-${mapping.course?.end?.slice(0, 5)}`,
+              day: mapping?.course?.day,
+              open: moment(mapping?.course?.open).format('DD/MM/YYYY'),
+              total: registration?.total,
+              description: '',
+            });
+          });
       });
-    });
     setRows(arr);
   }, [result]);
 

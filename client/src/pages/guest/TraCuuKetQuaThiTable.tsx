@@ -85,22 +85,26 @@ const TraCuuKetQuaThiTable = (props) => {
 
   useEffect(() => {
     const arr: any = [];
-    result?.registration?.map((registration: any, index: number) => {
-      let i = 0;
-      registration?.student?.studentExamMapping?.map((examMapping: any) => {
-        arr.push({
-          id: ++i,
-          studentId: result.id,
-          code: examMapping?.exam?.code,
-          name: examMapping?.exam?.name,
-          certificateId: examMapping?.exam?.certificateId,
-          practicalScore: examMapping?.practicalScore,
-          theoreticalScore: examMapping?.theoreticalScore,
-          examId: examMapping?.exam?.id,
-          lanthi: examMapping?.entry,
-        });
+    let i = 0;
+    result?.registration
+      ?.filter((r) => r.type == 'thi')
+      .map((registration: any, index: number) => {
+        registration?.student?.studentExamMapping
+          ?.filter((s) => s?.exam?.certificateId == registration?.certificate?.id)
+          ?.map((examMapping: any) => {
+            arr.push({
+              id: ++i,
+              studentId: result.id,
+              code: examMapping?.exam?.code,
+              name: examMapping?.exam?.name,
+              certificateId: examMapping?.exam?.certificateId,
+              practicalScore: examMapping?.practicalScore,
+              theoreticalScore: examMapping?.theoreticalScore,
+              examId: examMapping?.exam?.id,
+              lanthi: examMapping?.entry,
+            });
+          });
       });
-    });
     setRows(arr);
   }, [result]);
 

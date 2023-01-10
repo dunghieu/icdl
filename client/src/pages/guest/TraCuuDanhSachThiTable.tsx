@@ -10,6 +10,7 @@ import TheDuThi from 'components/pdf/TheDuThi';
 import NopBaiThiModal from 'components/common/modal/NopBaiThiModal';
 import {removeVietnameseTones} from 'utils/helper';
 const moment = require('moment');
+import * as _ from 'lodash';
 
 const theme = createTheme({
   palette: {
@@ -89,14 +90,16 @@ const TraCuuDanhSachThi = (props) => {
             <>
               {params.row.description !== 'Hoãn thi' && beforeExam ? (
                 <>
-                  <NopBaiThiModal
-                    name={`${removeVietnameseTones(
-                      `${result?.firstName}${result?.lastName}`
-                    ).replace(/ /g, '')}`}
-                    folderDate={moment(params.row.testDate, 'DD/MM/YYYY').format('DDMMYYYY')}
-                    folderRoom={params.row.room}
-                    sbd={params.row.sbd}
-                  />
+                  {params.row.room && (
+                    <NopBaiThiModal
+                      name={`${removeVietnameseTones(
+                        `${result?.firstName}${result?.lastName}`
+                      ).replace(/ /g, '')}`}
+                      folderDate={moment(params.row.testDate, 'DD/MM/YYYY').format('DDMMYYYY')}
+                      folderRoom={params.row.room}
+                      sbd={params.row.sbd}
+                    />
+                  )}
                   <Tooltip title="Hoãn thi">
                     <IconButton
                       onClick={() =>
@@ -110,7 +113,7 @@ const TraCuuDanhSachThi = (props) => {
                       <CancelIcon />
                     </IconButton>
                   </Tooltip>
-                  <TheDuThi {...result} {...params.row} />
+                  {params.row.room && <TheDuThi {...result} {...params.row} />}
                 </>
               ) : (
                 <></>
@@ -118,17 +121,6 @@ const TraCuuDanhSachThi = (props) => {
             </>
           );
         }
-        // {
-        //   return (
-        //     <Tooltip title="Thanh toán">
-        //       <IconButton>
-        //         <Link to={`/checkout/${params.row.intentId}/${params.row.clientSecret}`} replace>
-        //           <PaidIcon />
-        //         </Link>
-        //       </IconButton>
-        //     </Tooltip>
-        //   );
-        // }
       },
     },
   ];
@@ -138,43 +130,51 @@ const TraCuuDanhSachThi = (props) => {
   }, []);
 
   useEffect(() => {
-    console.log(result);
     const arr: any = [];
-    result?.registration?.map((registration: any, index: number) => {
-      let i = 0;
-      registration?.student?.studentExamMapping?.map((examMapping: any) => {
-        arr.push({
-          id: ++i,
-          studentId: result.id,
-          avatar: result.avatar,
-          intentId: registration?.payment?.intentId,
-          clientSecret: registration?.payment?.secret,
-          name: examMapping?.exam?.name,
-          certificateId: examMapping?.exam?.certificateId,
-          examId: examMapping?.exam?.id,
-          time: `${examMapping?.start?.slice(0, 5)} - ${examMapping.end?.slice(0, 5)}`,
-          testTime: `${moment(examMapping?.start, 'HH:mm:ss')
-            .subtract(15, 'minutes')
-            .format('HH:mm')}`,
-          testDate: moment(examMapping?.exam.date).format('DD/MM/YYYY'),
-          registrationStatus: registration?.status,
-          room: examMapping?.room,
-          sbd: examMapping?.sbd,
-          dotthi: examMapping?.exam?.series,
-          lanthi: examMapping?.entry,
-          // amount: new Intl.NumberFormat('it-IT', {style: 'currency', currency: 'VND'}).format(
-          //   registration?.payment?.amount
-          // ),
-          description:
-            registration?.status === 0
-              ? 'Hoãn thi'
-              : registration?.payment?.status === 1
-              ? 'Đã thanh toán'
-              : 'Chưa thanh toán',
-        });
+    let i = 0;
+    result?.registration
+      ?.filter((r) => r.type == 'thi')
+      .map((registration: any, index: number) => {
+        registration?.student?.studentExamMapping
+          ?.filter((s) => s?.exam?.certificateId == registration?.certificate?.id)
+          .map((examMapping: any) => {
+            arr.push({
+              id: ++i,
+              studentId: result.id,
+              avatar: result.avatar,
+              intentId: registration?.payment?.intentId,
+              clientSecret: registration?.payment?.secret,
+              name: examMapping?.exam?.name,
+              certificateId: examMapping?.exam?.certificateId,
+              examId: examMapping?.exam?.id,
+              time:
+                examMapping?.start &&
+                `${examMapping?.start?.slice(0, 5)} - ${examMapping.end?.slice(0, 5)}`,
+              testTime: `${moment(examMapping?.start, 'HH:mm:ss')
+                .subtract(15, 'minutes')
+                .format('HH:mm')}`,
+              testDate: moment(examMapping?.exam.date).format('DD/MM/YYYY'),
+              registrationStatus: registration?.status,
+              room: examMapping?.room,
+              sbd: examMapping?.sbd,
+              dotthi: examMapping?.exam?.series,
+              lanthi: examMapping?.entry,
+              // amount: new Intl.NumberFormat('it-IT', {style: 'currency', currency: 'VND'}).format(
+              //   registration?.payment?.amount
+              // ),
+              description:
+                registration?.status === 0
+                  ? 'Hoãn thi'
+                  : registration?.payment?.status === 1
+                  ? 'Đã thanh toán'
+                  : 'Chưa thanh toán',
+            });
+          });
       });
+    const finalArr = _.uniqBy(arr, function (e) {
+      return e.id;
     });
-    setRows(arr);
+    setRows(finalArr);
   }, [result]);
 
   return (
