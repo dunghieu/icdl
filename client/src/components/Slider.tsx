@@ -10,13 +10,13 @@ const Slider = () => {
   return (
     <Swiper modules={[Navigation, Pagination]} slidesPerView={1} navigation pagination loop={true}>
       <SwiperSlide>
-        <img src={slider1} alt="Slider 1" />
+        <img src={slider1} alt="Slider 1" style={{width: '100%'}} />
       </SwiperSlide>
       <SwiperSlide>
-        <img src={slider2} alt="Slider 2" />
+        <img src={slider2} alt="Slider 2" style={{width: '100%'}} />
       </SwiperSlide>
       <SwiperSlide>
-        <img src={slider3} alt="Slider 3" />
+        <img src={slider3} alt="Slider 3" style={{width: '100%'}} />
       </SwiperSlide>
     </Swiper>
   );
