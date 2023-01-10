@@ -1,6 +1,5 @@
 import {useEffect, useRef, useState} from 'react';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import axios from 'axios';
 import {Grid, Typography} from '@mui/material';
 import BaiThiModal from 'components/common/modal/BaiThiModal';

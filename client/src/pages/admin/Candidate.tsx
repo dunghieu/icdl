@@ -1,4 +1,4 @@
-import {Button, Paper, Box, IconButton, TextField, MenuItem} from '@mui/material';
+import {Button, Box, TextField, MenuItem} from '@mui/material';
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import AdminCandidateTable from 'components/common/table/AdminCandidateTable';
@@ -53,6 +53,10 @@ const Candidate = () => {
         data: formData,
         headers: {'Content-Type': 'multipart/form-data'},
       });
+      if (response.data) {
+        alert('Import thành công');
+        fetchData();
+      }
     } catch (error) {
       console.log(error);
     }

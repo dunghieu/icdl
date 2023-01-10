@@ -4,7 +4,6 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import {CardActionArea, Divider} from '@mui/material';
-import parse from 'html-react-parser';
 import {useHistory} from 'react-router-dom';
 
 export default function ActionAreaCardVertical({title, content, time, thumbnail, id}: any) {

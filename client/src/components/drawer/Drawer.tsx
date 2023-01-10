@@ -1,5 +1,5 @@
-import {Avatar, Divider, Drawer, IconButton} from '@mui/material';
-import {Link} from 'react-router-dom';
+import {Divider, Drawer, IconButton} from '@mui/material';
+
 import React from 'react';
 import {styled, useTheme} from '@mui/material/styles';
 import {DrawerProps} from 'lib/interfaces';

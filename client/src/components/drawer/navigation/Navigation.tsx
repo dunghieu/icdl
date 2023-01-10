@@ -1,7 +1,6 @@
 import {List, ListSubheader, Typography} from '@mui/material';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
-import ExitToAppOutlinedIcon from '@mui/icons-material/ExitToAppOutlined';
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 import {Basic, Collapsable} from './components';
 import LocalLibraryOutlinedIcon from '@mui/icons-material/LocalLibraryOutlined';

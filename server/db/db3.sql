@@ -14,10 +14,12 @@
 
 
 -- Dumping database structure for datn
+DROP DATABASE IF EXISTS `datn`;
 CREATE DATABASE IF NOT EXISTS `datn` /*!40100 DEFAULT CHARACTER SET latin1 */;
 USE `datn`;
 
 -- Dumping structure for table datn.account
+DROP TABLE IF EXISTS `account`;
 CREATE TABLE IF NOT EXISTS `account` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
@@ -36,6 +38,7 @@ INSERT INTO `account` (`id`, `created_at`, `updated_at`, `email`, `password`, `n
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
 
 -- Dumping structure for table datn.certificate
+DROP TABLE IF EXISTS `certificate`;
 CREATE TABLE IF NOT EXISTS `certificate` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
@@ -53,6 +56,7 @@ INSERT INTO `certificate` (`id`, `created_at`, `updated_at`, `name`) VALUES
 /*!40000 ALTER TABLE `certificate` ENABLE KEYS */;
 
 -- Dumping structure for table datn.city
+DROP TABLE IF EXISTS `city`;
 CREATE TABLE IF NOT EXISTS `city` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
@@ -131,6 +135,7 @@ INSERT INTO `city` (`id`, `created_at`, `updated_at`, `name`) VALUES
 /*!40000 ALTER TABLE `city` ENABLE KEYS */;
 
 -- Dumping structure for table datn.course
+DROP TABLE IF EXISTS `course`;
 CREATE TABLE IF NOT EXISTS `course` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created_at` datetime DEFAULT current_timestamp(),
@@ -160,6 +165,7 @@ INSERT INTO `course` (`id`, `created_at`, `updated_at`, `name`, `code`, `day`, `
 /*!40000 ALTER TABLE `course` ENABLE KEYS */;
 
 -- Dumping structure for table datn.ethnic
+DROP TABLE IF EXISTS `ethnic`;
 CREATE TABLE IF NOT EXISTS `ethnic` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
@@ -230,6 +236,7 @@ INSERT INTO `ethnic` (`id`, `created_at`, `updated_at`, `name`, `description`) V
 /*!40000 ALTER TABLE `ethnic` ENABLE KEYS */;
 
 -- Dumping structure for table datn.exam
+DROP TABLE IF EXISTS `exam`;
 CREATE TABLE IF NOT EXISTS `exam` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
@@ -253,6 +260,7 @@ INSERT INTO `exam` (`id`, `created_at`, `updated_at`, `name`, `certificateId`, `
 /*!40000 ALTER TABLE `exam` ENABLE KEYS */;
 
 -- Dumping structure for table datn.feed
+DROP TABLE IF EXISTS `feed`;
 CREATE TABLE IF NOT EXISTS `feed` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
@@ -292,6 +300,7 @@ INSERT INTO `feed` (`id`, `created_at`, `updated_at`, `title`, `thumbnail`, `con
 /*!40000 ALTER TABLE `feed` ENABLE KEYS */;
 
 -- Dumping structure for table datn.payment
+DROP TABLE IF EXISTS `payment`;
 CREATE TABLE IF NOT EXISTS `payment` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
@@ -413,6 +422,7 @@ INSERT INTO `payment` (`id`, `created_at`, `updated_at`, `intentId`, `secret`, `
 /*!40000 ALTER TABLE `payment` ENABLE KEYS */;
 
 -- Dumping structure for table datn.registration
+DROP TABLE IF EXISTS `registration`;
 CREATE TABLE IF NOT EXISTS `registration` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
@@ -571,10 +581,11 @@ INSERT INTO `registration` (`id`, `created_at`, `updated_at`, `studentId`, `type
 	(132, '2022-12-04 15:13:19', '2022-12-18 20:26:28', 102, 'thi', 1, 1, NULL, 102),
 	(133, '2022-12-04 15:13:19', '2022-12-04 15:13:19', 103, 'ôn', NULL, 2, 4, 103),
 	(135, '2022-12-04 15:13:19', '2022-12-29 19:55:21', 8, 'ôn', NULL, 2, 4, 104),
-	(136, '2022-12-04 15:13:19', '2023-01-11 01:57:44', 8, 'thi', 1, 2, NULL, 104);
+	(136, '2022-12-04 15:13:19', '2023-01-11 04:31:16', 8, 'thi', 1, 2, NULL, 104);
 /*!40000 ALTER TABLE `registration` ENABLE KEYS */;
 
 -- Dumping structure for table datn.student
+DROP TABLE IF EXISTS `student`;
 CREATE TABLE IF NOT EXISTS `student` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
@@ -600,7 +611,7 @@ CREATE TABLE IF NOT EXISTS `student` (
   CONSTRAINT `FK_student_ethnic` FOREIGN KEY (`ethnic`) REFERENCES `ethnic` (`name`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=104 DEFAULT CHARSET=latin1;
 
--- Dumping data for table datn.student: ~104 rows (approximately)
+-- Dumping data for table datn.student: ~103 rows (approximately)
 /*!40000 ALTER TABLE `student` DISABLE KEYS */;
 INSERT INTO `student` (`id`, `created_at`, `updated_at`, `firstName`, `lastName`, `avatar`, `gender`, `citizenId`, `dayOfBirth`, `monthOfBirth`, `yearOfBirth`, `placeOfBirth`, `phoneNumber`, `email`, `ethnic`, `code`, `description`) VALUES
 	(1, '2022-12-04 15:13:19', '2022-12-29 15:23:06', 'Nguyễn Tuấn', 'Anh', 'https://firebasestorage.googleapis.com/v0/b/datn-f3d5e.appspot.com/o/avatars%2Fimg_avatar.png?alt=media&token=d0e65e3f-6cf7-4aed-9d81-bd738147115f', 'Nam', '000002486', '24', '04', '2000', 'Hà Nội', NULL, NULL, 'Kinh', 'casc', NULL),
@@ -709,6 +720,7 @@ INSERT INTO `student` (`id`, `created_at`, `updated_at`, `firstName`, `lastName`
 /*!40000 ALTER TABLE `student` ENABLE KEYS */;
 
 -- Dumping structure for table datn.student_course_mapping
+DROP TABLE IF EXISTS `student_course_mapping`;
 CREATE TABLE IF NOT EXISTS `student_course_mapping` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created_at` datetime DEFAULT current_timestamp(),
@@ -794,6 +806,7 @@ INSERT INTO `student_course_mapping` (`id`, `created_at`, `updated_at`, `student
 /*!40000 ALTER TABLE `student_course_mapping` ENABLE KEYS */;
 
 -- Dumping structure for table datn.student_exam_mapping
+DROP TABLE IF EXISTS `student_exam_mapping`;
 CREATE TABLE IF NOT EXISTS `student_exam_mapping` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
@@ -889,7 +902,7 @@ INSERT INTO `student_exam_mapping` (`id`, `created_at`, `updated_at`, `examId`, 
 	(66, '2022-12-18 20:26:28', '2023-01-11 02:30:43', 1, 98, '1kmv-1', 8, '07:30:00', '10:30:00', NULL, NULL, NULL, NULL, NULL, NULL, 1),
 	(67, '2022-12-18 20:26:28', '2023-01-11 02:30:43', 3, 100, '2lde-1', 10, '07:30:00', '10:30:00', NULL, NULL, NULL, NULL, NULL, NULL, 1),
 	(68, '2022-12-18 20:26:28', '2023-01-11 02:30:43', 1, 102, '1kmv-1', 10, '07:30:00', '10:30:00', NULL, NULL, NULL, NULL, NULL, NULL, 1),
-	(69, '2023-01-11 01:57:44', '2023-01-11 02:30:43', 3, 8, '2lde-1', 5, '07:30:00', '10:30:00', NULL, NULL, NULL, NULL, NULL, NULL, 1);
+	(72, '2023-01-11 04:31:16', '2023-01-11 04:31:16', 3, 8, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
 /*!40000 ALTER TABLE `student_exam_mapping` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

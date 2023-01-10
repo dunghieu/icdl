@@ -2,17 +2,9 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
-import {Link, TextField, Typography} from '@mui/material';
+import {TextField} from '@mui/material';
 import axios from 'axios';
-import {
-  getStorage,
-  ref,
-  uploadBytes,
-  listAll,
-  getDownloadURL,
-  getMetadata,
-  getBlob,
-} from 'firebase/storage';
+import {getStorage, ref, getBlob} from 'firebase/storage';
 
 const style = {
   position: 'absolute' as 'absolute',

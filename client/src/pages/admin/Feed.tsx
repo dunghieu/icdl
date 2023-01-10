@@ -1,4 +1,4 @@
-import {Button, Paper, Box, IconButton} from '@mui/material';
+import {Box, IconButton} from '@mui/material';
 import {FuseCard} from 'components';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from 'store/reducers';

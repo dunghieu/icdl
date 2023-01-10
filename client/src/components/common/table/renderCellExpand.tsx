@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
-import {DataGrid, GridColDef, GridRenderCellParams} from '@mui/x-data-grid';
+import {GridRenderCellParams} from '@mui/x-data-grid';
 
 interface GridCellExpandProps {
   value?: string;

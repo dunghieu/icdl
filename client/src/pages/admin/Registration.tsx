@@ -1,4 +1,4 @@
-import {Button, Paper, Box, IconButton, Snackbar, Alert} from '@mui/material';
+import {Button, Box, Snackbar, Alert} from '@mui/material';
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import AdminRegistrationTable from 'components/common/table/AdminRegistrationTable';
