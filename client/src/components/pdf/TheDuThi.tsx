@@ -3,6 +3,7 @@ import {printDocument} from 'utils/helper';
 import LocalPrintshopIcon from '@mui/icons-material/LocalPrintshop';
 
 const TheDuThi = (props: {
+  avatar: string;
   name: string;
   dotthi: number;
   room: string;
@@ -24,6 +25,7 @@ const TheDuThi = (props: {
     const opt = {
       orientation: 'l',
       unit: 'px',
+      pdfName: `TheDuThi_${props.sbd}_${props.room}`,
     };
     printDocument(elem, opt);
   };
@@ -107,7 +109,11 @@ const TheDuThi = (props: {
               alignItems: 'center',
             }}
           >
-            <Typography variant="body2">Ảnh 3x4</Typography>
+            {props?.avatar ? (
+              <img src={props?.avatar} width="100%" height="100%" />
+            ) : (
+              <Typography variant="body2">Ảnh 3x4</Typography>
+            )}
           </Box>
           <Grid container sx={{width: '800px'}}>
             <Grid item xs={6}>

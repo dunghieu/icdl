@@ -50,6 +50,7 @@ export default function BaiThiModal(props: any) {
       room,
       score,
     };
+    console.log(unit, sbd, room);
     await axios.post('http://localhost:8080/api/student-exam-mapping/update-score', data);
     setScore('');
     handleClose();
@@ -61,7 +62,6 @@ export default function BaiThiModal(props: any) {
     const newUrl = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = newUrl;
-    console.log(a.href);
     a.download = `${phach}.xlsx`;
     a.click();
   };

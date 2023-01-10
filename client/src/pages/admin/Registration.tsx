@@ -34,7 +34,7 @@ const Registration = () => {
       alert('Không có dữ liệu');
       return;
     }
-    await axios.post('http://localhost:8080/api/registration/assign').then(() => {
+    axios.post('http://localhost:8080/api/registration/assign').then(() => {
       setOpen(true);
       fetchData();
     });

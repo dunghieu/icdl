@@ -35,7 +35,10 @@ async function savePdf(imageUrls, custom) {
 
 export const printDocument = (input, opt) => {
   // Đầu vào nhận được là một đối tượng HTML
-  html2canvas(input).then((canvas) => {
+  html2canvas(input, {
+    allowTaint: true,
+    useCORS: true,
+  }).then((canvas) => {
     // Chuyển đối tượng HTML thành ảnh
     const imgData = canvas.toDataURL('image/png');
     // Tạo đối tượng PDF với các tham số tùy chỉnh
@@ -43,7 +46,7 @@ export const printDocument = (input, opt) => {
     // Thêm ảnh vào PDF
     pdf.addImage(imgData, 'PNG', 0, 0);
     // Lưu PDF
-    pdf.save('download.pdf');
+    pdf.save(`${opt.pdfName}.pdf`);
   });
 };
 

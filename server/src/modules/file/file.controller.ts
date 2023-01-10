@@ -30,7 +30,7 @@ export class FileController {
   ) {
 
     const { folderDate, folderRoom, unit, sbd, name } = body;
-    file.filename = unit + '_' + sbd + '_' + name + '.' + 'xlsx';
+    file.filename = unit + '_' + sbd + '_' + folderRoom + '_' + name + '.' + 'xlsx';
     await this.firebaseProvider.uploadFile(file, { date: folderDate, room: folderRoom });
     // this.fileService.uploadFile(body, file);
     return { message: 'Upload file successfully' };

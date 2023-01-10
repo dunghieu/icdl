@@ -91,7 +91,7 @@ export default function AdminRegistrationTable({rows, onDeleteRow}: any) {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-
+  console.log(rows);
   return (
     <TableContainer
       component={Paper}
@@ -123,7 +123,7 @@ export default function AdminRegistrationTable({rows, onDeleteRow}: any) {
               <TableCell>
                 {row.student?.firstName} {row.student?.lastName}
               </TableCell>
-              <TableCell>{row.gender}</TableCell>
+              <TableCell>{row.student?.gender}</TableCell>
               <TableCell>
                 {row.student?.dayOfBirth} - {row.student?.monthOfBirth} - {row.student?.yearOfBirth}
               </TableCell>
@@ -132,9 +132,9 @@ export default function AdminRegistrationTable({rows, onDeleteRow}: any) {
               <TableCell>{row.student?.email}</TableCell>
               <TableCell>{row.student?.ethnic}</TableCell>
               <TableCell>
-                {row.certificateId == 1
+                {row.certificate?.id == 1
                   ? 'CNTT Cơ bản'
-                  : row.certificateId == 2
+                  : row.certificate?.id == 2
                   ? 'CNTT Nâng cao'
                   : 'IC3, MOS'}
               </TableCell>

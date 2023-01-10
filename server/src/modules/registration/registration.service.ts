@@ -109,7 +109,7 @@ export class RegistrationService {
   findAll(query?: RegistrationQueryDto) {
     return this.registrationRepository.find({
       where: query,
-      relations: ['student', 'payment'],
+      relations: ['student', 'payment', 'certificate'],
     });
   }
 

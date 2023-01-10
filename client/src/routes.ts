@@ -33,7 +33,7 @@ export const adminRoutes = [
       {
         path: paths.Admin,
         exact: true,
-        component: lazy(() => import("pages/admin/Home")),
+        component: lazy(() => import("pages/admin/Candidate")),
       },
       {
         path: `${paths.Admin}/registration`,
@@ -41,9 +41,9 @@ export const adminRoutes = [
         component: lazy(() => import("pages/admin/Registration")),
       },
       {
-        path: `${paths.Admin}/candidate`,
+        path: `${paths.Admin}/feed`,
         exact: true,
-        component: lazy(() => import("pages/admin/Candidate")),
+        component: lazy(() => import("pages/admin/Feed")),
       },
       {
         path: `${paths.Admin}/course`,

@@ -60,20 +60,22 @@ export class PaymentService {
   }
 
   async update(id: number | string, body: UpdatePaymentDto): Promise<Payment> {
-    let payment;
+    let payment: Payment;
     if (typeof id === 'string') {
       payment = await this.findOneBy({ intentId: id });
     }
     if (typeof id === 'number') {
       payment = await this.findById(id);
     }
+    const amount = body.amount || payment.amount;
     const paymentIntent = await this.createPaymentIntent({
-      amount: body.amount,
+      amount: amount,
       currency: 'vnd',
     });
     payment.intentId = paymentIntent.paymentId;
     payment.secret = paymentIntent.clientSecret;
-    payment.amount = body.amount;
+    payment.amount = amount;
+    payment.status = body.status || payment.status;
     return this.paymentRepository.save(payment);
   }
 

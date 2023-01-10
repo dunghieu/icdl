@@ -15,7 +15,7 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
-import {Link} from 'react-router-dom';
+import {Link, useHistory} from 'react-router-dom';
 import Logo from '../../lib/assets/images/Logo.png';
 import PhoneIcon from '@mui/icons-material/Phone';
 import {Tooltip} from '@mui/material';
@@ -75,6 +75,8 @@ const GuestHeader = () => {
   const [anchorElUser2, setAnchorElUser2] = React.useState<null | HTMLElement>(null);
   const {width, height} = useWindowDimensions();
 
+  const history = useHistory();
+
   const [openSearch, setOpenSearch] = React.useState(false);
   const [searchText, setSearchText] = React.useState('');
 
@@ -98,7 +100,8 @@ const GuestHeader = () => {
   };
 
   const handleSearch = () => {
-    alert(searchText);
+    history.push(`/category?s=${searchText}`);
+    window.location.reload();
   };
 
   return (

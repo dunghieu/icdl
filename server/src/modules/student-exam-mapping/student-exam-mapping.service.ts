@@ -201,6 +201,9 @@ export class StudentExamMappingService {
       const mapping = await this.studentExamMappingRepository.findOne({
         where: {
           sbd: item[keys[0]],
+          exam: {
+            code: item[keys[1]],
+          },
           status: IsNull(),
         },
       });
@@ -209,10 +212,10 @@ export class StudentExamMappingService {
         // Nếu điểm thực hành đã được cập nhật trước đó
         // thì cập nhật trạng thái của thí sinh
         if (mapping.practicalScore) {
-          mapping.status = this.calculateStatus(mapping.practicalScore, item[keys[1]]);
+          mapping.status = this.calculateStatus(mapping.practicalScore, item[keys[2]]);
         }
         // Nếu không thì chỉ cập nhật điểm thi lý thuyết
-        mapping.theoreticalScore = item[keys[1]];
+        mapping.theoreticalScore = item[keys[2]];
         // Lưu lại vào database
         await this.studentExamMappingRepository.save(mapping);
       }

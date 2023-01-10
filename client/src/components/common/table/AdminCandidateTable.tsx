@@ -173,6 +173,7 @@ export default function AdminCandidateTable({rows, printable}: any) {
                         yearOfBirth={row.student?.yearOfBirth}
                         placeOfBirth={row.student?.placeOfBirth}
                         testTime={row.start}
+                        avatar={row.student?.avatar}
                         testDate={moment(row.exam?.date).format('DD/MM/YYYY')}
                       />
                     )}

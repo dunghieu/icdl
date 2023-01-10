@@ -86,6 +86,7 @@ function Row(props: {row: ReturnType<typeof createData>}) {
                           </IconButton>
                         </Tooltip>
                         <TheDuThi
+                          avatar={row.student.avatar}
                           name={examMapping.exam.name}
                           dayOfBirth={row.student.dayOfBirth}
                           dotthi={+examMapping.exam.series}
@@ -148,6 +149,7 @@ function createData(
     monthOfBirth: string;
     yearOfBirth: string;
     placeOfBirth: string;
+    avatar: string;
   }
 ) {
   return {

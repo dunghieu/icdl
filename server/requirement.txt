@@ -1,4 +1,4 @@
-//Hệ thống quản lý thi chứng chỉ tin học
+//Hệ thống quản lý đăng ký thi chứng chỉ tin học
 
 Đăng tin thông báo tổ chức thi
 Thí sinh đăng ký thi/ôn thi

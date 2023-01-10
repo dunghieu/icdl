@@ -25,8 +25,8 @@ const navigationItems: NavigationItem[] = [
     type: 'group',
     children: [
       {
-        id: 'dashboard.feed',
-        title: 'Bảng tin',
+        id: 'dashboard.candidate',
+        title: 'Thí sinh',
         type: 'basic',
         icon: <HomeOutlinedIcon />,
         link: '/admin',
@@ -39,11 +39,11 @@ const navigationItems: NavigationItem[] = [
         link: '/admin/registration',
       },
       {
-        id: 'dashboard.candidate',
-        title: 'Thí sinh',
+        id: 'dashboard.feed',
+        title: 'Bài viết',
         type: 'basic',
         icon: <SchoolOutlinedIcon />,
-        link: '/admin/candidate',
+        link: '/admin/feed',
       },
       {
         id: 'dashboard.course',

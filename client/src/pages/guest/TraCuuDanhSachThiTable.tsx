@@ -61,15 +61,15 @@ const TraCuuDanhSachThi = (props) => {
     {field: 'intentId'},
     {field: 'clientSecret'},
     {field: 'testTime'},
+    {field: 'avatar'},
     {field: 'id', headerName: 'STT', width: 50},
     {field: 'name', headerName: 'Tên chứng chỉ', width: 300},
     {field: 'testDate', headerName: 'Ngày thi', width: 120},
     {field: 'time', headerName: 'Thời gian', width: 150},
     {field: 'room', headerName: 'Phòng thi', width: 120},
-    {field: 'sbd', headerName: 'SBD', width: 50},
-    {field: 'dotthi', headerName: 'Đợt thi', width: 80},
-    {field: 'lanthi', headerName: 'Lần thi', width: 80},
-    {field: 'amount', headerName: 'Lệ phí', width: 120},
+    {field: 'sbd', headerName: 'SBD', width: 80},
+    {field: 'dotthi', headerName: 'Đợt thi', width: 100},
+    {field: 'lanthi', headerName: 'Lần thi', width: 100},
     {
       field: 'description',
       headerName: 'Ghi chú',
@@ -138,6 +138,7 @@ const TraCuuDanhSachThi = (props) => {
   }, []);
 
   useEffect(() => {
+    console.log(result);
     const arr: any = [];
     result?.registration?.map((registration: any, index: number) => {
       let i = 0;
@@ -145,6 +146,7 @@ const TraCuuDanhSachThi = (props) => {
         arr.push({
           id: ++i,
           studentId: result.id,
+          avatar: result.avatar,
           intentId: registration?.payment?.intentId,
           clientSecret: registration?.payment?.secret,
           name: examMapping?.exam?.name,
@@ -194,6 +196,7 @@ const TraCuuDanhSachThi = (props) => {
               intentId: false,
               clientSecret: false,
               testTime: false,
+              avatar: false,
             }}
           />
         </Box>

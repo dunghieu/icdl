@@ -1,12 +1,15 @@
 import {Box, Button, Icon, IconButton, TextField, Typography} from '@mui/material';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import React from 'react';
+import {useHistory} from 'react-router-dom';
 
 const NotFound = () => {
   const [searchText, setSearchText] = React.useState('');
+  const history = useHistory();
 
   const handleSearch = () => {
-    alert(searchText);
+    history.push(`/category?s=${searchText}`);
+    window.location.reload();
   };
 
   return (

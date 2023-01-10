@@ -84,10 +84,11 @@ const Candidate = () => {
   }, [filter, filter2]);
 
   const handleGenerateRoom = async () => {
-    await axios.post('http://localhost:8080/api/student-exam-mapping/generate-room').then(() => {
+    axios.post('http://localhost:8080/api/student-exam-mapping/generate-room').then((result) => {
       setTimeout(() => {
         fetchData();
       }, 1000);
+      if (result.data && result.data.length > 0) alert('Lập phòng thi thành công');
     });
   };
 

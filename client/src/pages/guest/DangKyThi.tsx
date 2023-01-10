@@ -235,7 +235,7 @@ const DangKyThi = () => {
 
         <Grid container spacing={5}>
           <Grid item xs={5}>
-            <InputLabel sx={{fontWeight: 700}}>HỌ VÀ TÊN LÓT (Ví dụ: Nguyễn Văn)</InputLabel>
+            <InputLabel sx={{fontWeight: 700}}>HỌ VÀ TÊN ĐỆM (Ví dụ: Nguyễn Văn)</InputLabel>
             <TextField
               variant="outlined"
               color="neutral"
