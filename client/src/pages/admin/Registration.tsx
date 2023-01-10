@@ -34,10 +34,11 @@ const Registration = () => {
       alert('Không có dữ liệu');
       return;
     }
-    axios.post('http://localhost:8080/api/registration/assign').then(() => {
-      setOpen(true);
+    const result = await axios.post('http://localhost:8080/api/registration/assign');
+    if (result.data?.message === 'success') {
       fetchData();
-    });
+      setOpen(true);
+    }
   };
 
   return (
